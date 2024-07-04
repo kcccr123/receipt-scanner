@@ -52,7 +52,9 @@
           "isAccessMediaLocationEnabled": true
         }
       ],
-      "react-native-fast-tflite"
+      "react-native-fast-tflite",
+      "onnxruntime-react-native",
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true

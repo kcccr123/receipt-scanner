@@ -3,12 +3,15 @@ import { View, Text, TouchableOpacity, Button } from "react-native";
 import { CameraView, CameraProps, useCameraPermissions } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
 import * as MediaLibrary from "expo-media-library";
+import * as ort from "onnxruntime-react-native";
 
-import { runModelonImage } from "./utils";
+import { runModelonImage, runOrtModel } from "./utils";
 
 import { styles } from "./styles";
 
 export default function CameraTab() {
+  let myModel: ort.InferenceSession;
+
   // @ts-ignore: just being lazy with types here
   const cameraRef = useRef<CameraView>(undefined);
   const [facing, setFacing] = useState<CameraProps["facing"]>("back");
@@ -48,7 +51,8 @@ export default function CameraTab() {
         await MediaLibrary.createAssetAsync(photo.uri);
       }
       setCapturedImage(photo.uri);
-      console.log(runModelonImage(photo.uri, "assets/my-model.tflite"));
+      //console.log(runModelonImage(photo.uri, "assets/my-model.tflite"));
+      console.log(runOrtModel(photo.uri));
     }
     // pass to next component to begin scanning
 

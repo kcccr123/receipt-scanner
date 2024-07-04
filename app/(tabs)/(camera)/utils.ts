@@ -1,6 +1,10 @@
 import * as tf from "@tensorflow/tfjs";
 import * as FileSystem from "expo-file-system";
+import * as ImageManipulator from "expo-image-manipulator";
 import "@tensorflow/tfjs-react-native";
+import * as ort from "onnxruntime-react-native";
+import { Alert } from "react-native";
+import { Asset } from "expo-asset";
 import { decodeJpeg } from "@tensorflow/tfjs-react-native";
 import { loadTensorflowModel } from "react-native-fast-tflite";
 
@@ -36,14 +40,10 @@ const processImage = async (imageUri: string) => {
 };
 
 export const runModelonImage = async (imageUri: string, modelPath: string) => {
-  console.log("hello");
   const model = await loadTensorflowModel(require("./model.tflite"));
-  console.log("hello2");
   const imageTensor = await processImage(imageUri);
-  console.log("fuck oyu???");
   const imageTensorArray: (Float32Array | Int32Array | Uint8Array)[] = [];
   imageTensorArray.push(imageTensor);
-  console.log("fuck oyu");
   const prediction = await model.run(imageTensorArray);
 
   //console.log(prediction); // Ensure this is an array of TypedArray
@@ -90,3 +90,76 @@ export const runModelonImage = async (imageUri: string, modelPath: string) => {
   console.log(detectionResults);
   return detectionResults;
 };
+
+async function loadOrtModel() {
+  try {
+    const assets = await Asset.loadAsync(require("./assets/models/best.onnx"));
+    const modelUri = assets[0].localUri;
+    if (!modelUri) {
+      Alert.alert("failed to get model URI", `${assets[0]}`);
+    } else {
+      const myModel = await ort.InferenceSession.create(modelUri);
+      Alert.alert(
+        "model loaded successfully",
+        `input names: ${myModel.inputNames}, output names: ${myModel.outputNames}`
+      );
+    }
+  } catch (e) {
+    Alert.alert("failed to load model", `${e}`);
+    throw e;
+  }
+}
+
+export async function runOrtModel(imageUri: string) {
+  // Load and preprocess the image
+  const preprocessedImage = await preprocessImage(imageUri);
+
+  // @ts-ignore
+  const myModel: ort.InferenceSession = await loadOrtModel();
+  try {
+    const inputData = new Float32Array(preprocessedImage.dataSync());
+    const feeds: Record<string, ort.Tensor> = {};
+    feeds[myModel.inputNames[0]] = new ort.Tensor(inputData, [1, 28, 28]);
+    const fetches = await myModel.run(feeds);
+    const output = fetches[myModel.outputNames[0]];
+    if (!output) {
+      Alert.alert("failed to get output", `${myModel.outputNames[0]}`);
+    } else {
+      Alert.alert(
+        "model inference successfully",
+        `output shape: ${output.dims}, output data: ${output.data}`
+      );
+    }
+  } catch (e) {
+    Alert.alert("failed to inference model", `${e}`);
+    throw e;
+  }
+}
+
+async function preprocessImage(imageUri: string) {
+  // Load and manipulate the image
+  const manipulatedImage = await ImageManipulator.manipulateAsync(
+    imageUri,
+    [{ resize: { width: 28, height: 28 } }],
+    { format: ImageManipulator.SaveFormat.PNG }
+  );
+
+  // Convert the manipulated image to tensor
+  const imgB64 = await FileSystem.readAsStringAsync(manipulatedImage.uri, {
+    encoding: FileSystem.EncodingType.Base64,
+  });
+
+  const imageTensor = tf.browser.fromPixels({
+    // @ts-ignore
+    data: Uint8Array.from(atob(imgB64), (c) => c.charCodeAt(0)),
+    width: 28,
+    height: 28,
+    // @ts-ignore
+    channels: 1,
+  });
+
+  // Normalize the image tensor
+  const normalizedImage = imageTensor.div(tf.scalar(255.0));
+
+  return normalizedImage;
+}
