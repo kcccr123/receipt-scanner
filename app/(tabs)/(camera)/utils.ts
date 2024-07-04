@@ -37,7 +37,7 @@ const processImage = async (imageUri: string) => {
 
 export const runModelonImage = async (imageUri: string, modelPath: string) => {
   console.log("hello");
-  const model = await loadTensorflowModel(require("./model.tflite"));
+  const model = await loadTensorflowModel(require("model.tflite"));
   console.log("hello2");
   const imageTensor = await processImage(imageUri);
   console.log("fuck oyu???");
