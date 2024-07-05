@@ -48,7 +48,7 @@ export default function CameraTab() {
         await MediaLibrary.createAssetAsync(photo.uri);
       }
       setCapturedImage(photo.uri);
-      console.log(runModelonImage(photo.uri, "assets/my-model.tflite"));
+      console.log(runModelonImage(photo.uri));
     }
     // pass to next component to begin scanning
 

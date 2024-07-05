@@ -35,7 +35,7 @@ const processImage = async (imageUri: string) => {
   return imageTensor.dataSync();
 };
 
-export const runModelonImage = async (imageUri: string, modelPath: string) => {
+export const runModelonImage = async (imageUri: string) => {
   console.log("hello");
   const model = await loadTensorflowModel(require("model.tflite"));
   console.log("hello2");
@@ -90,3 +90,62 @@ export const runModelonImage = async (imageUri: string, modelPath: string) => {
   console.log(detectionResults);
   return detectionResults;
 };
+
+/*
+export const runModelonStaticImage = async (imageUri: string) => {
+  console.log("hello");
+  const model = await loadTensorflowModel(
+    require("models/best_float32.tflite")
+  );
+  console.log("hello2");
+  const imageTensor = await processImage(imageUri);
+  console.log("fuck oyu???");
+  const imageTensorArray: (Float32Array | Int32Array | Uint8Array)[] = [];
+  imageTensorArray.push(imageTensor);
+  console.log("fuck oyu");
+  const prediction = await model.run(imageTensorArray);
+
+  //console.log(prediction); // Ensure this is an array of TypedArray
+
+  const outputTensor = prediction[0] as Float32Array; // Explicitly cast to Float32Array
+  const outputArray = Array.from(outputTensor); // Convert TypedArray to regular array
+
+  const numDetections = 6300;
+  const numClasses = 80; // Assuming 80 classes + 1 objectness score + 4 bounding box coords
+  const detectionResults: Array<{
+    bbox: any;
+    objectness: number;
+    class: number;
+    score: number;
+  }> = [];
+
+  for (let i = 0; i < numDetections; i++) {
+    const offset = i * 85;
+    const bbox = {
+      yMin: outputArray[offset + 0],
+      xMin: outputArray[offset + 1],
+      yMax: outputArray[offset + 2],
+      xMax: outputArray[offset + 3],
+    };
+    const objectness = outputArray[offset + 4];
+
+    // Convert class scores TypedArray to regular array
+    const classScoresTypedArray = outputTensor.subarray(
+      offset + 5,
+      offset + 85
+    ) as Float32Array;
+    const classScores = Array.from(classScoresTypedArray);
+
+    const maxClassScore = Math.max(...classScores);
+    const maxClassIndex = classScores.indexOf(maxClassScore);
+
+    detectionResults.push({
+      bbox,
+      objectness,
+      class: maxClassIndex,
+      score: maxClassScore,
+    });
+  }
+  console.log(detectionResults);
+  return detectionResults;
+};*/
