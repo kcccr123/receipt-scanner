@@ -48,12 +48,12 @@ export default function CameraTab() {
         await MediaLibrary.createAssetAsync(photo.uri);
       }
       setCapturedImage(photo.uri);
-      console.log(runModelonImage(photo.uri));
+      runModelonImage(photo.uri);
     }
     // pass to next component to begin scanning
 
     alert(`photo captured with dimensions: ${photo!.width} x ${photo!.height}`);
-    console.log(JSON.stringify(photo));
+    //console.log(JSON.stringify(photo));
   };
 
   if (!permission) {
