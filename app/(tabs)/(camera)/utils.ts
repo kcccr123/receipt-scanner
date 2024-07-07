@@ -1,6 +1,5 @@
 import * as tf from "@tensorflow/tfjs";
 import * as FileSystem from "expo-file-system";
-import { fetch } from "@tensorflow/tfjs-react-native";
 import "@tensorflow/tfjs-react-native";
 import { decodeJpeg } from "@tensorflow/tfjs-react-native";
 import { loadTensorflowModel } from "react-native-fast-tflite";
@@ -18,37 +17,26 @@ type DetectionResult = {
   class: number;
 };
 
-const uriToTensor = async (uri: string) => {
-  await tf.ready();
-
-  // Read the file from the provided URI
-  /*
-  console.log(uri);
+const loadImage = async (uri: string) => {
   const imgB64 = await FileSystem.readAsStringAsync(uri, {
     encoding: FileSystem.EncodingType.Base64,
   });
-  console.log("got b64");
+  return imgB64;
+};
 
-  // Convert base64 string to buffer
-  const imgBuffer = tf.util.encodeString(imgB64, "base64").buffer;
-  const uint8Array = new Uint8Array(imgBuffer);
-
-  console.log("what now");*/
-
+const uriToTensor = async (imgB64: string) => {
+  await tf.ready();
   console.log("decoding");
-  const imageUri = uri;
-  const response = await fetch(imageUri, {}, { isBinary: true });
-  const imageDataArrayBuffer = await response.arrayBuffer();
-  const imageData = new Uint8Array(imageDataArrayBuffer);
 
-  // Decode the image to a tensor
+  const imgBuffer = tf.util.encodeString(imgB64, "base64").buffer;
+  const imageData = new Uint8Array(imgBuffer);
+
   const imageTensor = decodeJpeg(imageData);
   console.log("decoded image");
 
   // Resize the image to 640x640
   const resizedImageTensor = tf.image.resizeBilinear(imageTensor, [640, 640]);
   console.log("resized image");
-
   return resizedImageTensor;
 };
 
@@ -56,24 +44,27 @@ const processImage = async (imageUri: string) => {
   console.log("process image");
   const imageTensor = await uriToTensor(imageUri);
   console.log("uri to tensor");
-  return imageTensor.dataSync();
+  const returnValue = await imageTensor.data();
+  console.log("fucked here here fucked");
+  return returnValue;
 };
 
 export const runModelonImage = async (imageUri: string) => {
-  const model = await loadTensorflowModel(require("./pretrained32.tflite"));
-  const imageTensor = await processImage(imageUri);
-  console.log("imageTensor retrieved", imageTensor);
+  const b64data = await loadImage(imageUri);
+  const imageTensorArray = await processImage(b64data);
+  console.log("imageTensor retrieved", imageTensorArray);
+  /*
+  const model = await loadTensorflowModel(require("./testing.tflite"));
 
-  const imageTensorArray = [imageTensor];
-
-  const prediction = await model.run(imageTensorArray);
+  const prediction = await model.run([imageTensorArray]);
   console.log("prediction", prediction);
 
   if (!prediction || prediction.length === 0) {
     console.error("No prediction results from model");
     return [];
   }
-
+    */
+  /*
   // Assume the first element in prediction is the output tensor
   const outputTensor = prediction[0] as Float32Array;
   const outputArray = Array.from(outputTensor); // Convert TypedArray to regular array
@@ -144,63 +135,5 @@ export const runModelonImage = async (imageUri: string) => {
   console.log("detectionResults", nmsBoxes);
   console.log("hello");
   return nmsBoxes;
+  */
 };
-
-/*
-export const runModelonStaticImage = async (imageUri: string) => {
-  console.log("hello");
-  const model = await loadTensorflowModel(
-    require("models/best_float32.tflite")
-  );
-  console.log("hello2");
-  const imageTensor = await processImage(imageUri);
-  console.log("fuck oyu???");
-  const imageTensorArray: (Float32Array | Int32Array | Uint8Array)[] = [];
-  imageTensorArray.push(imageTensor);
-  console.log("fuck oyu");
-  const prediction = await model.run(imageTensorArray);
-
-  //console.log(prediction); // Ensure this is an array of TypedArray
-
-  const outputTensor = prediction[0] as Float32Array; // Explicitly cast to Float32Array
-  const outputArray = Array.from(outputTensor); // Convert TypedArray to regular array
-
-  const numDetections = 6300;
-  const numClasses = 80; // Assuming 80 classes + 1 objectness score + 4 bounding box coords
-  const detectionResults: Array<{
-    bbox: any;
-    objectness: number;
-    class: number;
-    score: number;
-  }> = [];
-
-  for (let i = 0; i < numDetections; i++) {
-    const offset = i * 85;
-    const bbox = {
-      yMin: outputArray[offset + 0],
-      xMin: outputArray[offset + 1],
-      yMax: outputArray[offset + 2],
-      xMax: outputArray[offset + 3],
-    };
-    const objectness = outputArray[offset + 4];
-
-    // Convert class scores TypedArray to regular array
-    const classScoresTypedArray = outputTensor.subarray(
-      offset + 5,
-      offset + 85
-    ) as Float32Array;
-    const classScores = Array.from(classScoresTypedArray);
-
-    const maxClassScore = Math.max(...classScores);
-    const maxClassIndex = classScores.indexOf(maxClassScore);
-
-    detectionResults.push({
-      bbox,
-      objectness,
-      class: maxClassIndex,
-      score: maxClassScore,
-    });
-  }
-  console.log(detectionResults);
-  return detectionResults;
-};*/
