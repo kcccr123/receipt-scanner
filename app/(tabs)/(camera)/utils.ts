@@ -48,11 +48,11 @@ export const runModelonImage = async (imageUri: string) => {
   console.log("tensor retrieved");
   // console.log("imageTensor retrieved", imageTensorArray);
 
-  const model = await loadTensorflowModel(require("./scratch.tflite"));
+  const model = await loadTensorflowModel(require("./100epoch.tflite"));
   console.log("model loaded");
 
   const prediction = await model.run([imageTensorArray]);
-  console.log("prediction", prediction);
+  //console.log("prediction", prediction);
 
   if (!prediction || prediction.length === 0) {
     console.error("No prediction results from model");
@@ -93,9 +93,9 @@ export const runModelonImage = async (imageUri: string) => {
     }
   }
 
-  const maxOutputSize = 10; // Maximum number of boxes to keep
-  const iouThreshold = 0.5; // IoU threshold for NMS
-  const scoreThreshold = 0.5; // Score threshold for NMS
+  const maxOutputSize = 100; // Maximum number of boxes to keep
+  const iouThreshold = 0.1; // IoU threshold for NMS
+  const scoreThreshold = 100; // Score threshold for NMS
 
   //console.log("nms begin");
   //console.log(boxes.length);
