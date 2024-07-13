@@ -4,15 +4,8 @@ import "@tensorflow/tfjs-react-native";
 import { decodeJpeg } from "@tensorflow/tfjs-react-native";
 import { loadTensorflowModel } from "react-native-fast-tflite";
 
-type BoundingBox = {
-  yMin: number;
-  xMin: number;
-  yMax: number;
-  xMax: number;
-};
-
 type DetectionResult = {
-  bbox: BoundingBox;
+  bbox: number[];
   score: number;
   class: number;
 };
@@ -41,8 +34,9 @@ const uriToTensor = async (imgB64: string) => {
 };
 
 const processImage = async (imageUri: string) => {
+  const b64data = await loadImage(imageUri);
   console.log("process image");
-  const imageTensor = await uriToTensor(imageUri);
+  const imageTensor = await uriToTensor(b64data);
   console.log("uri to tensor");
   const returnValue = await imageTensor.data();
   console.log("fucked here here fucked");
@@ -50,11 +44,12 @@ const processImage = async (imageUri: string) => {
 };
 
 export const runModelonImage = async (imageUri: string) => {
-  const b64data = await loadImage(imageUri);
-  const imageTensorArray = await processImage(b64data);
-  console.log("imageTensor retrieved", imageTensorArray);
-  /*
-  const model = await loadTensorflowModel(require("./testing.tflite"));
+  const imageTensorArray = await processImage(imageUri);
+  console.log("tensor retrieved");
+  // console.log("imageTensor retrieved", imageTensorArray);
+
+  const model = await loadTensorflowModel(require("./scratch.tflite"));
+  console.log("model loaded");
 
   const prediction = await model.run([imageTensorArray]);
   console.log("prediction", prediction);
@@ -63,54 +58,49 @@ export const runModelonImage = async (imageUri: string) => {
     console.error("No prediction results from model");
     return [];
   }
-    */
-  /*
+
   // Assume the first element in prediction is the output tensor
   const outputTensor = prediction[0] as Float32Array;
   const outputArray = Array.from(outputTensor); // Convert TypedArray to regular array
   //console.log("outputArray", outputArray);
-
+  console.log(outputArray.length);
   const numDetections = 8400;
 
-  const boxes: BoundingBox[] = [];
   const tfBoxes: number[][] = [];
   const scores: number[] = [];
   const classes: number[] = [];
 
   for (let i = 0; i < numDetections; i++) {
     const offset = i * 7;
-    const bbox = {
-      yMin: outputArray[offset + 0],
-      xMin: outputArray[offset + 1],
-      yMax: outputArray[offset + 2],
-      xMax: outputArray[offset + 3],
-    };
-    const temp = [];
-    temp.push(outputArray[offset + 0]);
-    temp.push(outputArray[offset + 1]);
-    temp.push(outputArray[offset + 2]);
-    temp.push(outputArray[offset + 3]);
-    tfBoxes.push(temp);
 
-    const objectness = outputArray[offset + 4];
-    const class1Score = outputArray[offset + 5];
-    const class2Score = outputArray[offset + 6];
-    const maxClassScore = Math.max(class1Score, class2Score);
-    const maxClassIndex = class1Score > class2Score ? 0 : 1;
+    // find class with highest prob
+    let classes_scores = outputArray.slice(offset + 4, offset + 7); // Extract class scores
+    let maxScore = Math.max(...classes_scores); // Find max score
+    let maxClassIndex = classes_scores.indexOf(maxScore);
 
-    if (objectness > 0.5) {
+    if (maxScore >= 0.25) {
+      let box = [
+        outputArray[offset] - 0.5 * outputArray[offset + 2], // x
+        outputArray[offset + 1] - 0.5 * outputArray[offset + 3], // y
+        outputArray[offset + 2], // width
+        outputArray[offset + 3], // height
+      ];
+
       // Example threshold
-      boxes.push(bbox);
-      scores.push(objectness);
+      tfBoxes.push(box);
+      scores.push(maxScore);
       classes.push(maxClassIndex);
     }
   }
 
-  const maxOutputSize = 100; // Maximum number of boxes to keep
+  const maxOutputSize = 10; // Maximum number of boxes to keep
   const iouThreshold = 0.5; // IoU threshold for NMS
   const scoreThreshold = 0.5; // Score threshold for NMS
 
-  console.log("nms begin");
+  //console.log("nms begin");
+  //console.log(boxes.length);
+  //console.log(scores.length);
+  //console.log(scores);
   const indices = await tf.image.nonMaxSuppressionAsync(
     tfBoxes,
     scores,
@@ -122,18 +112,13 @@ export const runModelonImage = async (imageUri: string) => {
 
   const nmsBoxes: DetectionResult[] = indices.arraySync().map((index) => {
     return {
-      bbox: {
-        yMin: boxes[index].yMin,
-        xMin: boxes[index].xMin,
-        yMax: boxes[index].yMax,
-        xMax: boxes[index].xMax,
-      },
+      bbox: tfBoxes[index],
       score: scores[index],
       class: classes[index],
     };
   });
   console.log("detectionResults", nmsBoxes);
+  console.log(nmsBoxes.length);
   console.log("hello");
   return nmsBoxes;
-  */
 };
