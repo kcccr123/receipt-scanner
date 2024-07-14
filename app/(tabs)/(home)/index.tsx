@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Button } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { runModelonImage } from "../(camera)/utils";
+import { runOnnxModel } from "../(camera)/utils";
 
 const pickImage = async () => {
   // No permissions request is necessary for launching the image library
@@ -11,7 +11,7 @@ const pickImage = async () => {
     quality: 1,
   });
   if (!result.canceled) {
-    runModelonImage(result.assets[0].uri);
+    runOnnxModel(result.assets[0].uri);
   }
 };
 

@@ -4,7 +4,7 @@ import { CameraView, CameraProps, useCameraPermissions } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
 import * as MediaLibrary from "expo-media-library";
 
-import { runModelonImage } from "./utils";
+import {runOnnxModel } from "./utils";
 
 import { styles } from "./styles";
 
@@ -48,7 +48,7 @@ export default function CameraTab() {
         await MediaLibrary.createAssetAsync(photo.uri);
       }
       setCapturedImage(photo.uri);
-      runModelonImage(photo.uri);
+      runOnnxModel(photo.uri);
     }
     // pass to next component to begin scanning
 
