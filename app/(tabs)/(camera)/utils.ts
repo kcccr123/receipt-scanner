@@ -28,8 +28,14 @@ const uriToTensor = async (imgB64: string) => {
 
   console.log("Image data length:", imageData.length);
 
-  const imageTensor = decodeJpeg(imageData);
-  console.log("decoded image", imageTensor.shape);
+  const imageTensor = decodeJpeg(imageData, 3);
+  console.log("decoded image", imageTensor);
+
+  const [redArray, greenArray, blueArray] = new Array(
+    new Array<number>(),
+    new Array<number>(),
+    new Array<number>()
+  );
 
   // Resize the image to 640x640
   const resizedImageTensor = tf.image.resizeBilinear(imageTensor, [640, 640]);
@@ -158,7 +164,7 @@ export const runOnnxModel = async (imageUri: string) => {
 
     console.log("tensor lenght", imageTensorArray.length);
 
-    const inputTensor2 = new ort.Tensor(imageTensorArray, [1, 3, 640, 640]);
+    const inputTensor2 = new ort.Tensor(imageTensorArray, [3, 640, 640]);
     const inputTensor = new ort.Tensor(
       new Float32Array(3 * 640 * 640),
       [1, 3, 640, 640]
@@ -171,7 +177,7 @@ export const runOnnxModel = async (imageUri: string) => {
     console.log("equal:", inputTensor.data.length == inputTensor2.data.length);
     const feeds: Record<string, ort.Tensor> = {};
     // console.log(inputTensor);
-    feeds[session.inputNames[0]] = inputTensor;
+    feeds[session.inputNames[0]] = inputTensor2;
 
     const fetches = await session.run(feeds);
     console.log("ran");
