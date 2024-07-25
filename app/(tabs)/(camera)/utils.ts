@@ -31,12 +31,6 @@ const uriToTensor = async (imgB64: string) => {
   const imageTensor = decodeJpeg(imageData, 3);
   console.log("decoded image", imageTensor);
 
-  const [redArray, greenArray, blueArray] = new Array(
-    new Array<number>(),
-    new Array<number>(),
-    new Array<number>()
-  );
-
   // Resize the image to 640x640
   const resizedImageTensor = tf.image.resizeBilinear(imageTensor, [640, 640]);
   console.log("Resized image tensor shape:", resizedImageTensor.shape);
@@ -66,10 +60,104 @@ const processImage = async (imageUri: string) => {
   console.log("process image");
   const imageTensor = await uriToTensor(b64data);
   console.log("uri to tensor", imageTensor.shape);
-  const returnValue = await imageTensor.data();
-  console.log("fucked here here fucked", returnValue.length);
+
+
+  const returnValue = Float32Array.from(imageTensor.dataSync());
+  console.log("Image tensor data length:", returnValue.length);
   return returnValue;
 };
+
+export const runOnnxModel = async (imageUri: string) => {
+  // load model
+  const InferenceSession = ort.InferenceSession;
+  const assets = await Asset.loadAsync(
+    require("../../../assets/models/smallertest.onnx")
+  );
+  const modelUri = assets[0].localUri;
+  if (modelUri) {
+    const session = await InferenceSession.create(modelUri);
+    const imageTensorArray = await processImage(imageUri);
+
+    console.log("Image tensor array length:", imageTensorArray.length);
+
+    const inputTensor = new ort.Tensor(imageTensorArray, [1, 3, 640, 640], 'float32');
+    console.log("ORT tensor data length:", inputTensor.data.length);
+    console.log("ORT tensor data type:", inputTensor.type);
+
+    const feeds = {};
+    feeds[session.inputNames[0]] = inputTensor
+
+
+
+    const fetches = await session.run(feeds);
+    console.log("Model run successfully");
+    const output = fetches[session.outputNames[0]];
+    console.log("Model output size:", output.size);
+
+    // const outputTensor = output[0] as Float32Array;
+    // const outputArray = Array.from(outputTensor); // Convert TypedArray to regular array
+    // //console.log("outputArray", outputArray);
+    // console.log(outputArray.length);
+    const numDetections = 8400;
+
+    const tfBoxes: number[][] = [];
+    const scores: number[] = [];
+    const classes: number[] = [];
+
+    for (let i = 0; i < numDetections; i++) {
+      const offset = i * 7;
+
+      // find class with highest prob
+      let classes_scores = output.slice(offset + 4, offset + 7); // Extract class scores
+      let maxScore = Math.max(...classes_scores); // Find max score
+      let maxClassIndex = classes_scores.indexOf(maxScore);
+
+      if (maxScore >= 0.25) {
+        let box = [
+          output[offset] - 0.5 * output[offset + 2], // x
+          output[offset + 1] - 0.5 * output[offset + 3], // y
+          output[offset + 2], // width
+          output[offset + 3], // height
+        ];
+
+        // Example threshold
+        tfBoxes.push(box);
+        scores.push(maxScore);
+        classes.push(maxClassIndex);
+      }
+    }
+
+    const maxOutputSize = 100; // Maximum number of boxes to keep
+    const iouThreshold = 0.1; // IoU threshold for NMS
+    const scoreThreshold = 100; // Score threshold for NMS
+
+    //console.log("nms begin");
+    //console.log(boxes.length);
+    //console.log(scores.length);
+    //console.log(scores);
+    const indices = await tf.image.nonMaxSuppressionAsync(
+      tfBoxes,
+      scores,
+      maxOutputSize,
+      iouThreshold,
+      scoreThreshold
+    );
+    console.log("nms");
+
+    const nmsBoxes: DetectionResult[] = indices.arraySync().map((index) => {
+      return {
+        bbox: tfBoxes[index],
+        score: scores[index],
+        class: classes[index],
+      };
+    });
+    console.log("detectionResults", nmsBoxes);
+    console.log(nmsBoxes.length);
+    console.log("hello");
+    return nmsBoxes;
+  }
+};
+
 
 // export const runModelonImage = async (imageUri: string) => {
 //   const imageTensorArray = await processImage(imageUri);
@@ -151,37 +239,3 @@ const processImage = async (imageUri: string) => {
 //   return nmsBoxes;
 // };
 
-export const runOnnxModel = async (imageUri: string) => {
-  // load model
-  const InferenceSession = ort.InferenceSession;
-  const assets = await Asset.loadAsync(
-    require("../../../assets/models/smallertest.onnx")
-  );
-  const modelUri = assets[0].localUri;
-  if (modelUri) {
-    const session = await InferenceSession.create(modelUri);
-    const imageTensorArray = await processImage(imageUri);
-
-    console.log("tensor lenght", imageTensorArray.length);
-
-    const inputTensor2 = new ort.Tensor(imageTensorArray, [3, 640, 640]);
-    const inputTensor = new ort.Tensor(
-      new Float32Array(3 * 640 * 640),
-      [1, 3, 640, 640]
-    );
-    console.log(
-      "ORT tensor data length:",
-      inputTensor.data.length,
-      inputTensor2.data.length
-    );
-    console.log("equal:", inputTensor.data.length == inputTensor2.data.length);
-    const feeds: Record<string, ort.Tensor> = {};
-    // console.log(inputTensor);
-    feeds[session.inputNames[0]] = inputTensor2;
-
-    const fetches = await session.run(feeds);
-    console.log("ran");
-    const output = fetches[session.outputNames[0]];
-    console.log(output);
-  }
-};
