@@ -61,7 +61,6 @@ const processImage = async (imageUri: string) => {
   const imageTensor = await uriToTensor(b64data);
   console.log("uri to tensor", imageTensor.shape);
 
-
   const returnValue = Float32Array.from(imageTensor.dataSync());
   console.log("Image tensor data length:", returnValue.length);
   return returnValue;
@@ -80,25 +79,24 @@ export const runOnnxModel = async (imageUri: string) => {
 
     console.log("Image tensor array length:", imageTensorArray.length);
 
-    const inputTensor = new ort.Tensor(imageTensorArray, [1, 3, 640, 640], 'float32');
+    const inputTensor = new ort.Tensor(
+      imageTensorArray,
+      [1, 3, 640, 640],
+      "float32"
+    );
     console.log("ORT tensor data length:", inputTensor.data.length);
     console.log("ORT tensor data type:", inputTensor.type);
 
-    const feeds = {};
-    feeds[session.inputNames[0]] = inputTensor
-
-
+    const feeds: Record<string, ort.Tensor> = {};
+    feeds[session.inputNames[0]] = inputTensor;
 
     const fetches = await session.run(feeds);
     console.log("Model run successfully");
     const output = fetches[session.outputNames[0]];
-    console.log("Model output size:", output.size);
 
-    // const outputTensor = output[0] as Float32Array;
-    // const outputArray = Array.from(outputTensor); // Convert TypedArray to regular array
-    // //console.log("outputArray", outputArray);
-    // console.log(outputArray.length);
     const numDetections = 8400;
+    const outputTensor = output.data as Float32Array;
+    const outputArray = Array.from(outputTensor);
 
     const tfBoxes: number[][] = [];
     const scores: number[] = [];
@@ -108,16 +106,16 @@ export const runOnnxModel = async (imageUri: string) => {
       const offset = i * 7;
 
       // find class with highest prob
-      let classes_scores = output.slice(offset + 4, offset + 7); // Extract class scores
+      let classes_scores = outputArray.slice(offset + 4, offset + 7); // Extract class scores
       let maxScore = Math.max(...classes_scores); // Find max score
       let maxClassIndex = classes_scores.indexOf(maxScore);
 
       if (maxScore >= 0.25) {
         let box = [
-          output[offset] - 0.5 * output[offset + 2], // x
-          output[offset + 1] - 0.5 * output[offset + 3], // y
-          output[offset + 2], // width
-          output[offset + 3], // height
+          outputArray[offset] - 0.5 * outputArray[offset + 2], // x
+          outputArray[offset + 1] - 0.5 * outputArray[offset + 3], // y
+          outputArray[offset + 2], // width
+          outputArray[offset + 3], // height
         ];
 
         // Example threshold
@@ -157,8 +155,6 @@ export const runOnnxModel = async (imageUri: string) => {
     return nmsBoxes;
   }
 };
-
-
 // export const runModelonImage = async (imageUri: string) => {
 //   const imageTensorArray = await processImage(imageUri);
 //   console.log("tensor retrieved");
@@ -238,4 +234,3 @@ export const runOnnxModel = async (imageUri: string) => {
 //   console.log("hello");
 //   return nmsBoxes;
 // };
-
