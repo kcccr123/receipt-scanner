@@ -52,8 +52,8 @@ const onnxNms = async (output: ort.Tensor) => {
   }
 
   const maxOutputSize = 100; // Maximum number of boxes to keep
-  const iouThreshold = 0.4; // IoU threshold for NMS
-  const scoreThreshold = 500; // Score threshold for NMS
+  const iouThreshold = 0.1; // IoU threshold for NMS
+  const scoreThreshold = 400; // Score threshold for NMS
 
   //console.log("nms begin");
   //console.log(boxes.length);
@@ -132,7 +132,7 @@ export const runOnnxModel = async (imageUri: string) => {
   // load model
   const InferenceSession = ort.InferenceSession;
   const assets = await Asset.loadAsync(
-    require("../../../assets/models/onnxtest.onnx")
+    require("../../../assets/models/bestonnx.onnx")
   );
   const modelUri = assets[0].localUri;
   if (modelUri) {
@@ -158,5 +158,9 @@ export const runOnnxModel = async (imageUri: string) => {
 
     // run non max supression
     const detections = onnxNms(output);
+
+    // need to figure out how to validate these detections
+    // start new function to add garys model into the app
+    // in python run predictiosn on same image that app is running model on, and comapre results.
   }
 };
