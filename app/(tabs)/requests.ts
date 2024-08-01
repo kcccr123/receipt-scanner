@@ -1,18 +1,26 @@
 import axios from "axios";
+import { FileObject } from "./types";
 import * as FileSystem from "expo-file-system";
+import mime from "mime";
 
 export const detectImagePost = async (uri: string) => {
-  let formData = new FormData();
-  // FIGURE OUT HOW TO SEND IMAGE DATA TO FLASK AND READ IMAGE DATA
-
-  formData.append("file", {
-    uri: uri,
-    name: "photo.jpg",
-    type: "image/jpeg",
-  });
-
   try {
-    const response = await axios.post(
+    //  get uri and format
+    const newImageUri = "file://" + uri.split("file:/").join("");
+    console.log(newImageUri);
+
+    // So, FormData object automatically converts image to binary data.
+    // its given the image uri, takes the image uri, uses it to get the image and convert to binary data
+    // flask takes the formdata in the post request and reads the binary data.
+    
+    const formData = new FormData();
+    formData.append("image", {
+      uri: newImageUri,
+      type: mime.getType(newImageUri),
+      name: newImageUri.split("/").pop(),
+    });
+    console.log(formData);
+    const serverResponse = await axios.post(
       "http://10.0.2.2:5000/predict",
       formData,
       {
@@ -21,7 +29,7 @@ export const detectImagePost = async (uri: string) => {
         },
       }
     );
-    console.log(response.data);
+    console.log(serverResponse.data);
   } catch (error) {
     console.error(error);
   }
@@ -29,7 +37,7 @@ export const detectImagePost = async (uri: string) => {
 
 export const sayHello = async (words: string) => {
   try {
-    const response = await axios.post("http://10.0.2.2:5000/response", {
+    const response = await axios.post("http://10.0.2.2:5000/predict", {
       message: words,
     });
     alert(response.data.response);
@@ -37,4 +45,3 @@ export const sayHello = async (words: string) => {
     console.error(error);
   }
 };
-

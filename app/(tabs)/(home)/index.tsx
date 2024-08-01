@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Button } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { runOnnxModel } from "../(camera)/utils";
-import { sayHello } from "../requests";
+import { sayHello, detectImagePost } from "../requests";
 
 const pickImage = async () => {
   // No permissions request is necessary for launching the image library
@@ -12,7 +12,8 @@ const pickImage = async () => {
     quality: 1,
   });
   if (!result.canceled) {
-    sayHello("hello");
+    //sayHello("hello");
+    detectImagePost(result.assets[0].uri);
     // runOnnxModel(result.assets[0].uri);
   }
 };
