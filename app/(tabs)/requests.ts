@@ -12,7 +12,7 @@ export const detectImagePost = async (uri: string) => {
     // So, FormData object automatically converts image to binary data.
     // its given the image uri, takes the image uri, uses it to get the image and convert to binary data
     // flask takes the formdata in the post request and reads the binary data.
-    
+
     const formData = new FormData();
     formData.append("image", {
       uri: newImageUri,
@@ -21,7 +21,7 @@ export const detectImagePost = async (uri: string) => {
     });
     console.log(formData);
     const serverResponse = await axios.post(
-      "http://10.0.2.2:5000/predict",
+      "http://34.123.250.241:30001/predict",
       formData,
       {
         headers: {
@@ -36,8 +36,9 @@ export const detectImagePost = async (uri: string) => {
 };
 
 export const sayHello = async (words: string) => {
+  console.log("make request");
   try {
-    const response = await axios.post("http://10.0.2.2:5000/predict", {
+    const response = await axios.post("http://34.123.250.241:30001/response", {
       message: words,
     });
     alert(response.data.response);
