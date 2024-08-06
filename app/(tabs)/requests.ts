@@ -20,6 +20,8 @@ export const detectImagePost = async (uri: string) => {
       name: newImageUri.split("/").pop(),
     });
     console.log(formData);
+    // gcp: http://34.123.250.241:30001/predict
+    // local: http://10.0.2.2:5000/predict
     const serverResponse = await axios.post(
       "http://34.123.250.241:30001/predict",
       formData,
@@ -38,6 +40,7 @@ export const detectImagePost = async (uri: string) => {
 export const sayHello = async (words: string) => {
   console.log("make request");
   try {
+    // gcp: http://34.123.250.241:30001/response
     const response = await axios.post("http://34.123.250.241:30001/response", {
       message: words,
     });
