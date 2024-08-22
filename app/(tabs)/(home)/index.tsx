@@ -10,6 +10,7 @@ const pickImage = async () => {
     quality: 1,
   });
   if (!result.canceled) {
+    // sayHello("hi");
     detectImagePost(result.assets[0].uri);
   }
 };
