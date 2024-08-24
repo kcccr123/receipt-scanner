@@ -40,8 +40,6 @@ export const addSingleGroup = async (db: SQLiteDatabase, group: GroupType) => {
      VALUES (?, ?, ?, ?)
    `;
 
-  console.log("Starting to add groups");
-
   try {
     const result = await db.executeSql(insertQuery, [
       group.name,

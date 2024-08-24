@@ -6,11 +6,11 @@ import {
   updateGroup,
 } from "@/app/database/groups";
 import { useEffect, useState } from "react";
-import { GroupType, ReceiptType } from "../types";
-import { getReceipts } from "@/app/database/receipts";
+import { GroupType, ReceiptType } from "../../app/(tabs)/types";
+import { deleteReceipt, getReceipts } from "@/app/database/receipts";
 import { Button, Icon, Input, ListItem, Overlay } from "@rneui/themed";
 import { FlatList, StyleSheet } from "react-native";
-import { DisplayReceipt } from "./receiptOV";
+import { DisplayReceipt } from "../ReceiptEditor";
 
 export const DisplayGroup: React.FC<{
   isVisible: boolean;
@@ -18,18 +18,19 @@ export const DisplayGroup: React.FC<{
   setGroup: React.Dispatch<React.SetStateAction<GroupType[]>>;
   group: GroupType[];
   groupID: number | null;
-}> = ({
-  isVisible,
-  setVisible,
-  groupID = null,
-  group,
-  setGroup,
-}) => {
-  const [name, setName] = useState(" ");
-  const [pdate, setPdate] = useState("YYYY-MM-DD");
-  const [udate, setUdate] = useState("YYYY-MM-DD");
-  const [total, setTotal] = useState(0);
-  const [gID, setGID] = useState(0);
+}> = ({ isVisible, setVisible, groupID = null, group, setGroup }) => {
+  const defaultBase: GroupType = {
+    id: 0,
+    name: " ",
+    total: 0,
+    purchase_date: "9999-12-30",
+    upload_date: "9999-12-30",
+  };
+  const [name, setName] = useState(defaultBase.name);
+  const [pdate, setPdate] = useState(defaultBase.purchase_date);
+  const [udate, setUdate] = useState(defaultBase.upload_date);
+  const [total, setTotal] = useState(defaultBase.total);
+  const [gID, setGID] = useState(defaultBase.id);
   const [itemOV, setItemOV] = useState(false);
   const [receiptID, setReceiptID] = useState(0);
   const [receiptsList, setReceiptsList] = useState<ReceiptType[]>([]);
@@ -50,27 +51,51 @@ export const DisplayGroup: React.FC<{
           const receipts = await getReceipts(db, groupID);
           setReceiptsList(receipts);
         } else {
+          setName(defaultBase.name);
+          setPdate(defaultBase.purchase_date);
+          setUdate(defaultBase.upload_date);
+          setTotal(defaultBase.total);
           const newID = await addSingleGroup(db, {
             id: 0,
             name: name,
-            total: 0,
-            upload_date: "2000-01-01",
-            purchase_date: "2000-01-01",
+            total: total,
+            upload_date: udate,
+            purchase_date: pdate,
           });
           setGID(newID);
+          const newg = await getSingleGroup(db, newID);
+          console.log(newg);
+          if (newg != null) {
+            group.push(newg);
+            setGroup(group);
+          } else {
+            console.log("new group not inited");
+          }
         }
       } catch (error) {
         console.error(error);
       }
     };
 
-    if (groupID !== null) {
+    if (isVisible) {
       fetchData();
     }
-  }, [groupID]);
+  }, [isVisible, groupID]);
 
   const toggleOverLay = () => {
     setVisible(!isVisible);
+  };
+
+  const remove = async (id: number) => {
+    try {
+      const db = await connectToDb();
+      deleteReceipt(db, id);
+
+      const newList = receiptsList.filter((item) => item.id != id);
+      setReceiptsList(newList);
+    } catch (error) {
+      console.error("Failed to delete Receipt:", error);
+    }
   };
 
   const update = (g: GroupType) => {
@@ -88,12 +113,6 @@ export const DisplayGroup: React.FC<{
     setGroup(updatedData);
   };
 
-  const add = (g: GroupType) => {
-    g.id = gID;
-    group.push(g);
-    setGroup(group);
-  };
-
   const renderreceiptsList = ({ item }: { item: ReceiptType }) => (
     <ListItem bottomDivider>
       <Icon name={"receipt"} type={"material"} color="grey" />
@@ -103,13 +122,31 @@ export const DisplayGroup: React.FC<{
       <ListItem.Content right>
         <ListItem.Title>{"$" + item.total}</ListItem.Title>
       </ListItem.Content>
-      <ListItem.Chevron color="black" onPress={() => {setItemOV(true); setReceiptID(item.id)}} />
+      <ListItem.Chevron
+        color="black"
+        onPress={() => {
+          setItemOV(true);
+          setReceiptID(item.id);
+        }}
+      />
+      <Button
+        icon={{
+          name: "delete",
+          type: "material",
+          size: 20,
+          color: "white",
+        }}
+        buttonStyle={{ backgroundColor: "#a67f78", borderRadius: 20 }}
+        onPress={() => {
+          remove(item.id);
+        }}
+      />
     </ListItem>
   );
 
   const saveGroup = async () => {
     const newGroup: GroupType = {
-      id: 0,
+      id: gID,
       name: name,
       total: total,
       upload_date: udate,
@@ -117,13 +154,12 @@ export const DisplayGroup: React.FC<{
     };
     console.log(newGroup);
     const db = await connectToDb();
-    if (groupID != null) {
-      newGroup.id = groupID;
-      await updateGroup(db, newGroup);
-      update(newGroup);
-    } else {
-      add(newGroup);
-    }
+    await updateGroup(db, newGroup);
+    update(newGroup);
+    setName(defaultBase.name);
+    setPdate(defaultBase.purchase_date);
+    setUdate(defaultBase.upload_date);
+    setTotal(defaultBase.total);
   };
 
   return (
@@ -150,36 +186,44 @@ export const DisplayGroup: React.FC<{
         />
         <Input
           style={styles.input}
-          value={pdate}
+          value={pdate.toString()}
           onChangeText={setPdate}
           leftIcon={{ type: "font-awesome", name: "chevron-left" }}
           label={"Purchase Date"}
         />
         <Input
           style={styles.input}
-          value={udate}
+          value={udate.toString()}
           onChangeText={setUdate}
           leftIcon={{ type: "font-awesome", name: "chevron-left" }}
           label={"Upload Date"}
+        />
+        <Button
+          title={"Save And Exit"}
+          onPress={() => {
+            saveGroup();
+            toggleOverLay();
+          }}
         />
         <FlatList
           keyExtractor={(item) => item.id.toString()}
           data={receiptsList}
           renderItem={renderreceiptsList}
         ></FlatList>
+
         <Button
           title={"new receipt"}
           onPress={() => console.log("add a new receipt")}
         />
-        <Button
-          title={"save"}
-          onPress={() => {
-            saveGroup();
-            toggleOverLay();
-          }}
-        />
       </Overlay>
-      <DisplayReceipt isVisible={itemOV} setVisible={setItemOV} groupID={gID} ID={receiptID}/>
+      <DisplayReceipt
+        isVisible={itemOV}
+        setVisible={setItemOV}
+        receiptsList={receiptsList}
+        setReceiptsList={setReceiptsList}
+        groupID={gID}
+        ID={receiptID}
+      />
     </>
   );
 };

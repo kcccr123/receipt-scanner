@@ -7,17 +7,21 @@ import {
   Platform,
   ScrollView,
 } from "react-native";
-import { ListItem, Button, Icon} from "@rneui/themed";
+import { ListItem, Button, Icon } from "@rneui/themed";
 import React, { useState } from "react";
-import { ItemType } from "../types";
+import { ItemType } from "../../app/(tabs)/types";
 import { connectToDb } from "@/app/database/db";
-import { addItem, addSingleItem, deleteItem, updateItem } from "@/app/database/items";
-
+import {
+  addItem,
+  addSingleItem,
+  deleteItem,
+  updateItem,
+} from "@/app/database/items";
 
 export const RenderTable: React.FC<{
   setItems: React.Dispatch<React.SetStateAction<ItemType[]>>;
   items: ItemType[];
-  receiptID:number;
+  receiptID: number;
 }> = ({ setItems, items, receiptID }) => {
   const [edit, setEdit] = useState(false);
   const [itemID, setItemID] = useState<number | null>(null);
@@ -30,26 +34,31 @@ export const RenderTable: React.FC<{
     setItemPrice(item.price.toString());
   };
 
-  const update = async(id: number) => {
+  const update = async (id: number) => {
     const numericValue = parseFloat(itemPrice);
     const price = isNaN(numericValue) ? 0 : numericValue;
     const updatedData = items.map((item) =>
       item.id == id ? { ...item, name: itemName, price: price } : item
     );
     const db = await connectToDb();
-    updateItem(db, {id: id, name: itemName, price: price, receipt_id: receiptID})
+    updateItem(db, {
+      id: id,
+      name: itemName,
+      price: price,
+      receipt_id: receiptID,
+    });
     setItems(updatedData);
     setItemID(null);
   };
 
-  const removeItem = async(id: number) => {
+  const removeItem = async (id: number) => {
     const updatedData = items.filter((item) => item.id !== id);
     const db = await connectToDb();
     deleteItem(db, id);
     setItems(updatedData);
   };
 
-  const add = async() => {
+  const add = async () => {
     const db = await connectToDb();
     const baseItem: ItemType = {
       id: 0,
@@ -65,7 +74,6 @@ export const RenderTable: React.FC<{
     editValues(baseItem);
   };
 
-
   const renderVewOnlyItem = ({ item }: { item: ItemType }) => (
     <ListItem bottomDivider>
       <Icon name={"add-shopping-cart"} type={"material"} color="grey" />
@@ -77,71 +85,79 @@ export const RenderTable: React.FC<{
   );
 
   const renderEditableItem = ({ item }: { item: ItemType }) => (
-    <>
-      {
-        <ListItem.Swipeable
-          rightContent={() => (
-            <Button
-              onPress={() => {
-                removeItem(item.id);
-              }}
-              icon={{ name: "remove-shopping-cart", color: "white" }}
-              buttonStyle={{ minHeight: "100%", backgroundColor: "#a67f78" }}
+    <ListItem.Swipeable
+      rightContent={() => (
+        <Button
+          onPress={() => {
+            removeItem(item.id);
+          }}
+          icon={{ name: "remove-shopping-cart", color: "white" }}
+          buttonStyle={{ minHeight: "100%", backgroundColor: "#a67f78" }}
+        />
+      )}
+      bottomDivider
+    >
+      <Icon name={"add-shopping-cart"} type={"material"} color="grey" />
+      <ListItem.Content>
+        {itemID == item.id ? (
+          <>
+            <TextInput
+              style={styles.input}
+              value={itemName}
+              onChangeText={setItemName}
+              placeholder="Edit Name"
             />
-          )}
-          bottomDivider
-        >
-          <Icon name={"add-shopping-cart"} type={"material"} color="grey" />
-          <ListItem.Content>
-            {itemID == item.id ? (
-              <>
-                <TextInput
-                  style={styles.input}
-                  value={itemName}
-                  onChangeText={setItemName}
-                  placeholder="Edit Name"
-                />
-                <TextInput
-                  style={styles.input}
-                  value={itemPrice}
-                  onChangeText={setItemPrice}
-                  placeholder="Edit Price"
-                  keyboardType="numeric"
-                />
-              </>
-            ) : (
-              <>
-                <ListItem.Title>{item.name}</ListItem.Title>
-                <ListItem.Subtitle>{"$" + item.price}</ListItem.Subtitle>
-              </>
-            )}
-          </ListItem.Content>
-          {itemID != item.id ? (
-            <Button
-              icon={{
-                name: "edit",
-                type: "material",
-                size: 20,
-                color: "white",
-              }}
-              buttonStyle={{ backgroundColor: "#32425f", borderRadius: 20 }}
-              onPress={() => editValues(item)}
+            <TextInput
+              style={styles.input}
+              value={itemPrice}
+              onChangeText={setItemPrice}
+              placeholder="Edit Price"
+              keyboardType="numeric"
             />
-          ) : (
-            <Button
-              icon={{
-                name: "done-outline",
-                type: "material",
-                size: 20,
-                color: "white",
-              }}
-              buttonStyle={{ backgroundColor: "#162812", borderRadius: 20 }}
-              onPress={() => update(item.id)}
-            />
-          )}
-        </ListItem.Swipeable>
-      }
-    </>
+          </>
+        ) : (
+          <>
+            <ListItem.Title>{item.name}</ListItem.Title>
+            <ListItem.Subtitle>{"$" + item.price}</ListItem.Subtitle>
+          </>
+        )}
+      </ListItem.Content>
+      {itemID != item.id ? (
+        <Button
+          icon={{
+            name: "edit",
+            type: "material",
+            size: 20,
+            color: "white",
+          }}
+          buttonStyle={{ backgroundColor: "#32425f", borderRadius: 20 }}
+          onPress={() => editValues(item)}
+        />
+      ) : (
+        <Button
+          icon={{
+            name: "done-outline",
+            type: "material",
+            size: 20,
+            color: "white",
+          }}
+          buttonStyle={{ backgroundColor: "#162812", borderRadius: 20 }}
+          onPress={() => update(item.id)}
+        />
+      )}
+      <Button
+        icon={{
+          name: "delete",
+          type: "material",
+          size: 20,
+          color: "white",
+        }}
+        buttonStyle={{ backgroundColor: "#a67f78", borderRadius: 20 }}
+        onPress={() => {
+          removeItem(item.id);
+        }}
+      />
+    </ListItem.Swipeable>
   );
 
   const renderViewOnlyList = () => {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ItemType, ReceiptType } from "../types";
+import { ItemType, ReceiptType } from "../../app/(tabs)/types";
 import { connectToDb } from "@/app/database/db";
 import {
   addReceipt,
@@ -10,18 +10,34 @@ import {
 import { getItems } from "@/app/database/items";
 import { Button, Input, Overlay } from "@rneui/themed";
 import { StyleSheet } from "react-native";
-import { RenderTable } from "./itemDisplay";
+import { RenderTable } from "../ItemEditor";
 
 export const DisplayReceipt: React.FC<{
   isVisible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  receiptsList: ReceiptType[];
+  setReceiptsList: React.Dispatch<React.SetStateAction<ReceiptType[]>>;
   ID: number | null;
   groupID: number;
-}> = ({ isVisible, setVisible, ID = null, groupID }) => {
-  const [name, setName] = useState(" ");
-  const [total, setTotal] = useState(0);
+}> = ({
+  isVisible,
+  setVisible,
+  ID = null,
+  groupID,
+  receiptsList,
+  setReceiptsList,
+}) => {
+  const defaultBase: ReceiptType = {
+    id: 0,
+    group_id: groupID,
+    name: " ",
+    total: 0,
+  };
+  const [name, setName] = useState(defaultBase.name);
+  const [total, setTotal] = useState(defaultBase.total);
   const [itemsList, setItemsList] = useState<ItemType[]>([]);
-  const [receiptID, setReceiptID] = useState(0);
+  const [receiptID, setReceiptID] = useState(defaultBase.id);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,6 +52,9 @@ export const DisplayReceipt: React.FC<{
           const items = await getItems(db, ID);
           setItemsList(items);
         } else {
+          setName(defaultBase.name);
+          setTotal(defaultBase.total);
+          setItemsList([]);
           const newID = await addSingleReceipt(db, {
             name: name,
             id: 0,
@@ -43,36 +62,56 @@ export const DisplayReceipt: React.FC<{
             total: total,
           });
           setReceiptID(newID);
+          const newr = await getSingleReceipt(db, newID);
+          console.log(newr);
+          if (newr != null) {
+            receiptsList.push(newr);
+            setReceiptsList(receiptsList);
+          } else {
+            console.log("new reciept not inited");
+          }
         }
       } catch (error) {
         console.error(error);
       }
     };
 
-    if (ID !== null) {
+    if (isVisible) {
       fetchData();
     }
-  }, [ID]);
+  }, [ID, isVisible]);
 
   const toggleOverLay = () => {
     setVisible(!isVisible);
   };
 
+  const update = (r: ReceiptType) => {
+    const updatedData = receiptsList.map((item) =>
+      item.id == r.id
+        ? {
+            ...item,
+            name: r.name,
+            total: r.total,
+          }
+        : item
+    );
+    setReceiptsList(updatedData);
+  };
+
   const saveReceipt = async () => {
     const newReceipt: ReceiptType = {
-      id: 0,
+      id: receiptID,
       group_id: groupID,
       name: name,
       total: total,
     };
     console.log(newReceipt);
     const db = await connectToDb();
-    if (ID != null) {
-      newReceipt.id = ID;
-      await updateReceipt(db, newReceipt);
-    } else {
-      await addReceipt(db, [newReceipt]);
-    }
+    update(newReceipt);
+    await updateReceipt(db, newReceipt);
+    setName(defaultBase.name);
+    setTotal(defaultBase.total);
+    setReceiptsList([])
   };
 
   return (
@@ -96,13 +135,17 @@ export const DisplayReceipt: React.FC<{
         leftIcon={{ type: "font-awesome", name: "chevron-left" }}
         label={"Total"}
       />
-      <RenderTable setItems={setItemsList} items={itemsList} receiptID={receiptID} />
       <Button
-        title={"save"}
+        title={"Save And Exit"}
         onPress={() => {
           saveReceipt();
           toggleOverLay();
         }}
+      />
+      <RenderTable
+        setItems={setItemsList}
+        items={itemsList}
+        receiptID={receiptID}
       />
     </Overlay>
   );
