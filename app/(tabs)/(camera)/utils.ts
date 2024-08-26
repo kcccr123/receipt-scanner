@@ -6,11 +6,13 @@ import { Asset } from "expo-asset";
 import { decodeJpeg } from "@tensorflow/tfjs-react-native";
 import { loadTensorflowModel } from "react-native-fast-tflite";
 
+
 type DetectionResult = {
   bbox: number[];
   score: number;
   class: number;
 };
+
 
 const loadImage = async (uri: string) => {
   const imgB64 = await FileSystem.readAsStringAsync(uri, {
