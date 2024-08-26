@@ -7,7 +7,16 @@ import { ListItem, Button, Icon, ListItemProps } from '@rneui/themed';
 import React, { useState} from "react";
 
 const pickImage = async () => {
-  return <View><Text> Hi </Text></View>;
+  // No permissions request is necessary for launching the image library
+  let result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsEditing: true,
+    quality: 1,
+  });
+  if (!result.canceled) {
+    // sayHello("hi");
+    detectImagePost(result.assets[0].uri);
+  }
 };
 
 interface ListItemData {
