@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, FlatList, TextInput, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+            import { View, Text, StyleSheet, FlatList, TextInput, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { runOnnxModel } from "../(camera)/utils";
 import { sayHello, detectImagePost } from "../requests";

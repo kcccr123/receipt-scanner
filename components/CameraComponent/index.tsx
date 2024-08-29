@@ -6,7 +6,7 @@ import * as MediaLibrary from "expo-media-library";
 
 import { styles } from "./styles";
 
-export default function CameraTab() {
+export default function CameraComponent() {
   // @ts-ignore: just being lazy with types here
   const cameraRef = useRef<CameraView>(undefined);
   const [facing, setFacing] = useState<CameraProps["facing"]>("back");

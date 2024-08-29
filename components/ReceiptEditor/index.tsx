@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { ItemType, ReceiptType } from "../../app/(tabs)/types";
+import { ReceiptType } from "../../app/(tabs)/types";
+import { ItemType } from "../ItemEditor/types";
 import { connectToDb } from "@/app/database/db";
 import {
   addReceipt,
@@ -111,7 +112,7 @@ export const DisplayReceipt: React.FC<{
     await updateReceipt(db, newReceipt);
     setName(defaultBase.name);
     setTotal(defaultBase.total);
-    setReceiptsList([])
+    setReceiptsList([]);
   };
 
   return (

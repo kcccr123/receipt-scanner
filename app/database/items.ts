@@ -1,5 +1,5 @@
 import { SQLiteDatabase } from "react-native-sqlite-storage";
-import { ItemType } from "../(tabs)/types";
+import { ItemType } from "@/components/ItemEditor/types";
 
 export const addItem = async (db: SQLiteDatabase, items: ItemType[]) => {
   const insertQuery = `
