@@ -6,8 +6,10 @@ import { addGroup, deleteGroup, getGroups } from "@/app/database/groups";
 import { ListItem, Button, FAB } from "@rneui/themed";
 import { DisplayGroup } from "../../../components/GroupEditor";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 import { addReceipt, getReceipts } from "@/app/database/receipts";
 import { addItem } from "@/app/database/items";
+import { Link } from "expo-router";
 
 const dummyGroup = [
   {
@@ -243,13 +245,20 @@ const Home = () => {
         group={groups}
         setGroup={setGroups}
       />
-      <FAB
-        visible={true}
-        icon={{ name: "add", color: "white" }}
-        color="black"
-        onPress={createNewGroup}
-        placement="right"
-      />
+      <Link
+        href={{
+          pathname: "/(displayGroup)",
+          params: { groupID: groupID, createGroup: "true" },
+        }}
+        asChild
+      >
+        <FAB
+          visible={true}
+          icon={{ name: "add", color: "white" }}
+          color="black"
+          placement="right"
+        />
+      </Link>
     </View>
   );
 };

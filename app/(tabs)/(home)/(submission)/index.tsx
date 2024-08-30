@@ -16,54 +16,41 @@ import CameraComponent from "@/components/CameraComponent";
 
 export default function SubmissionComponent() {
   const router = useRouter();
-  const { id } = useLocalSearchParams();
-  const [isItemsTableVisisble, setItemsVisible] = useState(false);
-  const [isCameraActive, setCameraActive] = useState(false);
+  const { groupID } = useLocalSearchParams();
 
-  const [recieptItems, setRecieptItems] = useState<ItemType[]>([]);
-  const [currentRecieptId, setCurrentRecieptId] = useState<number>(-1);
+  const [currentGroupId, setCurrentGroupId] = useState<number>(-1);
 
   useEffect(() => {
-    if (Array.isArray(id)) {
-      setCurrentRecieptId(parseInt(id[0], 10));
-    } else if (id !== undefined) {
-      setCurrentRecieptId(parseInt(id, 10));
+    if (Array.isArray(groupID)) {
+      setCurrentGroupId(parseInt(groupID[0], 10));
+    } else if (groupID !== undefined) {
+      setCurrentGroupId(parseInt(groupID, 10));
     }
-  }, [id]);
+    console.log(groupID, "wowah1");
+  }, [groupID]);
 
   return (
     <>
-      <Overlay isVisible={isItemsTableVisisble} fullScreen={true}>
-        <Button onPress={() => setItemsVisible(false)}>Back</Button>
-        <RenderTable
-          receiptID={currentRecieptId}
-          items={recieptItems}
-          setItems={setRecieptItems}
-        />
-      </Overlay>
-
-      <Overlay isVisible={isCameraActive} fullScreen={true}>
-        <Button onPress={() => setCameraActive(false)}>Back</Button>
-        <CameraComponent />
-      </Overlay>
-
       <Button onPress={() => router.back()}>Back</Button>
       <View style={buttonStyles.container}>
-        <Button
-          buttonStyle={buttonStyles.button}
-          onPress={() => setItemsVisible(true)}
+        <Link
+          href={{
+            pathname: "/displayReciept",
+            params: { groupID: groupID },
+          }}
+          asChild
         >
-          <Text style={buttonStyles.buttonText}>Blank Table</Text>
-        </Button>
+          <Button buttonStyle={buttonStyles.button}>
+            <Text style={buttonStyles.buttonText}>Blank Table</Text>
+          </Button>
+        </Link>
 
-        <Button
-          buttonStyle={buttonStyles.button}
-          onPress={() => setCameraActive(true)}
-        >
-          <Text style={buttonStyles.buttonText}>Scan Receipt</Text>
-        </Button>
-
-        <Link href="/displayReciept" asChild>
+        <Link href="/scanReciept" asChild>
+          <Button buttonStyle={buttonStyles.button}>
+            <Text style={buttonStyles.buttonText}>Scan Receipt</Text>
+          </Button>
+        </Link>
+        <Link href="/uploadReciept" asChild>
           <Button
             buttonStyle={buttonStyles.button}
             onPress={() => console.log("add a new receipt")}

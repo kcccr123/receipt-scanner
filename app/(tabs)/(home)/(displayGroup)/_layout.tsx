@@ -14,15 +14,6 @@ export default function HomeLayout() {
       }}
     >
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="displayReciept/index"
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen name="scanReciept/index" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="uploadReciept/index"
-        options={{ headerShown: false }}
-      />
     </Stack>
   );
 }
