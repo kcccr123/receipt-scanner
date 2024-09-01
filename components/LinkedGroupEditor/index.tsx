@@ -5,17 +5,20 @@ import {
   getSingleGroup,
   updateGroup,
 } from "@/app/database/groups";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useCallback } from "react";
 import { GroupType, ReceiptType } from "../../app/(tabs)/types";
 import { deleteReceipt, getReceipts } from "@/app/database/receipts";
 import { Button, Icon, Input, ListItem, Overlay } from "@rneui/themed";
 import { FlatList, StyleSheet } from "react-native";
 import { DisplayReceipt } from "../ReceiptEditor";
-import { Link } from "expo-router";
+import { Link, useFocusEffect } from "expo-router";
 import { useRouter } from "expo-router";
 
 export const LinkedGroupEditor: React.FC<{
   groupID: number | null;
+  receiptsList: ReceiptType[];
+  setReceiptsList: React.Dispatch<React.SetStateAction<ReceiptType[]>>;
 }> = ({ groupID = null }) => {
   const router = useRouter();
   const defaultBase: GroupType = {
@@ -34,33 +37,39 @@ export const LinkedGroupEditor: React.FC<{
   const [receiptID, setReceiptID] = useState(0);
   const [receiptsList, setReceiptsList] = useState<ReceiptType[]>([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      console.log("fetcing dataaaa");
-      try {
-        const db = await connectToDb();
-        console.log("non empty groupid", groupID);
-        if (groupID != null) {
-          setGID(groupID);
-          const base = await getSingleGroup(db, groupID);
-          if (base != null) {
-            setName(base.name);
-            setPdate(base.purchase_date.toString());
-            setUdate(base.upload_date.toString());
-            setTotal(base.total);
+  useFocusEffect(
+    useCallback(() => {
+      const fetchData = async () => {
+        console.log("Fetching data...");
+        try {
+          const db = await connectToDb();
+          console.log("non empty groupID", groupID);
+          if (groupID != null) {
+            setGID(groupID);
+            const base = await getSingleGroup(db, groupID);
+            if (base != null) {
+              setName(base.name);
+              setPdate(base.purchase_date.toString());
+              setUdate(base.upload_date.toString());
+              setTotal(base.total);
+            }
+            const receipts = await getReceipts(db, groupID);
+            setReceiptsList(receipts);
           }
-          const receipts = await getReceipts(db, groupID);
-          console.log(groupID, "first branch");
-          console.log(receipts, "non emptyu");
-          setReceiptsList(receipts);
+        } catch (error) {
+          console.error(error);
         }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    console.log(groupID);
-    fetchData();
-  }, [groupID]);
+      };
+
+      console.log(groupID);
+      fetchData();
+
+      // Optional: Cleanup function
+      return () => {
+        // Cleanup logic if needed
+      };
+    }, [groupID]) // Dependencies array
+  );
 
   const remove = async (id: number) => {
     try {

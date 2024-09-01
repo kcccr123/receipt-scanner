@@ -56,6 +56,7 @@ export default function displayRecieptTablePage() {
       pathname: "/(displayGroup)", // The screen you want to navigate to
       params: {
         groupID: groupID,
+        
       },
     });
     setRecieptItems([]);
@@ -69,12 +70,16 @@ export default function displayRecieptTablePage() {
         style={receiptTableStyles.input}
         leftIcon={{ type: "font-awesome", name: "chevron-left" }}
         label={"Name"}
+        value={receiptName.toString()}
+        onChangeText={(text) => setReceiptName(text)}
       />
       <Input
         style={receiptTableStyles.input}
         inputMode="numeric"
         leftIcon={{ type: "font-awesome", name: "chevron-left" }}
         label={"Total"}
+        value={receiptTotal.toString()}
+        onChangeText={(text) => setReceiptTotal(parseInt(text))}
       />
 
       <RenderTable

@@ -81,7 +81,7 @@ export const DisplayReceipt: React.FC<{
       fetchData();
     }
   }, [ID, isVisible]);
-
+  
   const toggleOverLay = () => {
     setVisible(!isVisible);
   };

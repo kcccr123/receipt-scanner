@@ -11,6 +11,7 @@ import { addReceipt, getReceipts } from "@/app/database/receipts";
 import { addItem } from "@/app/database/items";
 import { Link } from "expo-router";
 
+/*
 const dummyGroup = [
   {
     id: 0,
@@ -62,6 +63,7 @@ const dummyGroup = [
     purchase_date: "2018-11-13",
   },
 ];
+
 const dummyReceipts = [
   { id: 0, group_id: 0, name: "Grocery Store", total: 45.32 },
   { id: 0, group_id: 1, name: "Pharmacy", total: 18.99 },
@@ -110,12 +112,11 @@ const dummyItems = [
   { id: 28, receipt_id: 3, name: "Item BB", price: 7.0 },
   { id: 29, receipt_id: 4, name: "Item CC", price: 13.5 },
   { id: 30, receipt_id: 5, name: "Item DD", price: 9.25 },
-];
+];*/
 
 const Home = () => {
   const [groups, setGroups] = useState<GroupType[]>([]);
   //for editing group
-  const [groupID, setGroupID] = useState<number | null>(null);
   const [groupOV, setGroupOV] = useState(false);
 
   const loadDBCallback = useCallback(async () => {
@@ -130,11 +131,6 @@ const Home = () => {
       const storedData = await getGroups(db);
       if (storedData && storedData.length) {
         setGroups(storedData);
-      } else {
-        await addGroup(db, dummyGroup);
-        await addReceipt(db, dummyReceipts);
-        await addItem(db, dummyItems);
-        setGroups(dummyGroup);
       }
     } catch (error) {
       console.error(error);
@@ -191,13 +187,15 @@ const Home = () => {
             <ListItem.Content right>
               <ListItem.Title>{"$" + item.total}</ListItem.Title>
             </ListItem.Content>
-            <ListItem.Chevron
-              color="black"
-              onPress={() => {
-                setGroupID(item.id);
-                setGroupOV(!groupOV);
+            <Link
+              href={{
+                pathname: "/(displayGroup)",
+                params: { groupID: item.id, createGroup: "false" },
               }}
-            />
+              asChild
+            >
+              <ListItem.Chevron color="black" />
+            </Link>
             <ListItem />
           </ListItem.Swipeable>
         )}
@@ -229,26 +227,24 @@ const Home = () => {
       return result;
     }, {} as { [key: string]: GroupType[] });
   };
-  const createNewGroup = () => {
-    setGroupID(null);
-    setGroupOV(!groupOV);
-  };
   const grouped_data = groupByPurchaseDate(sortedGroups);
-
+  /*
+  <DisplayGroup
+  isVisible={groupOV}
+  setVisible={setGroupOV}
+  groupID={groupID}
+  group={groups}
+  setGroup={setGroups}
+/>
+*/
   return (
     <View style={{ flex: 1 }}>
       <GroupedTable groupedData={grouped_data} />
-      <DisplayGroup
-        isVisible={groupOV}
-        setVisible={setGroupOV}
-        groupID={groupID}
-        group={groups}
-        setGroup={setGroups}
-      />
+
       <Link
         href={{
           pathname: "/(displayGroup)",
-          params: { groupID: groupID, createGroup: "true" },
+          params: { groupID: null, createGroup: "true" },
         }}
         asChild
       >

@@ -1,23 +1,15 @@
-import { View } from "react-native";
-import { Button } from "@rneui/themed";
-import { Overlay } from "@rneui/themed";
-import { Text } from "@rneui/base";
-import { Link } from "expo-router";
 import { useLocalSearchParams } from "expo-router";
 import { useState, useEffect } from "react";
-import { ItemType } from "@/components/ItemEditor/types";
-import { useRouter } from "expo-router";
 
-import { RenderTable } from "@/components/ItemEditor";
-import CameraComponent from "@/components/CameraComponent";
 import { LinkedGroupEditor } from "@/components/LinkedGroupEditor";
 import { addSingleGroup } from "@/app/database/groups";
 import { connectToDb } from "@/app/database/db";
-import { GroupType } from "../../types";
+import { GroupType, ReceiptType } from "../../types";
 
 export default function displayGroupPage() {
   const { groupID, createGroup } = useLocalSearchParams();
   const [currentGroupId, setCurrentGroupId] = useState<number | null>(null);
+  const [receiptsList, setReceiptsList] = useState<ReceiptType[]>([]);
 
   useEffect(() => {
     if (Array.isArray(groupID)) {
@@ -45,14 +37,18 @@ export default function displayGroupPage() {
   };
 
   useEffect(() => {
-    if (createGroup) {
+    if (createGroup === "true") {
       createNewGroup();
     }
   }, [createGroup]);
 
   return (
     <>
-      <LinkedGroupEditor groupID={currentGroupId} />
+      <LinkedGroupEditor
+        groupID={currentGroupId}
+        receiptsList={receiptsList}
+        setReceiptsList={setReceiptsList}
+      />
     </>
   );
 }
