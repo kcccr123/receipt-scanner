@@ -3,6 +3,7 @@ import { ReceiptType } from "../../app/(tabs)/types";
 import { ItemType } from "../ItemEditor/types";
 import { connectToDb } from "@/app/database/db";
 import {
+  addReceipt,
   addSingleReceipt,
   getSingleReceipt,
   updateReceipt,
@@ -12,21 +13,10 @@ import { Button, Input, Overlay } from "@rneui/themed";
 import { StyleSheet } from "react-native";
 import { RenderTable } from "../ItemEditor";
 
-export const DisplayReceipt: React.FC<{
-  isVisible: boolean;
-  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  receiptsList: ReceiptType[];
-  setReceiptsList: React.Dispatch<React.SetStateAction<ReceiptType[]>>;
+export const DisplayReceiptComponent: React.FC<{
   ID: number | null;
   groupID: number;
-}> = ({
-  isVisible,
-  setVisible,
-  ID = null,
-  groupID,
-  receiptsList,
-  setReceiptsList,
-}) => {
+}> = ({ ID = null, groupID }) => {
   const defaultBase: ReceiptType = {
     id: 0,
     group_id: groupID,
@@ -76,15 +66,9 @@ export const DisplayReceipt: React.FC<{
       }
     };
 
-    if (isVisible) {
-      fetchData();
-    }
-  }, [ID, isVisible]);
-
-  const toggleOverLay = () => {
-    setVisible(!isVisible);
-  };
-
+    fetchData();
+  }, [ID]);
+  /*
   const update = (r: ReceiptType) => {
     const updatedData = receiptsList.map((item) =>
       item.id == r.id
@@ -96,7 +80,7 @@ export const DisplayReceipt: React.FC<{
         : item
     );
     setReceiptsList(updatedData);
-  };
+  };*/
 
   const saveReceipt = async () => {
     const newReceipt: ReceiptType = {
@@ -111,11 +95,12 @@ export const DisplayReceipt: React.FC<{
     await updateReceipt(db, newReceipt);
     setName(defaultBase.name);
     setTotal(defaultBase.total);
+    setReceiptsList([]);
   };
 
   return (
-    <Overlay isVisible={isVisible} fullScreen={true}>
-      <Button title={"cancel"} onPress={toggleOverLay} />
+    <>
+      <Button title={"cancel"} />
       <Input
         style={styles.input}
         value={name}
@@ -138,7 +123,6 @@ export const DisplayReceipt: React.FC<{
         title={"Save And Exit"}
         onPress={() => {
           saveReceipt();
-          toggleOverLay();
         }}
       />
       <RenderTable
@@ -146,7 +130,7 @@ export const DisplayReceipt: React.FC<{
         items={itemsList}
         receiptID={receiptID}
       />
-    </Overlay>
+    </>
   );
 };
 

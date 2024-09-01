@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { ListItem, Button, Icon } from "@rneui/themed";
 import React, { useState } from "react";
-import { ItemType } from "../../app/(tabs)/types";
+import { ItemType } from "./types";
 import { connectToDb } from "@/app/database/db";
 import {
   addItem,
@@ -17,6 +17,11 @@ import {
   deleteItem,
   updateItem,
 } from "@/app/database/items";
+
+// TODO
+// 1. Edit/Save button has no effect on acutallying doing anything?
+// 2. were updating database every time we add or remove item
+// 3. why connect to db every single function call instead of just defining a reusable variable for it?
 
 export const RenderTable: React.FC<{
   setItems: React.Dispatch<React.SetStateAction<ItemType[]>>;
@@ -67,10 +72,9 @@ export const RenderTable: React.FC<{
       price: 0,
     };
     const newID = await addSingleItem(db, baseItem);
-
+    console.log(newID);
     baseItem.id = newID;
-    items.push(baseItem);
-    setItems(items);
+    setItems([...items, baseItem]);
     editValues(baseItem);
   };
 

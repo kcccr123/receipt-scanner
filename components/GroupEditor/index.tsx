@@ -11,6 +11,7 @@ import { deleteReceipt, getReceipts } from "@/app/database/receipts";
 import { Button, Icon, Input, ListItem, Overlay } from "@rneui/themed";
 import { FlatList, StyleSheet } from "react-native";
 import { DisplayReceipt } from "../ReceiptEditor";
+import { Link } from "expo-router";
 
 export const DisplayGroup: React.FC<{
   isVisible: boolean;
@@ -198,6 +199,7 @@ export const DisplayGroup: React.FC<{
           leftIcon={{ type: "font-awesome", name: "chevron-left" }}
           label={"Upload Date"}
         />
+
         <Button
           title={"Save And Exit"}
           onPress={() => {
@@ -210,11 +212,18 @@ export const DisplayGroup: React.FC<{
           data={receiptsList}
           renderItem={renderreceiptsList}
         ></FlatList>
-
-        <Button
-          title={"new receipt"}
-          onPress={() => console.log("add a new receipt")}
-        />
+        <Link
+          href={{
+            pathname: "(submission)",
+            params: { id: gID },
+          }}
+          asChild
+        >
+          <Button
+            title={"new receipt"}
+            onPress={() => console.log("add a new receipt")}
+          />
+        </Link>
       </Overlay>
       <DisplayReceipt
         isVisible={itemOV}

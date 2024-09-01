@@ -1,26 +1,32 @@
 import { SQLiteDatabase } from "react-native-sqlite-storage";
-import { ItemType } from "../(tabs)/types";
+import { ItemType } from "@/components/ItemEditor/types";
 
 export const addItem = async (db: SQLiteDatabase, items: ItemType[]) => {
-  const insertQuery = `
-  INSERT OR REPLACE INTO Items (receipt_id, name, price) VALUES
-  ${items.map(() => "(?, ?, ?)").join(", ")}
-`;
-  // Flatten the values into a single array to match the placeholders
-  const values = items.flatMap((item) => [
-    item.receipt_id,
-    item.name,
-    item.price,
-  ]);
-  try {
-    return db.executeSql(insertQuery, values);
-  } catch (error) {
-    console.error(error);
-    throw Error("Failed to add item");
+  if (items.length > 0) {
+    const insertQuery = `
+    INSERT OR REPLACE INTO Items (receipt_id, name, price) VALUES
+    ${items.map(() => "(?, ?, ?)").join(", ")}
+  `;
+    // Flatten the values into a single array to match the placeholders
+    const values = items.flatMap((item) => [
+      item.receipt_id,
+      item.name,
+      item.price,
+    ]);
+    try {
+      console.log("complete adding reciept");
+      return db.executeSql(insertQuery, values);
+    } catch (error) {
+      console.error(error);
+      throw Error("Failed to add item");
+    }
   }
 };
 
-export const addSingleItem = async (db: SQLiteDatabase, item: ItemType):Promise<number> => {
+export const addSingleItem = async (
+  db: SQLiteDatabase,
+  item: ItemType
+): Promise<number> => {
   const insertQuery = `
   INSERT OR REPLACE INTO Items (receipt_id, name, price) 
   VALUES (?, ?, ?)
