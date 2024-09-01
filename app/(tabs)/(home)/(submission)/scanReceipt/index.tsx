@@ -10,9 +10,6 @@ import CameraComponent from "@/components/CameraComponent";
 export default function displayCameraPage() {
   const router = useRouter();
 
-  const [recieptItems, setRecieptItems] = useState<ItemType[]>([]);
-  const [currentRecieptId, setCurrentRecieptId] = useState<number>(-1);
-
   return (
     <>
       <Button onPress={() => router.back()}>Back</Button>

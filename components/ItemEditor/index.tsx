@@ -19,8 +19,8 @@ import {
 } from "@/app/database/items";
 
 // TODO
-// 1. Edit/Save button has no effect on acutallying doing anything? 
-// 2. were updating database every time we add or remove item 
+// 1. Edit/Save button has no effect on acutallying doing anything?
+// 2. were updating database every time we add or remove item
 // 3. why connect to db every single function call instead of just defining a reusable variable for it?
 
 export const RenderTable: React.FC<{
@@ -72,6 +72,7 @@ export const RenderTable: React.FC<{
       price: 0,
     };
     const newID = await addSingleItem(db, baseItem);
+    console.log(newID);
     baseItem.id = newID;
     setItems([...items, baseItem]);
     editValues(baseItem);

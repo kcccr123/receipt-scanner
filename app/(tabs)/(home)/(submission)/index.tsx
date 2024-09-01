@@ -35,7 +35,7 @@ export default function SubmissionComponent() {
       <View style={buttonStyles.container}>
         <Link
           href={{
-            pathname: "/displayReciept",
+            pathname: "/displayReceipt",
             params: { groupID: groupID },
           }}
           asChild
@@ -45,12 +45,18 @@ export default function SubmissionComponent() {
           </Button>
         </Link>
 
-        <Link href="/scanReciept" asChild>
+        <Link
+          href={{
+            pathname: "/(camera)",
+            params: { groupID: groupID },
+          }}
+          asChild
+        >
           <Button buttonStyle={buttonStyles.button}>
             <Text style={buttonStyles.buttonText}>Scan Receipt</Text>
           </Button>
         </Link>
-        <Link href="/uploadReciept" asChild>
+        <Link href="/uploadReceipt" asChild>
           <Button
             buttonStyle={buttonStyles.button}
             onPress={() => console.log("add a new receipt")}

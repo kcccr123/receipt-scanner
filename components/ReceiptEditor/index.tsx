@@ -3,7 +3,6 @@ import { ReceiptType } from "../../app/(tabs)/types";
 import { ItemType } from "../ItemEditor/types";
 import { connectToDb } from "@/app/database/db";
 import {
-  addReceipt,
   addSingleReceipt,
   getSingleReceipt,
   updateReceipt,
@@ -81,7 +80,7 @@ export const DisplayReceipt: React.FC<{
       fetchData();
     }
   }, [ID, isVisible]);
-  
+
   const toggleOverLay = () => {
     setVisible(!isVisible);
   };
@@ -112,7 +111,6 @@ export const DisplayReceipt: React.FC<{
     await updateReceipt(db, newReceipt);
     setName(defaultBase.name);
     setTotal(defaultBase.total);
-    setReceiptsList([]);
   };
 
   return (

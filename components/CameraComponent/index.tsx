@@ -2,11 +2,20 @@ import { useState, useRef, useEffect } from "react";
 import { View, Text, TouchableOpacity, Button } from "react-native";
 import { CameraView, CameraProps, useCameraPermissions } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import * as MediaLibrary from "expo-media-library";
+
+import { connectToDb } from "@/app/database/db";
+import { addSingleGroup } from "@/app/database/groups";
+import { GroupType } from "@/app/(tabs)/types";
 
 import { styles } from "./styles";
 
-export default function CameraComponent() {
+export default function CameraComponent({
+  groupID,
+}: {
+  groupID: number | null;
+}) {
   // @ts-ignore: just being lazy with types here
   const cameraRef = useRef<CameraView>(undefined);
   const [facing, setFacing] = useState<CameraProps["facing"]>("back");
@@ -18,6 +27,8 @@ export default function CameraComponent() {
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [pictureSizes, setPictureSizes] = useState<string[]>([]);
   const [selectedSize, setSelectedSize] = useState(undefined);
+
+  const router = useRouter();
 
   useEffect(() => {
     async function getSizes() {
@@ -37,6 +48,20 @@ export default function CameraComponent() {
     setFacing((current) => (current === "back" ? "front" : "back"));
   }
 
+  const createNewGroup = async () => {
+    const db = await connectToDb();
+    const newGroupInfo: GroupType = {
+      id: -1,
+      name: " ",
+      total: 0.0,
+      purchase_date: "9999-12-30",
+      upload_date: "9999-12-30",
+    };
+
+    const newGroupId = await addSingleGroup(db, newGroupInfo);
+    return newGroupId;
+  };
+
   const takePhoto = async () => {
     const photo = await cameraRef.current?.takePictureAsync();
 
@@ -50,7 +75,23 @@ export default function CameraComponent() {
     // pass to next component to begin scanning
 
     alert(`photo captured with dimensions: ${photo!.width} x ${photo!.height}`);
-    //console.log(JSON.stringify(photo));
+
+    if (groupID) {
+      router.replace({
+        pathname: "/displayReceipt", // The screen you want to navigate to
+        params: {
+          groupID: groupID,
+        },
+      });
+    } else {
+      const newGroupId = await createNewGroup();
+      router.replace({
+        pathname: "/displayReceipt", // The screen you want to navigate to
+        params: {
+          groupID: newGroupId,
+        },
+      });
+    }
   };
 
   if (!permission) {

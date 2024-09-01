@@ -15,12 +15,12 @@ export default function HomeLayout() {
     >
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen
-        name="displayReciept/index"
+        name="displayReceipt/index"
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="scanReciept/index" options={{ headerShown: false }} />
+      <Stack.Screen name="scanReceipt/index" options={{ headerShown: false }} />
       <Stack.Screen
-        name="uploadReciept/index"
+        name="uploadReceipt/index"
         options={{ headerShown: false }}
       />
     </Stack>

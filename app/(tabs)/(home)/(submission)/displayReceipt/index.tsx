@@ -12,7 +12,7 @@ import { ReceiptType } from "@/app/(tabs)/types";
 import { RenderTable } from "@/components/ItemEditor";
 import { receiptTableStyles } from "./styles";
 
-export default function displayRecieptTablePage() {
+export default function displayReceiptTablePage() {
   const router = useRouter();
   const { groupID } = useLocalSearchParams();
   const [currentGroupId, setCurrentGroupId] = useState<number>(-1);
@@ -37,16 +37,17 @@ export default function displayRecieptTablePage() {
     const db = await connectToDb();
     console.log(currentGroupId);
     const receiptInfo = {
-      id: -1,
+      id: 0,
       group_id: currentGroupId,
       name: receiptName,
       total: receiptTotal,
     };
 
-    const recieptId = await addSingleReceipt(db, receiptInfo);
+    const receiptId = await addSingleReceipt(db, receiptInfo);
     const itemsToAdd = JSON.parse(JSON.stringify(receiptItems));
+
     for (let i = 0; i < itemsToAdd.length; i++) {
-      itemsToAdd[i].recieptId = recieptId;
+      itemsToAdd[i].receipt_id = receiptId;
     }
     await addItem(db, itemsToAdd);
     console.log("added items", itemsToAdd);
@@ -56,7 +57,6 @@ export default function displayRecieptTablePage() {
       pathname: "/(displayGroup)", // The screen you want to navigate to
       params: {
         groupID: groupID,
-        
       },
     });
     setRecieptItems([]);
