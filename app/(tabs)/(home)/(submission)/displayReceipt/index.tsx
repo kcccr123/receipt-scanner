@@ -56,7 +56,7 @@ export default function displayReceiptTablePage() {
     router.replace({
       pathname: "/(displayGroup)", // The screen you want to navigate to
       params: {
-        groupID: groupID,
+        groupID: currentGroupId,
       },
     });
     setRecieptItems([]);

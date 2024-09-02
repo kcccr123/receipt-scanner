@@ -32,7 +32,7 @@ export default function SubmissionComponent() {
         <Link
           href={{
             pathname: "/displayReceipt",
-            params: { groupID: groupID },
+            params: { groupID: currentGroupId },
           }}
           asChild
         >
@@ -44,7 +44,7 @@ export default function SubmissionComponent() {
         <Link
           href={{
             pathname: "/scanReceipt",
-            params: { groupID: groupID },
+            params: { groupID: currentGroupId },
           }}
           asChild
         >
@@ -52,7 +52,13 @@ export default function SubmissionComponent() {
             <Text style={buttonStyles.buttonText}>Scan Receipt</Text>
           </Button>
         </Link>
-        <Link href="/uploadReceipt" asChild>
+        <Link
+          href={{
+            pathname: "/uploadReceipt",
+            params: { groupID: currentGroupId },
+          }}
+          asChild
+        >
           <Button
             buttonStyle={buttonStyles.button}
             onPress={() => console.log("add a new receipt")}

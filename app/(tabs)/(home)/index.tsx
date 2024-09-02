@@ -1,20 +1,27 @@
 import { useCallback, useEffect, useState } from "react";
-import { useFocusEffect } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { View, Text, StyleSheet, SectionList } from "react-native";
 import { GroupedTableProps, GroupType } from "../types";
 import { connectToDb, createTable, removeTable } from "@/app/database/db";
-import { addGroup, deleteGroup, getGroups } from "@/app/database/groups";
+import {
+  addGroup,
+  deleteGroup,
+  getGroups,
+  addSingleGroup,
+} from "@/app/database/groups";
 import { ListItem, Button, FAB } from "@rneui/themed";
 import { DisplayGroup } from "../../../components/GroupEditor";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { addReceipt, getReceipts } from "@/app/database/receipts";
 import { addItem } from "@/app/database/items";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 
 const Home = () => {
   const [groups, setGroups] = useState<GroupType[]>([]);
   //for editing group
+
+  const router = useRouter();
 
   const loadDBCallback = useCallback(async () => {
     try {
@@ -127,33 +134,35 @@ const Home = () => {
     }, {} as { [key: string]: GroupType[] });
   };
   const grouped_data = groupByPurchaseDate(sortedGroups);
-  /*
-  <DisplayGroup
-  isVisible={groupOV}
-  setVisible={setGroupOV}
-  groupID={groupID}
-  group={groups}
-  setGroup={setGroups}
-/>
-*/
+
+  const createNewGroup = async () => {
+    const db = await connectToDb();
+
+    const newGroupInfo: GroupType = {
+      id: -1,
+      name: " ",
+      total: 0.0,
+      purchase_date: "9999-12-30",
+      upload_date: "9999-12-30",
+    };
+
+    const newGroupId = await addSingleGroup(db, newGroupInfo);
+    router.replace({
+      pathname: "/(displayGroup)",
+      params: { groupID: newGroupId },
+    });
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <GroupedTable groupedData={grouped_data} />
-
-      <Link
-        href={{
-          pathname: "/(displayGroup)",
-          params: { groupID: null, createGroup: "true" },
-        }}
-        asChild
-      >
-        <FAB
-          visible={true}
-          icon={{ name: "add", color: "white" }}
-          color="black"
-          placement="right"
-        />
-      </Link>
+      <FAB
+        visible={true}
+        icon={{ name: "add", color: "white" }}
+        color="black"
+        onPress={createNewGroup}
+        placement="right"
+      />
     </View>
   );
 };

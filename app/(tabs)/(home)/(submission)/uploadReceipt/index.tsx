@@ -1,12 +1,13 @@
-
 import { Button } from "@rneui/themed";
-import { useRouter } from "expo-router";
+import { useRouter, useLocalSearchParams } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
+import { useEffect } from "react";
+
+import { detectImagePost, sayHello } from "@/app/(tabs)/requests";
 
 export default function imageUploadPage() {
   const router = useRouter();
-
-
+  const { groupID } = useLocalSearchParams();
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -20,9 +21,20 @@ export default function imageUploadPage() {
 
     // after image is picked and value is obtained frm server, return to displayReceipt and add a new receipt with obtained info.
     if (!result.canceled) {
+      //sayHello("hi");
       detectImagePost(result.assets[0].uri);
+
+
+      
+      router.replace({
+        pathname: "/displayReceipt", // The screen you want to navigate to
+        params: {
+          groupID: groupID,
+        },
+      });
     }
-    // use returned data to create reciepts page, and then use that to create reciept 
+    // use returned data to create reciepts page, and then use that to create reciept
+
   };
   return (
     <>
