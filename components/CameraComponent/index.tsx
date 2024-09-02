@@ -8,6 +8,7 @@ import * as MediaLibrary from "expo-media-library";
 import { connectToDb } from "@/app/database/db";
 import { addSingleGroup } from "@/app/database/groups";
 import { GroupType } from "@/app/(tabs)/types";
+import { detectImagePost } from "@/app/(tabs)/requests";
 
 import { styles } from "./styles";
 
@@ -52,9 +53,10 @@ export default function CameraComponent({
       if (permissionMedia) {
         await MediaLibrary.createAssetAsync(photo.uri);
       }
+      // pass to next component to begin scanning
       setCapturedImage(photo.uri);
+      detectImagePost(photo.uri);
     }
-    // pass to next component to begin scanning
 
     alert(`photo captured with dimensions: ${photo!.width} x ${photo!.height}`);
 
