@@ -1,14 +1,10 @@
 import { View } from "react-native";
 import { Button } from "@rneui/themed";
-import { Overlay } from "@rneui/themed";
 import { buttonStyles } from "./styles";
 import { Text } from "@rneui/base";
 import { Link } from "expo-router";
-import { addSingleReceipt } from "@/app/database/receipts";
-import { connectToDb } from "@/app/database/db";
 import { useLocalSearchParams } from "expo-router";
 import { useState, useEffect } from "react";
-import { ItemType } from "@/components/ItemEditor/types";
 import { useRouter } from "expo-router";
 
 import { RenderTable } from "@/components/ItemEditor";
@@ -47,7 +43,7 @@ export default function SubmissionComponent() {
 
         <Link
           href={{
-            pathname: "/(camera)",
+            pathname: "/scanReceipt",
             params: { groupID: groupID },
           }}
           asChild

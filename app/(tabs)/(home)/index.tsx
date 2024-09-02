@@ -143,7 +143,7 @@ const Home = () => {
       <Link
         href={{
           pathname: "/(displayGroup)",
-          params: { createGroup: "true" },
+          params: { groupID: null, createGroup: "true" },
         }}
         asChild
       >

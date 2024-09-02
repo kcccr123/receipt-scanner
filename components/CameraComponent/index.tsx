@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { View, Text, TouchableOpacity, Button } from "react-native";
 import { CameraView, CameraProps, useCameraPermissions } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import * as MediaLibrary from "expo-media-library";
 
 import { connectToDb } from "@/app/database/db";
@@ -29,24 +29,6 @@ export default function CameraComponent({
   const [selectedSize, setSelectedSize] = useState(undefined);
 
   const router = useRouter();
-
-  useEffect(() => {
-    async function getSizes() {
-      console.log(permission);
-      if (permission?.granted && cameraRef.current) {
-        console.log("sized!");
-        const sizes = await cameraRef.current.getAvailablePictureSizesAsync();
-        setPictureSizes(sizes);
-        console.log(sizes);
-      }
-    }
-
-    getSizes();
-  }, [permission, cameraRef]);
-
-  function toggleCameraFacing() {
-    setFacing((current) => (current === "back" ? "front" : "back"));
-  }
 
   const createNewGroup = async () => {
     const db = await connectToDb();
@@ -93,6 +75,24 @@ export default function CameraComponent({
       });
     }
   };
+
+  useEffect(() => {
+    async function getSizes() {
+      console.log(permission);
+      if (permission?.granted && cameraRef.current) {
+        console.log("sized!");
+        const sizes = await cameraRef.current.getAvailablePictureSizesAsync();
+        setPictureSizes(sizes);
+        console.log(sizes);
+      }
+    }
+
+    getSizes();
+  }, [permission, cameraRef]);
+
+  function toggleCameraFacing() {
+    setFacing((current) => (current === "back" ? "front" : "back"));
+  }
 
   if (!permission) {
     // Camera permissions are still loading.

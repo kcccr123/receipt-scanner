@@ -1,5 +1,7 @@
 import { useLocalSearchParams } from "expo-router";
 import { useState, useEffect } from "react";
+import { useFocusEffect } from "expo-router";
+import { useCallback } from "react";
 
 import { LinkedGroupEditor } from "@/components/LinkedGroupEditor";
 import { addSingleGroup } from "@/app/database/groups";
@@ -10,16 +12,6 @@ export default function displayGroupPage() {
   const { groupID, createGroup } = useLocalSearchParams();
   const [currentGroupId, setCurrentGroupId] = useState<number | null>(null);
   const [receiptsList, setReceiptsList] = useState<ReceiptType[]>([]);
-
-  useEffect(() => {
-    if (Array.isArray(groupID)) {
-      setCurrentGroupId(parseInt(groupID[0], 10));
-    } else if (groupID !== undefined) {
-      setCurrentGroupId(parseInt(groupID, 10));
-      console.log(groupID, 2, "back");
-    }
-    console.log(groupID, "back");
-  }, [groupID]);
 
   const createNewGroup = async () => {
     const db = await connectToDb();
@@ -35,12 +27,22 @@ export default function displayGroupPage() {
     const newGroupId = await addSingleGroup(db, newGroupInfo);
     setCurrentGroupId(newGroupId);
   };
-
-  useEffect(() => {
-    if (createGroup === "true") {
-      createNewGroup();
-    }
-  }, [createGroup]);
+  useFocusEffect(
+    useCallback(() => {
+      console.log("running");
+      if (Array.isArray(groupID)) {
+        setCurrentGroupId(parseInt(groupID[0], 10));
+      } else if (groupID == null) {
+        if (createGroup === "true") {
+          createNewGroup();
+        }
+      } else {
+        setCurrentGroupId(parseInt(groupID, 10));
+      }
+      console.log(groupID, 2, "back");
+      console.log(currentGroupId, "back");
+    }, [groupID]) // The dependency array should include groupID to rerun when groupID changes
+  );
 
   return (
     <>
