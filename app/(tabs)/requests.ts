@@ -1,6 +1,4 @@
 import axios from "axios";
-import { FileObject } from "./types";
-import * as FileSystem from "expo-file-system";
 import mime from "mime";
 
 export const detectImagePost = async (uri: string) => {
@@ -18,12 +16,12 @@ export const detectImagePost = async (uri: string) => {
       uri: newImageUri,
       type: mime.getType(newImageUri),
       name: newImageUri.split("/").pop(),
-    });
+    } as any);
     console.log(formData);
-    // gcp: http://34.30.72.127:30001/predict
+    // gcp: http://35.224.80.149:30001/predict
     // local: http://10.0.2.2:5000/predict
     const serverResponse = await axios.post(
-      "http://34.133.183.93:30001/predict",
+      "http://35.224.80.149:30001/predict",
       formData,
       {
         headers: {
@@ -40,7 +38,7 @@ export const detectImagePost = async (uri: string) => {
 export const sayHello = async (words: string) => {
   console.log("make request");
   try {
-    const response = await axios.post("http://34.133.183.93:30001/response", {
+    const response = await axios.post("http://35.224.80.149:30001/response", {
       message: words,
     });
     alert(response.data.response);

@@ -1,14 +1,10 @@
 import { View } from "react-native";
 import { Button } from "@rneui/themed";
-import { Overlay } from "@rneui/themed";
 import { buttonStyles } from "./styles";
 import { Text } from "@rneui/base";
 import { Link } from "expo-router";
-import { addSingleReceipt } from "@/app/database/receipts";
-import { connectToDb } from "@/app/database/db";
 import { useLocalSearchParams } from "expo-router";
 import { useState, useEffect } from "react";
-import { ItemType } from "@/components/ItemEditor/types";
 import { useRouter } from "expo-router";
 
 import { RenderTable } from "@/components/ItemEditor";
@@ -36,7 +32,7 @@ export default function SubmissionComponent() {
         <Link
           href={{
             pathname: "/displayReceipt",
-            params: { groupID: groupID },
+            params: { groupID: currentGroupId },
           }}
           asChild
         >
@@ -47,8 +43,8 @@ export default function SubmissionComponent() {
 
         <Link
           href={{
-            pathname: "/(camera)",
-            params: { groupID: groupID },
+            pathname: "/scanReceipt",
+            params: { groupID: currentGroupId },
           }}
           asChild
         >
@@ -56,7 +52,13 @@ export default function SubmissionComponent() {
             <Text style={buttonStyles.buttonText}>Scan Receipt</Text>
           </Button>
         </Link>
-        <Link href="/uploadReceipt" asChild>
+        <Link
+          href={{
+            pathname: "/uploadReceipt",
+            params: { groupID: currentGroupId },
+          }}
+          asChild
+        >
           <Button
             buttonStyle={buttonStyles.button}
             onPress={() => console.log("add a new receipt")}
