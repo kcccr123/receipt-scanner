@@ -82,7 +82,7 @@ const Home = () => {
               <Button
                 onPress={() => deleteAction(item.id)}
                 icon={{ name: "delete", color: "white" }}
-                buttonStyle={{ minHeight: "100%", backgroundColor: "#a67f78" }}
+                buttonStyle={{ minHeight: "100%", backgroundColor: "#9b5353" }}
               />
             )}
             bottomDivider
@@ -106,8 +106,8 @@ const Home = () => {
           </ListItem.Swipeable>
         )}
         renderSectionHeader={({ section: { title } }) => (
-          <View style={{ padding: 10, backgroundColor: "#32425f" }}>
-            <Text style={{ fontWeight: "bold", color: "white", fontSize: 17 }}>
+          <View style={{ padding: 10, backgroundColor: "black", borderRadius: 4 }}>
+            <Text style={{ fontWeight: "bold", color: "white", fontSize: 17, marginHorizontal: 145}}>
               {title}
             </Text>
           </View>
@@ -159,7 +159,7 @@ const Home = () => {
       <FAB
         visible={true}
         icon={{ name: "add", color: "white" }}
-        color="black"
+        color="#6c7869"
         onPress={createNewGroup}
         placement="right"
       />

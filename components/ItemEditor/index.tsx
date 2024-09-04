@@ -134,7 +134,7 @@ export const RenderTable: React.FC<{
             size: 20,
             color: "white",
           }}
-          buttonStyle={{ backgroundColor: "#32425f", borderRadius: 20 }}
+          buttonStyle={{ backgroundColor: "#65657e", borderRadius: 20 }}
           onPress={() => editValues(item)}
         />
       ) : (
@@ -145,7 +145,7 @@ export const RenderTable: React.FC<{
             size: 20,
             color: "white",
           }}
-          buttonStyle={{ backgroundColor: "#162812", borderRadius: 20 }}
+          buttonStyle={{ backgroundColor: "#6c7869", borderRadius: 20 }}
           onPress={() => update(item.id)}
         />
       )}
@@ -156,7 +156,7 @@ export const RenderTable: React.FC<{
           size: 20,
           color: "white",
         }}
-        buttonStyle={{ backgroundColor: "#a67f78", borderRadius: 20 }}
+        buttonStyle={{ backgroundColor: "#9b5353", borderRadius: 20 }}
         onPress={() => {
           removeItem(item.id);
         }}
@@ -187,13 +187,17 @@ export const RenderTable: React.FC<{
           }}
           title="Add Item"
           buttonStyle={{
-            backgroundColor: "black",
+            backgroundColor: "#65657e",
             borderWidth: 2,
             borderColor: "white",
-            borderRadius: 15,
+            borderRadius: 20,
           }}
           containerStyle={{
             marginVertical: 10,
+            width: 200,
+            marginHorizontal: 96,
+            alignContent: "center",
+            justifyContent: "center"
           }}
         />
       </ScrollView>
@@ -210,17 +214,17 @@ export const RenderTable: React.FC<{
         onPress={() => {
           setEdit(!edit);
         }}
-        title={edit ? "Save" : "Edit"}
+        title={edit ? "Save Items" : "Edit Items"}
         buttonStyle={{
-          backgroundColor: "black",
+          backgroundColor: edit ? "#6c7869" : "#65657e",
           borderWidth: 2,
           borderColor: "white",
           borderRadius: 30,
         }}
         containerStyle={{
-          width: 200,
-          marginHorizontal: 50,
-          marginVertical: 10,
+          width: 150,
+          marginHorizontal: 119,
+          marginVertical: 5,
         }}
         titleStyle={{ fontWeight: "bold" }}
       />

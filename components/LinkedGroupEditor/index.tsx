@@ -90,7 +90,7 @@ export const LinkedGroupEditor: React.FC<{
 
   const renderreceiptsList = ({ item }: { item: ReceiptType }) => (
     <ListItem bottomDivider>
-      <Icon name={"receipt"} type={"material"} color="grey" />
+      <Icon name={"receipt"} type={"material"} color="#dfc6af" />
       <ListItem.Content>
         <ListItem.Title>{item.name}</ListItem.Title>
       </ListItem.Content>
@@ -111,7 +111,7 @@ export const LinkedGroupEditor: React.FC<{
           size: 20,
           color: "white",
         }}
-        buttonStyle={{ backgroundColor: "#a67f78", borderRadius: 20 }}
+        buttonStyle={{ backgroundColor: "#9b5353", borderRadius: 20 }}
         onPress={() => {
           remove(item.id);
         }}
@@ -138,8 +138,9 @@ export const LinkedGroupEditor: React.FC<{
         style={styles.input}
         value={name}
         onChangeText={setName}
-        leftIcon={{ type: "font-awesome", name: "chevron-left" }}
-        label={"name"}
+        leftIcon={{ type: "font-awesome", name: "chevron-left", color:"#dfc6af" }}
+        label={"Name"}
+        labelStyle={{fontWeight: "bold", fontSize: 18, color: "dark grey"}}
       />
       <Input
         style={styles.input}
@@ -149,25 +150,29 @@ export const LinkedGroupEditor: React.FC<{
           const numericValue = parseFloat(value);
           setTotal(isNaN(numericValue) ? 0 : numericValue);
         }}
-        leftIcon={{ type: "font-awesome", name: "chevron-left" }}
+        leftIcon={{ type: "font-awesome", name: "chevron-left", color:"#dfc6af"}}
         label={"Total"}
+        labelStyle={{fontWeight: "bold", fontSize: 18, color: "dark grey"}}
       />
       <Input
         style={styles.input}
         value={pdate.toString()}
         onChangeText={setPdate}
-        leftIcon={{ type: "font-awesome", name: "chevron-left" }}
+        leftIcon={{ type: "font-awesome", name: "chevron-left", color:"#dfc6af"}}
         label={"Purchase Date"}
+        labelStyle={{fontWeight: "bold", fontSize: 18, color: "dark grey"}}
       />
       <Input
         style={styles.input}
         value={udate.toString()}
         onChangeText={setUdate}
-        leftIcon={{ type: "font-awesome", name: "chevron-left" }}
+        leftIcon={{ type: "font-awesome", name: "chevron-left", color:"#dfc6af"}}
         label={"Upload Date"}
+        labelStyle={{fontWeight: "bold", fontSize: 18, color: "dark grey"}}
       />
       <Button
         title={"Done"}
+        buttonStyle={{ backgroundColor: "#6c7869", borderRadius: 5 }}
         onPress={() => {
           saveGroup();
           router.replace("(home)");
@@ -188,6 +193,7 @@ export const LinkedGroupEditor: React.FC<{
       >
         <Button
           title={"new receipt"}
+          buttonStyle={{ backgroundColor: "#65657e", borderRadius: 5 }}
           onPress={() => {
             saveGroup();
           }}

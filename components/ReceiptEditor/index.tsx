@@ -115,13 +115,15 @@ export const DisplayReceipt: React.FC<{
 
   return (
     <Overlay isVisible={isVisible} fullScreen={true}>
-      <Button title={"cancel"} onPress={toggleOverLay} />
+      <Button title={"Cancel"} titleStyle={{ fontWeight: "bold" }} onPress={toggleOverLay} buttonStyle={{ backgroundColor: "#9b5353", borderRadius: 5 }}/>
       <Input
         style={styles.input}
         value={name}
         onChangeText={setName}
-        leftIcon={{ type: "font-awesome", name: "chevron-left" }}
-        label={"name"}
+
+        leftIcon={{ type: "font-awesome", name: "chevron-left", color:"#dfc6af"}}
+        label={"Name"}
+        labelStyle={{fontWeight: "bold", fontSize: 18, color: "dark grey"}}
       />
       <Input
         style={styles.input}
@@ -131,15 +133,18 @@ export const DisplayReceipt: React.FC<{
           const numericValue = parseFloat(value);
           setTotal(isNaN(numericValue) ? 0 : numericValue);
         }}
-        leftIcon={{ type: "font-awesome", name: "chevron-left" }}
+        leftIcon={{ type: "font-awesome", name: "chevron-left", color:"#dfc6af"}}
         label={"Total"}
+        labelStyle={{fontWeight: "bold", fontSize: 18, color: "dark grey"}}
       />
       <Button
         title={"Save And Exit"}
+        buttonStyle={{ backgroundColor: "#6c7869", borderRadius: 5 }}
         onPress={() => {
           saveReceipt();
           toggleOverLay();
         }}
+        titleStyle={{ fontWeight: "bold" }}
       />
       <RenderTable
         setItems={setItemsList}
