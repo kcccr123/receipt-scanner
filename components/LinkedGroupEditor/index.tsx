@@ -14,6 +14,7 @@ import { FlatList, StyleSheet } from "react-native";
 import { DisplayReceipt } from "../ReceiptEditor";
 import { Link, useFocusEffect } from "expo-router";
 import { useRouter } from "expo-router";
+import { buttonStyles, otherStyles } from "./styles";
 
 export const LinkedGroupEditor: React.FC<{
   groupID: number | null;
@@ -140,7 +141,7 @@ export const LinkedGroupEditor: React.FC<{
         onChangeText={setName}
         leftIcon={{ type: "font-awesome", name: "chevron-left", color:"#dfc6af" }}
         label={"Name"}
-        labelStyle={{fontWeight: "bold", fontSize: 18, color: "dark grey"}}
+        labelStyle={otherStyles.inputLabel}
       />
       <Input
         style={styles.input}
@@ -152,7 +153,7 @@ export const LinkedGroupEditor: React.FC<{
         }}
         leftIcon={{ type: "font-awesome", name: "chevron-left", color:"#dfc6af"}}
         label={"Total"}
-        labelStyle={{fontWeight: "bold", fontSize: 18, color: "dark grey"}}
+        labelStyle={otherStyles.inputLabel}
       />
       <Input
         style={styles.input}
@@ -160,7 +161,7 @@ export const LinkedGroupEditor: React.FC<{
         onChangeText={setPdate}
         leftIcon={{ type: "font-awesome", name: "chevron-left", color:"#dfc6af"}}
         label={"Purchase Date"}
-        labelStyle={{fontWeight: "bold", fontSize: 18, color: "dark grey"}}
+        labelStyle={otherStyles.inputLabel}
       />
       <Input
         style={styles.input}
@@ -168,11 +169,11 @@ export const LinkedGroupEditor: React.FC<{
         onChangeText={setUdate}
         leftIcon={{ type: "font-awesome", name: "chevron-left", color:"#dfc6af"}}
         label={"Upload Date"}
-        labelStyle={{fontWeight: "bold", fontSize: 18, color: "dark grey"}}
+        labelStyle={otherStyles.inputLabel}
       />
       <Button
         title={"Done"}
-        buttonStyle={{ backgroundColor: "#6c7869", borderRadius: 5 }}
+        buttonStyle={buttonStyles.Green}
         onPress={() => {
           saveGroup();
           router.replace("(home)");
@@ -193,7 +194,7 @@ export const LinkedGroupEditor: React.FC<{
       >
         <Button
           title={"new receipt"}
-          buttonStyle={{ backgroundColor: "#65657e", borderRadius: 5 }}
+          buttonStyle={buttonStyles.Blue}
           onPress={() => {
             saveGroup();
           }}
