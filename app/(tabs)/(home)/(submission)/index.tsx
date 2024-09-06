@@ -27,7 +27,7 @@ export default function SubmissionComponent() {
 
   return (
     <>
-      <Button onPress={() => router.back()}>Back</Button>
+      <Button buttonStyle={{ backgroundColor: "#9b5353", marginHorizontal: 20, borderRadius: 20 }} onPress={() => router.back()}>Back</Button>
       <View style={buttonStyles.container}>
         <Link
           href={{
@@ -36,8 +36,12 @@ export default function SubmissionComponent() {
           }}
           asChild
         >
-          <Button buttonStyle={buttonStyles.button}>
-            <Text style={buttonStyles.buttonText}>Blank Table</Text>
+          <Button
+            buttonStyle={buttonStyles.button}
+          >
+            <Text style={{ fontWeight: "bold", color: "white", fontSize: 26 }}>
+              Blank Table
+            </Text>
           </Button>
         </Link>
 
@@ -48,8 +52,12 @@ export default function SubmissionComponent() {
           }}
           asChild
         >
-          <Button buttonStyle={buttonStyles.button}>
-            <Text style={buttonStyles.buttonText}>Scan Receipt</Text>
+          <Button
+            buttonStyle={buttonStyles.button}
+          >
+            <Text style={{ fontWeight: "bold", color: "white", fontSize: 26 }}>
+              Scan Receipt
+            </Text>
           </Button>
         </Link>
         <Link
@@ -63,7 +71,9 @@ export default function SubmissionComponent() {
             buttonStyle={buttonStyles.button}
             onPress={() => console.log("add a new receipt")}
           >
-            <Text style={buttonStyles.buttonText}>Upload Image</Text>
+            <Text style={{ fontWeight: "bold", color: "white", fontSize: 26 }}>
+              Upload Image
+            </Text>
           </Button>
         </Link>
       </View>

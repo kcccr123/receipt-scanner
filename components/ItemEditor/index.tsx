@@ -17,6 +17,7 @@ import {
   deleteItem,
   updateItem,
 } from "@/app/database/items";
+import { buttonStyles, otherStyles } from "./styles";
 
 // TODO
 // 1. Edit/Save button has no effect on acutallying doing anything?
@@ -134,7 +135,7 @@ export const RenderTable: React.FC<{
             size: 20,
             color: "white",
           }}
-          buttonStyle={{ backgroundColor: "#32425f", borderRadius: 20 }}
+          buttonStyle={buttonStyles.item_edit}
           onPress={() => editValues(item)}
         />
       ) : (
@@ -145,7 +146,7 @@ export const RenderTable: React.FC<{
             size: 20,
             color: "white",
           }}
-          buttonStyle={{ backgroundColor: "#162812", borderRadius: 20 }}
+          buttonStyle={buttonStyles.item_save}
           onPress={() => update(item.id)}
         />
       )}
@@ -156,7 +157,7 @@ export const RenderTable: React.FC<{
           size: 20,
           color: "white",
         }}
-        buttonStyle={{ backgroundColor: "#a67f78", borderRadius: 20 }}
+        buttonStyle={buttonStyles.item_delete}
         onPress={() => {
           removeItem(item.id);
         }}
@@ -186,15 +187,8 @@ export const RenderTable: React.FC<{
             add();
           }}
           title="Add Item"
-          buttonStyle={{
-            backgroundColor: "black",
-            borderWidth: 2,
-            borderColor: "white",
-            borderRadius: 15,
-          }}
-          containerStyle={{
-            marginVertical: 10,
-          }}
+          buttonStyle={buttonStyles.add_item}
+          containerStyle={buttonStyles.add_item_container}
         />
       </ScrollView>
     );
@@ -210,19 +204,15 @@ export const RenderTable: React.FC<{
         onPress={() => {
           setEdit(!edit);
         }}
-        title={edit ? "Save" : "Edit"}
+        title={edit ? "Save Items" : "Edit Items"}
         buttonStyle={{
-          backgroundColor: "black",
+          backgroundColor: edit ? "#6c7869" : "#65657e",
           borderWidth: 2,
           borderColor: "white",
           borderRadius: 30,
         }}
-        containerStyle={{
-          width: 200,
-          marginHorizontal: 50,
-          marginVertical: 10,
-        }}
-        titleStyle={{ fontWeight: "bold" }}
+        containerStyle={buttonStyles.edit_container}
+        titleStyle={otherStyles.buttonLabel}
       />
       {edit ? renderEditableList() : renderViewOnlyList()}
     </KeyboardAvoidingView>

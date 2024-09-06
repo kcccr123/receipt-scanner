@@ -35,6 +35,17 @@ const Home = () => {
       const storedData = await getGroups(db);
       if (storedData && storedData.length) {
         setGroups(storedData);
+      } else {
+        const starting_example = {
+          id: -1,
+          name: "Edit you first group!",
+          total: 0,
+          upload_date: "12-30-2000",
+          purchase_date: "12-30-2000",
+        };
+        const firstID = await addSingleGroup(db, starting_example);
+        starting_example.id = firstID;
+        setGroups([starting_example]);
       }
     } catch (error) {
       console.error(error);
@@ -82,7 +93,7 @@ const Home = () => {
               <Button
                 onPress={() => deleteAction(item.id)}
                 icon={{ name: "delete", color: "white" }}
-                buttonStyle={{ minHeight: "100%", backgroundColor: "#a67f78" }}
+                buttonStyle={{ minHeight: "100%", backgroundColor: "#9b5353" }}
               />
             )}
             bottomDivider
@@ -106,8 +117,17 @@ const Home = () => {
           </ListItem.Swipeable>
         )}
         renderSectionHeader={({ section: { title } }) => (
-          <View style={{ padding: 10, backgroundColor: "#32425f" }}>
-            <Text style={{ fontWeight: "bold", color: "white", fontSize: 17 }}>
+          <View
+            style={{ padding: 10, backgroundColor: "black", borderRadius: 4 }}
+          >
+            <Text
+              style={{
+                fontWeight: "bold",
+                color: "white",
+                fontSize: 17,
+                marginHorizontal: 5,
+              }}
+            >
               {title}
             </Text>
           </View>
@@ -159,7 +179,7 @@ const Home = () => {
       <FAB
         visible={true}
         icon={{ name: "add", color: "white" }}
-        color="black"
+        color="#6c7869"
         onPress={createNewGroup}
         placement="right"
       />

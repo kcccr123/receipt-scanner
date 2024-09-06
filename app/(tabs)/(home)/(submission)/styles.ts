@@ -7,7 +7,10 @@ export const buttonStyles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    marginVertical: 25,
+    backgroundColor: "#65657e",
+    borderRadius: 20,
+    width: 300,
+    marginVertical: 20,
   },
   buttonText: {
     fontSize: 40,

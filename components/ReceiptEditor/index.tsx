@@ -11,6 +11,7 @@ import { getItems } from "@/app/database/items";
 import { Button, Input, Overlay } from "@rneui/themed";
 import { StyleSheet } from "react-native";
 import { RenderTable } from "../ItemEditor";
+import {buttonStyles, otherStyles} from "./styles"
 
 export const DisplayReceipt: React.FC<{
   isVisible: boolean;
@@ -115,13 +116,23 @@ export const DisplayReceipt: React.FC<{
 
   return (
     <Overlay isVisible={isVisible} fullScreen={true}>
-      <Button title={"cancel"} onPress={toggleOverLay} />
+      <Button
+        title={"Cancel"}
+        titleStyle={otherStyles.buttonLabel}
+        onPress={toggleOverLay}
+        buttonStyle={buttonStyles.Red}
+      />
       <Input
         style={styles.input}
         value={name}
         onChangeText={setName}
-        leftIcon={{ type: "font-awesome", name: "chevron-left" }}
-        label={"name"}
+        leftIcon={{
+          type: "font-awesome",
+          name: "chevron-left",
+          color: "#dfc6af",
+        }}
+        label={"Name"}
+        labelStyle={otherStyles.inputLabel}
       />
       <Input
         style={styles.input}
@@ -131,15 +142,22 @@ export const DisplayReceipt: React.FC<{
           const numericValue = parseFloat(value);
           setTotal(isNaN(numericValue) ? 0 : numericValue);
         }}
-        leftIcon={{ type: "font-awesome", name: "chevron-left" }}
+        leftIcon={{
+          type: "font-awesome",
+          name: "chevron-left",
+          color: "#dfc6af",
+        }}
         label={"Total"}
+        labelStyle={otherStyles.inputLabel}
       />
       <Button
         title={"Save And Exit"}
+        buttonStyle={buttonStyles.Green}
         onPress={() => {
           saveReceipt();
           toggleOverLay();
         }}
+        titleStyle={otherStyles.buttonLabel}
       />
       <RenderTable
         setItems={setItemsList}

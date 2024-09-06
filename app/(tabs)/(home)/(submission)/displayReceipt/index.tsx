@@ -11,6 +11,8 @@ import { addItem } from "@/app/database/items";
 import { ReceiptType } from "@/app/(tabs)/types";
 import { RenderTable } from "@/components/ItemEditor";
 import { receiptTableStyles } from "./styles";
+import { buttonStyles, otherStyles } from "@/app/(tabs)/main_styles";
+
 
 export default function displayReceiptTablePage() {
   const router = useRouter();
@@ -64,22 +66,41 @@ export default function displayReceiptTablePage() {
 
   return (
     <>
-      <Button onPress={() => router.back()}>Back</Button>
+      <Button
+        buttonStyle={buttonStyles.Red}
+        titleStyle={otherStyles.buttonLabel}
+        onPress={() => router.back()}
+      >
+        Back
+      </Button>
 
       <Input
         style={receiptTableStyles.input}
-        leftIcon={{ type: "font-awesome", name: "chevron-left" }}
+        leftIcon={{
+          type: "font-awesome",
+          name: "chevron-left",
+          color: "#dfc6af",
+        }}
         label={"Name"}
+        labelStyle={otherStyles.inputLabel}
         value={receiptName.toString()}
         onChangeText={(text) => setReceiptName(text)}
       />
       <Input
         style={receiptTableStyles.input}
         inputMode="numeric"
-        leftIcon={{ type: "font-awesome", name: "chevron-left" }}
+        leftIcon={{
+          type: "font-awesome",
+          name: "chevron-left",
+          color: "#dfc6af",
+        }}
         label={"Total"}
+        labelStyle={otherStyles.inputLabel}
         value={receiptTotal.toString()}
-        onChangeText={(text) => setReceiptTotal(parseInt(text))}
+        onChangeText={(text) => {
+          const numericValue = parseInt(text);
+          setReceiptTotal(isNaN(numericValue) ? 0 : numericValue);
+        }}
       />
 
       <RenderTable
@@ -88,7 +109,13 @@ export default function displayReceiptTablePage() {
         setItems={setRecieptItems}
       />
 
-      <Button onPress={() => onCreateReciept()}>Create Reciept</Button>
+      <Button
+        buttonStyle={buttonStyles.Green}
+        titleStyle={otherStyles.buttonLabel}
+        onPress={() => onCreateReciept()}
+      >
+        Create Reciept
+      </Button>
     </>
   );
 }
