@@ -27,6 +27,12 @@
       </ul>
     </li>
     <li>
+      <a href="#feature-details">Feature Details</a>
+      <ul>
+        <li><a href="#machine-learning"Machine Learning</a></li>
+      </ul>
+    </li>
+    <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
@@ -49,8 +55,6 @@ The machine learning models are deployed on a Google Kubernetes Engine (GKE) clu
 ![pic2](./images/Screenshot(192).png)
 ![pic3](./images/Screenshot(195).png)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 ### Built With
@@ -63,7 +67,15 @@ The machine learning models are deployed on a Google Kubernetes Engine (GKE) clu
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!-- Feature Details -->
+## Feature Details
+This seciton includes further detail on interesting features that were worked on in this project.
 
+### Machine Learning
+
+Stuff
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -102,7 +114,6 @@ There are two ways to interact with the program. You can enter in the long/lat c
 ![gif2](./images/Animation2.gif)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- CONTACT -->
