@@ -29,7 +29,7 @@
     <li>
       <a href="#feature-details">Feature Details</a>
       <ul>
-        <li><a href="#machine-learning"Machine Learning</a></li>
+        <li><a href="#machine-learning">Machine Learning</a></li>
       </ul>
     </li>
     <li>
