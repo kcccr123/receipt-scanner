@@ -27,18 +27,18 @@
       </ul>
     </li>
     <li>
-      <a href="#feature-details">Feature Details</a>
-      <ul>
-        <li><a href="#machine-learning">Machine Learning</a></li>
-      </ul>
-    </li>
-    <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
+    <li>
+      <a href="#feature-details">Feature Details</a>
+      <ul>
+        <li><a href="#machine-learning">Machine Learning</a></li>
+      </ul>
+    </li>
     <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
@@ -64,16 +64,6 @@ The machine learning models are deployed on a Google Kubernetes Engine (GKE) clu
 ![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=c-sharp&logoColor=white)
  ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
  ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- Feature Details -->
-## Feature Details
-This seciton includes further detail on interesting features that were worked on in this project.
-
-### Machine Learning
-
-Stuff
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -112,6 +102,16 @@ There are two ways to interact with the program. You can enter in the long/lat c
 
 ![gif1](./images/Animation.gif)
 ![gif2](./images/Animation2.gif)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- Feature Details -->
+## Feature Details
+This seciton includes further detail on interesting features that were worked on in this project.
+
+### Machine Learning
+
+Stuff
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
