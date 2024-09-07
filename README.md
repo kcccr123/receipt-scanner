@@ -11,7 +11,7 @@
 <h3 align="center">Receipt Scanner Mobile App</h3>
 
   <p align="center">
-    A mobile app that helps users easily store receipts with just a photo and track spending data for effective budgeting.
+    A mobile app that lets users quickly store receipts with a photo and track spending for better budgeting.
    <br />
 
 
@@ -41,7 +41,9 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-This project uses the Flight Radar API and Cesium to get a list of commerical flights and create a world accurate view of an in flight aircraft. Use the simple UI to see active flights and view them.
+This React Native project simplifies receipt storage and spending tracking for users. It uses machine learning to detect and process receipts from images, combining a custom-trained YOLOv8 model, BART, and a custom RCNN.
+
+The machine learning models are deployed on a Google Kubernetes Engine (GKE) cluster on Google Cloud Platform, set up to receive images from the app and return a processed response for display.
 
 ![pic1](./images/Screenshot(191).png)
 ![pic2](./images/Screenshot(192).png)
@@ -107,9 +109,8 @@ There are two ways to interact with the program. You can enter in the long/lat c
 ## Contact
 Feel free to contact us at:
 
-@Joshua Luo - jla818@sfu.ca\
 @Kevin Chen - kevinz.chen@mail.utoronto.ca\
-@Jerry Chen - jca476@sfu.ca
+@Gary Guo - garyz.guo@mail.utoronto.ca
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
