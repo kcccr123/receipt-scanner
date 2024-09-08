@@ -22,12 +22,20 @@ export default function SubmissionComponent() {
     } else if (groupID !== undefined) {
       setCurrentGroupId(parseInt(groupID, 10));
     }
-    console.log(groupID, "wowah1");
   }, [groupID]);
 
   return (
     <>
-      <Button buttonStyle={{ backgroundColor: "#9b5353", marginHorizontal: 20, borderRadius: 20 }} onPress={() => router.back()}>Back</Button>
+      <Button
+        buttonStyle={{
+          backgroundColor: "#9b5353",
+          marginHorizontal: 20,
+          borderRadius: 20,
+        }}
+        onPress={() => router.back()}
+      >
+        Back
+      </Button>
       <View style={buttonStyles.container}>
         <Link
           href={{
@@ -36,9 +44,7 @@ export default function SubmissionComponent() {
           }}
           asChild
         >
-          <Button
-            buttonStyle={buttonStyles.button}
-          >
+          <Button buttonStyle={buttonStyles.button}>
             <Text style={{ fontWeight: "bold", color: "white", fontSize: 26 }}>
               Blank Table
             </Text>
@@ -52,9 +58,7 @@ export default function SubmissionComponent() {
           }}
           asChild
         >
-          <Button
-            buttonStyle={buttonStyles.button}
-          >
+          <Button buttonStyle={buttonStyles.button}>
             <Text style={{ fontWeight: "bold", color: "white", fontSize: 26 }}>
               Scan Receipt
             </Text>

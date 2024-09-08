@@ -7,10 +7,13 @@ import { useRouter } from "expo-router";
 import { useLocalSearchParams } from "expo-router";
 import { useFocusEffect } from "expo-router";
 import { useCallback } from "react";
+import { otherStyles } from "@/app/(tabs)/main_styles";
 
 import CameraComponent from "@/components/CameraComponent";
 
 export default function displayCameraPage() {
+  const router = useRouter();
+
   const { groupID } = useLocalSearchParams();
   const [currentGroupId, setCurrentGroupId] = useState<number | null>(null);
 
@@ -29,6 +32,13 @@ export default function displayCameraPage() {
 
   return (
     <>
+      <Button
+        titleStyle={otherStyles.buttonLabel}
+        buttonStyle={{ backgroundColor: "#9b5353" }}
+        onPress={() => router.back()}
+      >
+        Back
+      </Button>
       <CameraComponent groupID={currentGroupId} />
     </>
   );

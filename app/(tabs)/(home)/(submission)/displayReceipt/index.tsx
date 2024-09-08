@@ -8,7 +8,6 @@ import { connectToDb } from "@/app/database/db";
 
 import { addSingleReceipt } from "@/app/database/receipts";
 import { addItem } from "@/app/database/items";
-import { ReceiptType } from "@/app/(tabs)/types";
 import { RenderTable } from "@/components/ItemEditor";
 import { receiptTableStyles } from "./styles";
 import { buttonStyles, otherStyles } from "@/app/(tabs)/main_styles";
