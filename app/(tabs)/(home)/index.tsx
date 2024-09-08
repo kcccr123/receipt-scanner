@@ -35,17 +35,6 @@ const Home = () => {
       const storedData = await getGroups(db);
       if (storedData && storedData.length) {
         setGroups(storedData);
-      } else {
-        const starting_example = {
-          id: -1,
-          name: "Edit you first group!",
-          total: 0,
-          upload_date: "12-30-2000",
-          purchase_date: "12-30-2000",
-        };
-        const firstID = await addSingleGroup(db, starting_example);
-        starting_example.id = firstID;
-        setGroups([starting_example]);
       }
     } catch (error) {
       console.error(error);
@@ -83,56 +72,77 @@ const Home = () => {
       data: groupedData[date],
     }));
 
+    if (groups.length == 0) {
+      return (
+        <View
+          style={{
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+          }}
+        >
+          <Text style={{ fontSize: 20, paddingBottom: 15 }}>
+            No Receipt groups found.
+          </Text>
+          <Text style={{ fontSize: 18 }}> Add one in the bottom right! </Text>
+        </View>
+      );
+    }
+
     return (
-      <SectionList
-        sections={sections}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <ListItem.Swipeable
-            rightContent={() => (
-              <Button
-                onPress={() => deleteAction(item.id)}
-                icon={{ name: "delete", color: "white" }}
-                buttonStyle={{ minHeight: "100%", backgroundColor: "#9b5353" }}
-              />
-            )}
-            bottomDivider
-          >
-            <ListItem.Content>
-              <ListItem.Title>{item.name}</ListItem.Title>
-            </ListItem.Content>
-            <ListItem.Content right>
-              <ListItem.Title>{"$" + item.total}</ListItem.Title>
-            </ListItem.Content>
-            <Link
-              href={{
-                pathname: "/(displayGroup)",
-                params: { groupID: item.id, createGroup: "false" },
-              }}
-              asChild
+      <>
+        <SectionList
+          sections={sections}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <ListItem.Swipeable
+              rightContent={() => (
+                <Button
+                  onPress={() => deleteAction(item.id)}
+                  icon={{ name: "delete", color: "white" }}
+                  buttonStyle={{
+                    minHeight: "100%",
+                    backgroundColor: "#9b5353",
+                  }}
+                />
+              )}
+              bottomDivider
             >
-              <ListItem.Chevron color="black" />
-            </Link>
-            <ListItem />
-          </ListItem.Swipeable>
-        )}
-        renderSectionHeader={({ section: { title } }) => (
-          <View
-            style={{ padding: 10, backgroundColor: "black", borderRadius: 4 }}
-          >
-            <Text
-              style={{
-                fontWeight: "bold",
-                color: "white",
-                fontSize: 17,
-                marginHorizontal: 5,
-              }}
-            >
-              {title}
-            </Text>
-          </View>
-        )}
-      />
+              <ListItem.Content>
+                <ListItem.Title>{item.name}</ListItem.Title>
+              </ListItem.Content>
+              <ListItem.Content right>
+                <ListItem.Title>{"$" + item.total}</ListItem.Title>
+              </ListItem.Content>
+              <Link
+                href={{
+                  pathname: "/(displayGroup)",
+                  params: { groupID: item.id, createGroup: "false" },
+                }}
+                asChild
+              >
+                <ListItem.Chevron color="black" />
+              </Link>
+              <ListItem />
+            </ListItem.Swipeable>
+          )}
+          renderSectionHeader={({ section: { title } }) => (
+            <View style={{ padding: 10, backgroundColor: "black" }}>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  color: "white",
+                  fontSize: 17,
+                  marginHorizontal: 5,
+                }}
+              >
+                {title}
+              </Text>
+            </View>
+          )}
+        />
+      </>
     );
   };
 
