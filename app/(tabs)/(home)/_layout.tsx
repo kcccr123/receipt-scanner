@@ -14,6 +14,8 @@ export default function HomeLayout() {
       }}
     >
       <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="(submission)" options={{ headerShown: false }} />
+      <Stack.Screen name="(displayGroup)" options={{ headerShown: false }} />
     </Stack>
   );
 }
