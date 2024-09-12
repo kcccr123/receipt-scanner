@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import { Button } from "@rneui/themed";
+import { Button, BottomSheet} from "@rneui/themed";
 import { buttonStyles } from "./styles";
 import { Text } from "@rneui/base";
 import { Link } from "expo-router";
@@ -26,17 +26,8 @@ export default function SubmissionComponent() {
 
   return (
     <>
-      <Button
-        buttonStyle={{
-          backgroundColor: "#9b5353",
-          marginHorizontal: 20,
-          borderRadius: 20,
-        }}
-        onPress={() => router.back()}
-      >
-        Back
-      </Button>
       <View style={buttonStyles.container}>
+        <Button buttonStyle={buttonStyles.back_button} onPress={() => router.back()}>Back</Button>
         <Link
           href={{
             pathname: "/displayReceipt",

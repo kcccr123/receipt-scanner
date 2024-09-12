@@ -6,7 +6,7 @@ export const buttonStyles = StyleSheet.create({
     borderRadius: 5,
   },
   save: {
-    backgroundColor: "#65657e",
+    backgroundColor: "#28282B",
     borderRadius: 5,
   },
   edit_container: {
@@ -15,7 +15,7 @@ export const buttonStyles = StyleSheet.create({
     marginVertical: 5,
   },
   item_edit: {
-    backgroundColor: "#65657e",
+    backgroundColor: "#28282B",
     borderRadius: 20,
   },
   item_save: {
@@ -27,7 +27,7 @@ export const buttonStyles = StyleSheet.create({
     borderRadius: 20,
   },
   add_item: {
-    backgroundColor: "#65657e",
+    backgroundColor: "#28282B",
     borderWidth: 2,
     borderColor: "white",
     borderRadius: 20,

@@ -7,7 +7,7 @@ export const buttonStyles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    backgroundColor: "#65657e",
+    backgroundColor: "#28282B",
     borderRadius: 20,
     width: 300,
     marginVertical: 20,
@@ -16,4 +16,10 @@ export const buttonStyles = StyleSheet.create({
     fontSize: 40,
     color: "white",
   },
+  back_button: { 
+    backgroundColor: "#9b5353", 
+    marginHorizontal: 20,
+    width: 300, 
+    borderRadius: 20 
+  }
 });

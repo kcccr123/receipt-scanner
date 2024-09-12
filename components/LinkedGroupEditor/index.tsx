@@ -1,11 +1,11 @@
 import { connectToDb } from "@/app/database/db";
 import { getSingleGroup, updateGroup } from "@/app/database/groups";
 import { DatePickerModal } from "react-native-paper-dates";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { useCallback } from "react";
 import { GroupType, ReceiptType } from "../../app/(tabs)/types";
 import { deleteReceipt, getReceipts } from "@/app/database/receipts";
-import { Button, Icon, Input, ListItem, Overlay } from "@rneui/themed";
+import { BottomSheet, Button, Icon, Input, ListItem, Overlay } from "@rneui/themed";
 import { FlatList, StyleSheet } from "react-native";
 import { DisplayReceipt } from "../ReceiptEditor";
 import { Link, useFocusEffect } from "expo-router";
@@ -16,6 +16,7 @@ import { CalendarDate } from "react-native-paper-dates/lib/typescript/Date/Calen
 import { View, Text } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import { registerTranslation, enGB } from "react-native-paper-dates";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 registerTranslation("en", enGB);
 
@@ -43,6 +44,7 @@ export const LinkedGroupEditor: React.FC<{
   const [itemOV, setItemOV] = useState(false);
   const [receiptID, setReceiptID] = useState(0);
   const [receiptsList, setReceiptsList] = useState<ReceiptType[]>([]);
+  const [popup, setPopup] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -139,7 +141,7 @@ export const LinkedGroupEditor: React.FC<{
   }, [datePickerOpen]);
 
   const onConfirmSingle = useCallback(
-    (params) => {
+    (params: { date: SetStateAction<CalendarDate>; }) => {
       console.log(params);
       setDatePickerOpen(false);
       setPdate(params.date);
@@ -244,12 +246,12 @@ export const LinkedGroupEditor: React.FC<{
               borderRadius: 20,
               width: "100%",
             }}
+            title={"Select"}
             containerStyle={{ flex: 1, marginLeft: 10, marginRight: 10 }}
             titleStyle={{ color: "black" }}
             onPress={() => setDatePickerOpen(true)}
-          >
-            Select
-          </Button>
+          />
+
         </View>
         <DatePickerModal
           locale="en"
@@ -270,24 +272,62 @@ export const LinkedGroupEditor: React.FC<{
             router.replace("(home)");
           }}
         />
+        <Button
+          title={"new receipt"}
+          buttonStyle={buttonStyles.NewReceipt}
+          onPress={() => {
+            saveGroup();
+            setPopup(true);
+          }}
+        />
 
         {renderReceiptsInGroup()}
+        <SafeAreaProvider>
+          <BottomSheet modalProps={{}} isVisible = {popup} onBackdropPress={()=>setPopup(false)}>
+            {/* <Button buttonStyle={buttonStyles.PopupButton} title={"Back"} onPress={()=>setPopup(false)}/> */}
+            <Link
+              href={{
+                pathname: "/(submission)/displayReceipt",
+                params: { groupID: gID },
+              }}
+              asChild
+            >
+              <Button
+                title = {"Blank Table"}
+                onPress={()=>setPopup(false)}
+                buttonStyle={buttonStyles.PopupButton}
+              />
+            </Link>
 
-        <Link
-          href={{
-            pathname: "/(submission)",
-            params: { groupID: gID },
-          }}
-          asChild
-        >
-          <Button
-            title={"new receipt"}
-            buttonStyle={buttonStyles.Blue}
-            onPress={() => {
-              saveGroup();
-            }}
-          />
-        </Link>
+            <Link
+              href={{
+                pathname: "/(submission)/scanReceipt",
+                params: { groupID: gID },
+              }}
+              asChild
+            >
+              <Button
+                title={"Scan Receipt"}
+                onPress={()=>setPopup(false)}
+                buttonStyle={buttonStyles.PopupButton}
+              />
+            </Link>
+            <Link
+              href={{
+                pathname: "/(submission)/uploadReceipt",
+                params: { groupID: gID },
+              }}
+              asChild
+            >
+              <Button
+                buttonStyle={buttonStyles.PopupButton}
+                title={"Upload Image"}
+                onPress={() => {console.log("add a new receipt"); setPopup(false)}}
+              />
+            </Link>
+          </BottomSheet>
+        </SafeAreaProvider>
+
         <DisplayReceipt
           isVisible={itemOV}
           setVisible={setItemOV}
