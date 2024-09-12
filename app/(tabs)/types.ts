@@ -23,3 +23,12 @@ export type GroupType = {
 export type GroupedTableProps = {
   groupedData: { [key: string]: GroupType[] };
 };
+
+type ReceiptItem = {
+  name: string;
+  price: string;
+};
+
+export type ProcessedReceipt = {
+  [key: string]: ReceiptItem;
+};

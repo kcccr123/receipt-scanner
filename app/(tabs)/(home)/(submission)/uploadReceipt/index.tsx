@@ -5,7 +5,9 @@ import * as ImagePicker from "expo-image-picker";
 import { otherStyles } from "@/app/(tabs)/main_styles";
 import { buttonStyles } from "../styles";
 
+import { ItemType } from "@/components/ItemEditor/types";
 import { detectImagePost, sayHello } from "@/app/(tabs)/requests";
+import { ProcessedReceipt } from "@/app/(tabs)/types";
 
 export default function imageUploadPage() {
   const router = useRouter();
@@ -24,14 +26,20 @@ export default function imageUploadPage() {
     // after image is picked and value is obtained frm server, return to displayReceipt and add a new receipt with obtained info.
     if (!result.canceled) {
       //sayHello("hi");
-      detectImagePost(result.assets[0].uri);
+      const response = await detectImagePost(result.assets[0].uri);
+      console.log(response, "receipt");
 
-      router.replace({
-        pathname: "/displayReceipt", // The screen you want to navigate to
-        params: {
-          groupID: groupID,
-        },
-      });
+      if (response.data) {
+        router.replace({
+          pathname: "/displayReceipt", // The screen you want to navigate to
+          params: {
+            groupID: groupID,
+            receiptData: JSON.stringify(response.data),
+          },
+        });
+      } else {
+        // error
+      }
     }
     // use returned data to create reciepts page, and then use that to create reciept
   };
