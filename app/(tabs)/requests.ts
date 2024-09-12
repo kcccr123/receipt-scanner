@@ -29,6 +29,7 @@ export const detectImagePost = async (
       },
     })
     .then((response) => {
+      console.log(response);
       return { status: response.status, data: response.data };
     })
     .catch((error) => {
