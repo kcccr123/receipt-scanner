@@ -6,7 +6,7 @@ export const buttonStyles = StyleSheet.create({
     borderRadius: 5,
   },
   Blue: { 
-    backgroundColor: "#65657e", 
+    backgroundColor: "#28282B", 
     borderRadius: 5,
   },
   Green: {

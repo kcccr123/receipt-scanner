@@ -206,10 +206,10 @@ export const RenderTable: React.FC<{
         }}
         title={edit ? "Save Items" : "Edit Items"}
         buttonStyle={{
-          backgroundColor: edit ? "#6c7869" : "#65657e",
+          backgroundColor: edit ? "#6c7869" : "#28282Bfa",
           borderWidth: 2,
           borderColor: "white",
-          borderRadius: 30,
+          borderRadius: 20,
         }}
         containerStyle={buttonStyles.edit_container}
         titleStyle={otherStyles.buttonLabel}
