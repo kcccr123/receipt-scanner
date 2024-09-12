@@ -23,7 +23,7 @@ export const detectImagePost = async (
   // gcp: http://35.224.80.149:30001/predict
   // local: http://10.0.2.2:5000/predict
   return await axios
-    .post("http://10.0.2.2:5000/predict", formData, {
+    .post("http://35.224.80.149:30001/predict", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
