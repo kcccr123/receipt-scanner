@@ -1,6 +1,5 @@
 import { Button } from "@rneui/themed";
 import { useState, useEffect } from "react";
-import { ItemType } from "@/components/ItemEditor/types";
 import { Input } from "@rneui/themed";
 import { useRouter } from "expo-router";
 import { useLocalSearchParams } from "expo-router";
@@ -8,15 +7,16 @@ import { connectToDb } from "@/app/database/db";
 
 import { addSingleReceipt } from "@/app/database/receipts";
 import { addItem } from "@/app/database/items";
-import { ReceiptType } from "@/app/(tabs)/types";
 import { RenderTable } from "@/components/ItemEditor";
 import { receiptTableStyles } from "./styles";
 import { buttonStyles, otherStyles } from "@/app/(tabs)/main_styles";
-
+import { ProcessedReceipt } from "@/app/(tabs)/types";
+import { ItemType } from "@/components/ItemEditor/types";
 
 export default function displayReceiptTablePage() {
   const router = useRouter();
-  const { groupID } = useLocalSearchParams();
+  const { groupID, receiptData } = useLocalSearchParams();
+
   const [currentGroupId, setCurrentGroupId] = useState<number>(-1);
   const [receiptItems, setRecieptItems] = useState<ItemType[]>([]);
   const [receiptName, setReceiptName] = useState<string>("");
@@ -34,6 +34,34 @@ export default function displayReceiptTablePage() {
     }
     console.log(groupID, "wowah");
   }, [groupID]);
+
+  useEffect(() => {
+    if (receiptData) {
+      const parsedReceiptData = JSON.parse(
+        receiptData as string
+      ) as ProcessedReceipt;
+      const newItems: ItemType[] = [];
+      Object.keys(parsedReceiptData).map((key, index) => {
+        // using the key process the receipt
+        if (parsedReceiptData[key].name === "##TOTAL") {
+          setReceiptTotal(Number(parsedReceiptData[key].price));
+        } else if (parsedReceiptData[key].name === "##SUBTOTAL") {
+          // TODO: Subtotal logic
+        } else {
+          const newItem: ItemType = {
+            id: index,
+            receipt_id: -1,
+            name: parsedReceiptData[key].name,
+            price: Number(parsedReceiptData[key].price),
+          };
+          newItems.push(newItem);
+          setRecieptItems([...receiptItems, ...newItems]);
+        }
+      });
+      console.log(parsedReceiptData);
+      console.log(newItems);
+    }
+  }, [receiptData]);
 
   const onCreateReciept = async () => {
     const db = await connectToDb();

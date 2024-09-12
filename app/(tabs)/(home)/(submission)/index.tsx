@@ -22,7 +22,6 @@ export default function SubmissionComponent() {
     } else if (groupID !== undefined) {
       setCurrentGroupId(parseInt(groupID, 10));
     }
-    console.log(groupID, "wowah1");
   }, [groupID]);
 
   return (
@@ -36,9 +35,7 @@ export default function SubmissionComponent() {
           }}
           asChild
         >
-          <Button
-            buttonStyle={buttonStyles.button}
-          >
+          <Button buttonStyle={buttonStyles.button}>
             <Text style={{ fontWeight: "bold", color: "white", fontSize: 26 }}>
               Blank Table
             </Text>
@@ -52,9 +49,7 @@ export default function SubmissionComponent() {
           }}
           asChild
         >
-          <Button
-            buttonStyle={buttonStyles.button}
-          >
+          <Button buttonStyle={buttonStyles.button}>
             <Text style={{ fontWeight: "bold", color: "white", fontSize: 26 }}>
               Scan Receipt
             </Text>

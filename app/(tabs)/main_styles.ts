@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 export const buttonStyles = StyleSheet.create({
   Red: {
     backgroundColor: "#9b5353",
-    borderRadius: 5,
   },
   Blue: { 
     backgroundColor: "#28282B", 
@@ -11,7 +10,6 @@ export const buttonStyles = StyleSheet.create({
   },
   Green: {
     backgroundColor: "#6c7869",
-    borderRadius: 5,
   },
 });
 

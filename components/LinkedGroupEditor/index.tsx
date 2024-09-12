@@ -1,10 +1,6 @@
 import { connectToDb } from "@/app/database/db";
-import {
-  addGroup,
-  addSingleGroup,
-  getSingleGroup,
-  updateGroup,
-} from "@/app/database/groups";
+import { getSingleGroup, updateGroup } from "@/app/database/groups";
+import { DatePickerModal } from "react-native-paper-dates";
 import { useState } from "react";
 import { useCallback } from "react";
 import { GroupType, ReceiptType } from "../../app/(tabs)/types";
@@ -15,6 +11,13 @@ import { DisplayReceipt } from "../ReceiptEditor";
 import { Link, useFocusEffect } from "expo-router";
 import { useRouter } from "expo-router";
 import { buttonStyles, otherStyles } from "./styles";
+import { format } from "date-fns";
+import { CalendarDate } from "react-native-paper-dates/lib/typescript/Date/Calendar";
+import { View, Text } from "react-native";
+import { PaperProvider } from "react-native-paper";
+import { registerTranslation, enGB } from "react-native-paper-dates";
+
+registerTranslation("en", enGB);
 
 export const LinkedGroupEditor: React.FC<{
   groupID: number | null;
@@ -30,8 +33,11 @@ export const LinkedGroupEditor: React.FC<{
     upload_date: "9999-12-30",
   };
   const [name, setName] = useState(defaultBase.name);
-  const [pdate, setPdate] = useState(defaultBase.purchase_date);
-  const [udate, setUdate] = useState(defaultBase.upload_date);
+
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
+  const [pdate, setPdate] = useState<CalendarDate>(new Date());
+  const [udate, setUdate] = useState<CalendarDate>(new Date());
+
   const [total, setTotal] = useState(defaultBase.total);
   const [gID, setGID] = useState(defaultBase.id);
   const [itemOV, setItemOV] = useState(false);
@@ -50,8 +56,8 @@ export const LinkedGroupEditor: React.FC<{
             const base = await getSingleGroup(db, groupID);
             if (base != null) {
               setName(base.name);
-              setPdate(base.purchase_date.toString());
-              setUdate(base.upload_date.toString());
+              setPdate(new Date());
+              setUdate(new Date());
               setTotal(base.total);
             }
             const receipts = await getReceipts(db, groupID);
@@ -82,11 +88,6 @@ export const LinkedGroupEditor: React.FC<{
     } catch (error) {
       console.error("Failed to delete Receipt:", error);
     }
-  };
-
-  const update = async (groupInfo: GroupType) => {
-    const db = await connectToDb();
-    updateGroup(db, groupInfo);
   };
 
   const renderreceiptsList = ({ item }: { item: ReceiptType }) => (
@@ -125,89 +126,177 @@ export const LinkedGroupEditor: React.FC<{
       id: gID,
       name: name,
       total: total,
-      upload_date: udate,
-      purchase_date: pdate,
+      upload_date: format(udate as Date, "yyyy-MM-dd"),
+      purchase_date: format(pdate as Date, "yyyy-MM-dd"),
     };
     console.log(newGroup);
     const db = await connectToDb();
     await updateGroup(db, newGroup);
   };
 
+  const onDismissSingle = useCallback(() => {
+    setDatePickerOpen(false);
+  }, [datePickerOpen]);
+
+  const onConfirmSingle = useCallback(
+    (params) => {
+      console.log(params);
+      setDatePickerOpen(false);
+      setPdate(params.date);
+    },
+    [setDatePickerOpen, setPdate]
+  );
+
+  const theme = {
+    colors: {
+      primary: "#dfc6af",
+      background: "#ffffff",
+      surface: "#ffffff",
+      accent: "#dfc6af",
+      text: "#000000",
+      disabled: "rgba(0, 0, 0, 0.38)",
+      placeholder: "#aaaaaa",
+    },
+    roundness: 10,
+  };
+
+  const renderReceiptsInGroup = () => {
+    if (receiptsList.length == 0) {
+      return (
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            flex: 1,
+          }}
+        >
+          <Text style={{ fontSize: 20, paddingBottom: 15 }}>
+            No Receipts found.
+          </Text>
+        </View>
+      );
+    } else {
+      return (
+        <FlatList
+          keyExtractor={(item) => item.id.toString()}
+          data={receiptsList}
+          renderItem={renderreceiptsList}
+        />
+      );
+    }
+  };
+
   return (
     <>
-      <Input
-        style={styles.input}
-        value={name}
-        onChangeText={setName}
-        leftIcon={{ type: "font-awesome", name: "chevron-left", color:"#dfc6af" }}
-        label={"Name"}
-        labelStyle={otherStyles.inputLabel}
-      />
-      <Input
-        style={styles.input}
-        value={total.toString()}
-        inputMode="numeric"
-        onChangeText={(value) => {
-          const numericValue = parseFloat(value);
-          setTotal(isNaN(numericValue) ? 0 : numericValue);
-        }}
-        leftIcon={{ type: "font-awesome", name: "chevron-left", color:"#dfc6af"}}
-        label={"Total"}
-        labelStyle={otherStyles.inputLabel}
-      />
-      <Input
-        style={styles.input}
-        value={pdate.toString()}
-        onChangeText={setPdate}
-        leftIcon={{ type: "font-awesome", name: "chevron-left", color:"#dfc6af"}}
-        label={"Purchase Date"}
-        labelStyle={otherStyles.inputLabel}
-      />
-      <Input
-        style={styles.input}
-        value={udate.toString()}
-        onChangeText={setUdate}
-        leftIcon={{ type: "font-awesome", name: "chevron-left", color:"#dfc6af"}}
-        label={"Upload Date"}
-        labelStyle={otherStyles.inputLabel}
-      />
-      <Button
-        title={"Done"}
-        buttonStyle={buttonStyles.Green}
-        onPress={() => {
-          saveGroup();
-          router.replace("(home)");
-        }}
-      />
+      <PaperProvider theme={theme}>
+        <Input
+          style={styles.input}
+          value={name}
+          onChangeText={setName}
+          leftIcon={{
+            type: "font-awesome",
+            name: "chevron-left",
+            color: "#dfc6af",
+          }}
+          label={"Name"}
+          labelStyle={otherStyles.inputLabel}
+        />
+        <Input
+          style={styles.input}
+          value={total.toString()}
+          inputMode="numeric"
+          onChangeText={(value) => {
+            const numericValue = parseFloat(value);
+            setTotal(isNaN(numericValue) ? 0 : numericValue);
+          }}
+          leftIcon={{
+            type: "font-awesome",
+            name: "chevron-left",
+            color: "#dfc6af",
+          }}
+          label={"Total"}
+          labelStyle={otherStyles.inputLabel}
+        />
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            alignItems: "center",
+          }}
+        >
+          <Input
+            label="Date"
+            style={styles.dateInput}
+            disabled={true}
+            value={format(pdate as Date, "yyyy-MM-dd")}
+            leftIcon={{
+              type: "font-awesome",
+              name: "chevron-left",
+              color: "#dfc6af",
+            }}
+            inputStyle={{ fontWeight: "bold", color: "black" }}
+            labelStyle={otherStyles.inputLabel}
+            containerStyle={{ flex: 1 }}
+          />
+          <Button
+            buttonStyle={{
+              backgroundColor: "#dfc6af",
+              borderRadius: 20,
+              width: "100%",
+            }}
+            containerStyle={{ flex: 1, marginLeft: 10, marginRight: 10 }}
+            titleStyle={{ color: "black" }}
+            onPress={() => setDatePickerOpen(true)}
+          >
+            Select
+          </Button>
+        </View>
+        <DatePickerModal
+          locale="en"
+          mode="single"
+          label={"Select Date"}
+          visible={datePickerOpen}
+          onDismiss={onDismissSingle}
+          date={pdate}
+          onConfirm={onConfirmSingle}
+          presentationStyle="overFullScreen"
+        />
 
-      <FlatList
-        keyExtractor={(item) => item.id.toString()}
-        data={receiptsList}
-        renderItem={renderreceiptsList}
-      ></FlatList>
-      <Link
-        href={{
-          pathname: "/(submission)",
-          params: { groupID: gID },
-        }}
-        asChild
-      >
         <Button
-          title={"new receipt"}
-          buttonStyle={buttonStyles.Blue}
+          title={"Done"}
+          buttonStyle={buttonStyles.Green}
           onPress={() => {
             saveGroup();
+            router.replace("(home)");
           }}
         />
-      </Link>
-      <DisplayReceipt
-        isVisible={itemOV}
-        setVisible={setItemOV}
-        receiptsList={receiptsList}
-        setReceiptsList={setReceiptsList}
-        groupID={gID}
-        ID={receiptID}
-      />
+
+        {renderReceiptsInGroup()}
+
+        <Link
+          href={{
+            pathname: "/(submission)",
+            params: { groupID: gID },
+          }}
+          asChild
+        >
+          <Button
+            title={"new receipt"}
+            buttonStyle={buttonStyles.Blue}
+            onPress={() => {
+              saveGroup();
+            }}
+          />
+        </Link>
+        <DisplayReceipt
+          isVisible={itemOV}
+          setVisible={setItemOV}
+          receiptsList={receiptsList}
+          setReceiptsList={setReceiptsList}
+          groupID={gID}
+          ID={receiptID}
+        />
+      </PaperProvider>
     </>
   );
 };
@@ -218,5 +307,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: "#ccc",
     padding: 5,
+  },
+  dateInput: {
+    flex: 1,
+    borderBottomWidth: 1,
+    borderColor: "#ccc",
+    padding: 5,
+    width: "50%",
   },
 });

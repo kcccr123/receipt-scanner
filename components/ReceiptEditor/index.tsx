@@ -11,7 +11,7 @@ import { getItems } from "@/app/database/items";
 import { Button, Input, Overlay } from "@rneui/themed";
 import { StyleSheet } from "react-native";
 import { RenderTable } from "../ItemEditor";
-import {buttonStyles, otherStyles} from "./styles"
+import { buttonStyles, otherStyles } from "./styles";
 
 export const DisplayReceipt: React.FC<{
   isVisible: boolean;
