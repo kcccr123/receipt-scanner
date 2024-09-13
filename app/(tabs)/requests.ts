@@ -1,6 +1,7 @@
 import axios from "axios";
 import mime from "mime";
 import { ProcessedReceipt } from "./types";
+import { GCP_URL_RESPONSE, GCP_URL_PREDICTION } from "@env";
 
 export const detectImagePost = async (
   uri: string
@@ -20,10 +21,8 @@ export const detectImagePost = async (
     name: newImageUri.split("/").pop(),
   } as any);
   console.log(formData);
-  // gcp: http://35.224.80.149:30001/predict
-  // local: http://10.0.2.2:5000/predict
   return await axios
-    .post("http://35.224.80.149:30001/predict", formData, {
+    .post(GCP_URL_PREDICTION, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -42,7 +41,7 @@ export const detectImagePost = async (
 export const sayHello = async (words: string) => {
   console.log("make request");
   try {
-    const response = await axios.post("http://35.224.80.149:30001/response", {
+    const response = await axios.post(GCP_URL_RESPONSE, {
       message: words,
     });
     alert(response.data.response);
