@@ -80,12 +80,9 @@ export default function CameraComponent({
 
   useEffect(() => {
     async function getSizes() {
-      console.log(permission);
       if (permission?.granted && cameraRef.current) {
-        console.log("sized!");
         const sizes = await cameraRef.current.getAvailablePictureSizesAsync();
         setPictureSizes(sizes);
-        console.log(sizes);
       }
     }
 

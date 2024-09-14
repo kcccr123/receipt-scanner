@@ -6,13 +6,11 @@ import { Asset } from "expo-asset";
 import { decodeJpeg } from "@tensorflow/tfjs-react-native";
 import { loadTensorflowModel } from "react-native-fast-tflite";
 
-
 type DetectionResult = {
   bbox: number[];
   score: number;
   class: number;
 };
-
 
 const loadImage = async (uri: string) => {
   const imgB64 = await FileSystem.readAsStringAsync(uri, {
@@ -68,7 +66,6 @@ const onnxNms = async (output: ort.Tensor) => {
     iouThreshold,
     scoreThreshold
   );
-  console.log("nms");
 
   const nmsBoxes: DetectionResult[] = indices.arraySync().map((index) => {
     return {
@@ -77,56 +74,37 @@ const onnxNms = async (output: ort.Tensor) => {
       class: classes[index],
     };
   });
-  console.log("detectionResults", nmsBoxes);
-  console.log(nmsBoxes.length);
-  console.log("hello");
   return nmsBoxes;
 };
 
 const uriToTensor = async (imgB64: string) => {
   await tf.ready();
-  console.log("decoding");
 
   const imgBuffer = tf.util.encodeString(imgB64, "base64").buffer;
   const imageData = new Uint8Array(imgBuffer);
 
-  console.log("Image data length:", imageData.length);
-
   const imageTensor = decodeJpeg(imageData, 3);
-  console.log("decoded image", imageTensor);
 
   // Resize the image to 640x640
   const resizedImageTensor = tf.image.resizeBilinear(imageTensor, [640, 640]);
-  console.log("Resized image tensor shape:", resizedImageTensor.shape);
 
   // Normalize the image data to the range [0, 1]
   const normalizedImageTensor = resizedImageTensor.div(tf.scalar(255));
-  console.log("Normalized image tensor shape:", normalizedImageTensor.shape);
 
   // Expand dimensions to add the batch size
   const batchedImageTensor = normalizedImageTensor.expandDims(0);
-  console.log("Batched image tensor shape:", batchedImageTensor.shape);
 
   // Transpose the tensor to match the required shape [1, 3, 640, 640]
   const transposedTensor = batchedImageTensor.transpose([0, 3, 1, 2]);
-  console.log("Transposed tensor shape:", transposedTensor.shape);
-
-  console.log(
-    "Transposed tensor data length:",
-    transposedTensor.dataSync().length
-  );
 
   return transposedTensor;
 };
 
 const processImage = async (imageUri: string) => {
   const b64data = await loadImage(imageUri);
-  console.log("process image");
   const imageTensor = await uriToTensor(b64data);
-  console.log("uri to tensor", imageTensor.shape);
 
   const returnValue = Float32Array.from(imageTensor.dataSync());
-  console.log("Image tensor data length:", returnValue.length);
   return returnValue;
 };
 
@@ -141,21 +119,16 @@ export const runOnnxModel = async (imageUri: string) => {
     const session = await InferenceSession.create(modelUri);
     const imageTensorArray = await processImage(imageUri);
 
-    console.log("Image tensor array length:", imageTensorArray.length);
-
     const inputTensor = new ort.Tensor(
       imageTensorArray,
       [1, 3, 640, 640],
       "float32"
     );
-    console.log("ORT tensor data length:", inputTensor.data.length);
-    console.log("ORT tensor data type:", inputTensor.type);
 
     const feeds: Record<string, ort.Tensor> = {};
     feeds[session.inputNames[0]] = inputTensor;
 
     const fetches = await session.run(feeds);
-    console.log("Model run successfully");
     const output = fetches[session.outputNames[0]];
 
     // run non max supression

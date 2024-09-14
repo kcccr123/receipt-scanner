@@ -65,12 +65,9 @@ export const DisplayGroup: React.FC<{
           });
           setGID(newID);
           const newg = await getSingleGroup(db, newID);
-          console.log(newg);
           if (newg != null) {
             group.push(newg);
             setGroup(group);
-          } else {
-            console.log("new group not inited");
           }
         }
       } catch (error) {
@@ -153,7 +150,6 @@ export const DisplayGroup: React.FC<{
       upload_date: udate,
       purchase_date: pdate,
     };
-    console.log(newGroup);
     const db = await connectToDb();
     await updateGroup(db, newGroup);
     update(newGroup);

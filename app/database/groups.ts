@@ -7,8 +7,6 @@ export const addGroup = async (db: SQLiteDatabase, groups: GroupType[]) => {
      VALUES (?, ?, ?, ?)
    `;
 
-  console.log("Starting to add groups");
-
   try {
     for (const group of groups) {
       const values = [
@@ -24,8 +22,6 @@ export const addGroup = async (db: SQLiteDatabase, groups: GroupType[]) => {
         console.error(`Failed to save ${group.name}:`, error);
       }
     }
-
-    console.log("Finished adding groups");
 
     return true;
   } catch (error) {
@@ -47,8 +43,6 @@ export const addSingleGroup = async (db: SQLiteDatabase, group: GroupType) => {
       group.upload_date,
       group.purchase_date,
     ]);
-
-    console.log("Finished adding group");
     return result[0].insertId;
   } catch (error) {
     console.error("Failed to add groups:", error);

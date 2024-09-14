@@ -10,8 +10,6 @@ export const addReceipt = async (
     VALUES (?, ?, ?)
   `;
 
-  console.log("Starting to add receipts");
-
   try {
     for (const receipt of receipts) {
       const values = [receipt.group_id, receipt.name, receipt.total];
@@ -22,8 +20,6 @@ export const addReceipt = async (
         console.error(`Failed to save ${receipt.name}:`, error);
       }
     }
-
-    console.log("Finished adding groups");
 
     return true;
   } catch (error) {
@@ -41,16 +37,12 @@ export const addSingleReceipt = async (
   VALUES (?, ?, ?)
 `;
 
-  console.log("Starting to add receipt");
-
   try {
     const result = await db.executeSql(insertQuery, [
       receipt.group_id,
       receipt.name,
       receipt.total,
     ]);
-
-    console.log("Finished adding receipt");
 
     return result[0].insertId;
   } catch (error) {

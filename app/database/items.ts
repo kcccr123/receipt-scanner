@@ -14,7 +14,6 @@ export const addItem = async (db: SQLiteDatabase, items: ItemType[]) => {
       item.price,
     ]);
     try {
-      console.log("complete adding reciept");
       return db.executeSql(insertQuery, values);
     } catch (error) {
       console.error(error);

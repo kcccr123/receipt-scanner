@@ -49,10 +49,8 @@ export const LinkedGroupEditor: React.FC<{
   useFocusEffect(
     useCallback(() => {
       const fetchData = async () => {
-        console.log("Fetching data...");
         try {
           const db = await connectToDb();
-          console.log("non empty groupID", groupID);
           if (groupID != null) {
             setGID(groupID);
             const base = await getSingleGroup(db, groupID);
@@ -69,8 +67,6 @@ export const LinkedGroupEditor: React.FC<{
           console.error(error);
         }
       };
-
-      console.log(groupID);
       fetchData();
 
       // Optional: Cleanup function
@@ -131,7 +127,6 @@ export const LinkedGroupEditor: React.FC<{
       upload_date: format(udate as Date, "yyyy-MM-dd"),
       purchase_date: format(pdate as Date, "yyyy-MM-dd"),
     };
-    console.log(newGroup);
     const db = await connectToDb();
     await updateGroup(db, newGroup);
   };
@@ -142,7 +137,6 @@ export const LinkedGroupEditor: React.FC<{
 
   const onConfirmSingle = useCallback(
     (params: { date: SetStateAction<CalendarDate>; }) => {
-      console.log(params);
       setDatePickerOpen(false);
       setPdate(params.date);
     },
@@ -322,7 +316,7 @@ export const LinkedGroupEditor: React.FC<{
               <Button
                 buttonStyle={buttonStyles.PopupButton}
                 title={"Upload Image"}
-                onPress={() => {console.log("add a new receipt"); setPopup(false)}}
+                onPress={() => {setPopup(false)}}
               />
             </Link>
           </BottomSheet>

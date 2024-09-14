@@ -73,7 +73,6 @@ export const RenderTable: React.FC<{
       price: 0,
     };
     const newID = await addSingleItem(db, baseItem);
-    console.log(newID);
     baseItem.id = newID;
     setItems([...items, baseItem]);
     editValues(baseItem);

@@ -64,12 +64,9 @@ export const DisplayReceipt: React.FC<{
           });
           setReceiptID(newID);
           const newr = await getSingleReceipt(db, newID);
-          console.log(newr);
           if (newr != null) {
             receiptsList.push(newr);
             setReceiptsList(receiptsList);
-          } else {
-            console.log("new reciept not inited");
           }
         }
       } catch (error) {
@@ -106,7 +103,6 @@ export const DisplayReceipt: React.FC<{
       name: name,
       total: total,
     };
-    console.log(newReceipt);
     const db = await connectToDb();
     update(newReceipt);
     await updateReceipt(db, newReceipt);

@@ -8,7 +8,6 @@ export const detectImagePost = async (
 ): Promise<{ status: number; data?: ProcessedReceipt }> => {
   //  get uri and format
   const newImageUri = "file://" + uri.split("file:/").join("");
-  console.log(newImageUri);
 
   // So, FormData object automatically converts image to binary data.
   // its given the image uri, takes the image uri, uses it to get the image and convert to binary data
@@ -20,7 +19,6 @@ export const detectImagePost = async (
     type: mime.getType(newImageUri),
     name: newImageUri.split("/").pop(),
   } as any);
-  console.log(formData);
   return await axios
     .post(GCP_URL_PREDICTION, formData, {
       headers: {
@@ -28,7 +26,6 @@ export const detectImagePost = async (
       },
     })
     .then((response) => {
-      console.log(response);
       return { status: response.status, data: response.data };
     })
     .catch((error) => {
@@ -39,7 +36,6 @@ export const detectImagePost = async (
 };
 
 export const sayHello = async (words: string) => {
-  console.log("make request");
   try {
     const response = await axios.post(GCP_URL_RESPONSE, {
       message: words,

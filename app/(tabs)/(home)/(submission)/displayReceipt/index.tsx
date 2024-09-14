@@ -23,7 +23,6 @@ export default function displayReceiptTablePage() {
   const [receiptTotal, setReceiptTotal] = useState<number>(0.0);
   // need to create reciewpt on create reciept and not before
   useEffect(() => {
-    console.log(receiptItems);
   }, [receiptItems]);
 
   useEffect(() => {
@@ -32,7 +31,6 @@ export default function displayReceiptTablePage() {
     } else if (groupID !== undefined) {
       setCurrentGroupId(parseInt(groupID, 10));
     }
-    console.log(groupID, "wowah");
   }, [groupID]);
 
   useEffect(() => {
@@ -58,14 +56,11 @@ export default function displayReceiptTablePage() {
           setRecieptItems([...receiptItems, ...newItems]);
         }
       });
-      console.log(parsedReceiptData);
-      console.log(newItems);
     }
   }, [receiptData]);
 
   const onCreateReciept = async () => {
     const db = await connectToDb();
-    console.log(currentGroupId);
     const receiptInfo = {
       id: 0,
       group_id: currentGroupId,
@@ -80,9 +75,7 @@ export default function displayReceiptTablePage() {
       itemsToAdd[i].receipt_id = receiptId;
     }
     await addItem(db, itemsToAdd);
-    console.log("added items", itemsToAdd);
 
-    console.log("end");
     router.replace({
       pathname: "/(displayGroup)", // The screen you want to navigate to
       params: {

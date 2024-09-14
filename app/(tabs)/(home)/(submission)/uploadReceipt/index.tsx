@@ -2,9 +2,7 @@ import { View, Text } from "react-native";
 import { Button } from "@rneui/themed";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
-import { otherStyles } from "@/app/(tabs)/main_styles";
-import { buttonStyles } from "../styles";
-
+import {buttonStyles, otherStyles } from "@/app/(tabs)/main_styles";
 import { ItemType } from "@/components/ItemEditor/types";
 import { detectImagePost, sayHello } from "@/app/(tabs)/requests";
 import { ProcessedReceipt } from "@/app/(tabs)/types";
@@ -27,7 +25,6 @@ export default function imageUploadPage() {
     if (!result.canceled) {
       //sayHello("hi");
       const response = await detectImagePost(result.assets[0].uri);
-      console.log(response, "receipt");
 
       if (response.data) {
         router.replace({
@@ -47,7 +44,7 @@ export default function imageUploadPage() {
     <>
       <Button
         titleStyle={otherStyles.buttonLabel}
-        buttonStyle={{ backgroundColor: "#9b5353" }}
+        buttonStyle={buttonStyles.Red}
         onPress={() => router.back()}
       >
         Back
@@ -61,7 +58,7 @@ export default function imageUploadPage() {
           marginTop: 20,
         }}
       >
-        <Button onPress={pickImage} style={buttonStyles.button}>
+        <Button onPress={pickImage} buttonStyle={buttonStyles.Blue}>
           <Text style={{ fontWeight: "bold", color: "white", fontSize: 26 }}>
             Select Image
           </Text>
