@@ -9,8 +9,8 @@ import { addSingleReceipt } from "@/app/database/receipts";
 import { addItem } from "@/app/database/items";
 import { RenderTable } from "@/components/ItemEditor";
 import { receiptTableStyles } from "./styles";
-import { buttonStyles, otherStyles } from "@/app/(tabs)/main_styles";
-import { ProcessedReceipt } from "@/app/(tabs)/types";
+import { buttonStyles, otherStyles } from "@/app/Other/main_styles";
+import { ProcessedReceipt } from "@/app/Other/types";
 import { ItemType } from "@/components/ItemEditor/types";
 
 export default function displayReceiptTablePage() {
@@ -22,8 +22,7 @@ export default function displayReceiptTablePage() {
   const [receiptName, setReceiptName] = useState<string>("");
   const [receiptTotal, setReceiptTotal] = useState<number>(0.0);
   // need to create reciewpt on create reciept and not before
-  useEffect(() => {
-  }, [receiptItems]);
+  useEffect(() => {}, [receiptItems]);
 
   useEffect(() => {
     if (Array.isArray(groupID)) {

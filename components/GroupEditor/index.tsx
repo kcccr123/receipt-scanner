@@ -6,7 +6,7 @@ import {
   updateGroup,
 } from "@/app/database/groups";
 import { useEffect, useState } from "react";
-import { GroupType, ReceiptType } from "../../app/(tabs)/types";
+import { GroupType, ReceiptType } from "../../app/Other/types";
 import { deleteReceipt, getReceipts } from "@/app/database/receipts";
 import { Button, Icon, Input, ListItem, Overlay } from "@rneui/themed";
 import { FlatList, StyleSheet } from "react-native";

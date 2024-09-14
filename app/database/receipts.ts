@@ -1,5 +1,5 @@
 import { SQLiteDatabase } from "react-native-sqlite-storage";
-import { ReceiptType } from "../(tabs)/types";
+import { ReceiptType } from "../Other/types";
 
 export const addReceipt = async (
   db: SQLiteDatabase,

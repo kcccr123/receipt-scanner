@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ReceiptType } from "../../app/(tabs)/types";
+import { ReceiptType } from "../../app/Other/types";
 import { ItemType } from "../ItemEditor/types";
 import { connectToDb } from "@/app/database/db";
 import {

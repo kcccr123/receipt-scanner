@@ -7,8 +7,8 @@ import * as MediaLibrary from "expo-media-library";
 
 import { connectToDb } from "@/app/database/db";
 import { addSingleGroup } from "@/app/database/groups";
-import { GroupType } from "@/app/(tabs)/types";
-import { detectImagePost } from "@/app/(tabs)/requests";
+import { GroupType } from "@/app/Other/types";
+import { detectImagePost } from "@/app/Other/requests";
 
 import { styles } from "./styles";
 

@@ -4,7 +4,7 @@ import {
   openDatabase,
   SQLiteDatabase,
 } from "react-native-sqlite-storage";
-import { AppTables } from "../(tabs)/types";
+import { AppTables } from "../Other/types";
 
 enablePromise(true);
 

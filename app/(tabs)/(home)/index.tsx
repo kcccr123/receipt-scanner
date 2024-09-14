@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useFocusEffect, useRouter } from "expo-router";
 import { View, Text, StyleSheet, SectionList } from "react-native";
-import { GroupedTableProps, GroupType } from "../types";
+import { GroupedTableProps, GroupType } from "../../Other/types";
 import { connectToDb, createTable, removeTable } from "@/app/database/db";
 import {
   addGroup,

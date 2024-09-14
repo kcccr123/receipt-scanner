@@ -3,9 +3,16 @@ import { getSingleGroup, updateGroup } from "@/app/database/groups";
 import { DatePickerModal } from "react-native-paper-dates";
 import { SetStateAction, useState } from "react";
 import { useCallback } from "react";
-import { GroupType, ReceiptType } from "../../app/(tabs)/types";
+import { GroupType, ReceiptType } from "../../app/Other/types";
 import { deleteReceipt, getReceipts } from "@/app/database/receipts";
-import { BottomSheet, Button, Icon, Input, ListItem, Overlay } from "@rneui/themed";
+import {
+  BottomSheet,
+  Button,
+  Icon,
+  Input,
+  ListItem,
+  Overlay,
+} from "@rneui/themed";
 import { FlatList, StyleSheet } from "react-native";
 import { DisplayReceipt } from "../ReceiptEditor";
 import { Link, useFocusEffect } from "expo-router";
@@ -136,7 +143,7 @@ export const LinkedGroupEditor: React.FC<{
   }, [datePickerOpen]);
 
   const onConfirmSingle = useCallback(
-    (params: { date: SetStateAction<CalendarDate>; }) => {
+    (params: { date: SetStateAction<CalendarDate> }) => {
       setDatePickerOpen(false);
       setPdate(params.date);
     },
@@ -245,7 +252,6 @@ export const LinkedGroupEditor: React.FC<{
             titleStyle={{ color: "black" }}
             onPress={() => setDatePickerOpen(true)}
           />
-
         </View>
         <DatePickerModal
           locale="en"
@@ -277,7 +283,11 @@ export const LinkedGroupEditor: React.FC<{
 
         {renderReceiptsInGroup()}
         <SafeAreaProvider>
-          <BottomSheet modalProps={{}} isVisible = {popup} onBackdropPress={()=>setPopup(false)}>
+          <BottomSheet
+            modalProps={{}}
+            isVisible={popup}
+            onBackdropPress={() => setPopup(false)}
+          >
             {/* <Button buttonStyle={buttonStyles.PopupButton} title={"Back"} onPress={()=>setPopup(false)}/> */}
             <Link
               href={{
@@ -287,8 +297,8 @@ export const LinkedGroupEditor: React.FC<{
               asChild
             >
               <Button
-                title = {"Blank Table"}
-                onPress={()=>setPopup(false)}
+                title={"Blank Table"}
+                onPress={() => setPopup(false)}
                 buttonStyle={buttonStyles.PopupButton}
               />
             </Link>
@@ -302,7 +312,7 @@ export const LinkedGroupEditor: React.FC<{
             >
               <Button
                 title={"Scan Receipt"}
-                onPress={()=>setPopup(false)}
+                onPress={() => setPopup(false)}
                 buttonStyle={buttonStyles.PopupButton}
               />
             </Link>
@@ -316,7 +326,9 @@ export const LinkedGroupEditor: React.FC<{
               <Button
                 buttonStyle={buttonStyles.PopupButton}
                 title={"Upload Image"}
-                onPress={() => {setPopup(false)}}
+                onPress={() => {
+                  setPopup(false);
+                }}
               />
             </Link>
           </BottomSheet>

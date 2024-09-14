@@ -1,5 +1,5 @@
 import { SQLiteDatabase } from "react-native-sqlite-storage";
-import { GroupType } from "../(tabs)/types";
+import { GroupType } from "../Other/types";
 
 export const addGroup = async (db: SQLiteDatabase, groups: GroupType[]) => {
   const insertQuery = `

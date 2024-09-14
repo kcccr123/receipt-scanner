@@ -6,7 +6,7 @@ import { useCallback } from "react";
 import { LinkedGroupEditor } from "@/components/LinkedGroupEditor";
 import { addSingleGroup } from "@/app/database/groups";
 import { connectToDb } from "@/app/database/db";
-import { GroupType, ReceiptType } from "../../types";
+import { GroupType, ReceiptType } from "../../../Other/types";
 
 export default function displayGroupPage() {
   const { groupID } = useLocalSearchParams();
