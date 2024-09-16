@@ -47,7 +47,6 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.74.2",
-    "react-native-dotenv": "^3.4.11",
     "react-native-fast-tflite": "^1.2.0",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "~2.16.1",
