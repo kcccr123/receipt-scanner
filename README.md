@@ -122,6 +122,10 @@ This seciton includes further detail on interesting features that were worked on
 
 #### YOLOv8
 
+YOLOv8, a robust open-source AI framework for computer vision tasks with a large community, was leveraged to extract bounding boxes for items, totals, and subtotals from processed receipt images. The captured bounding boxes were then passed to subsequent models for further analysis.
+
+The model was trained from scratch using a dataset of over 400 receipts, which were preprocessed into grayscale images and perspective corrected. Through data augmentation techniques, the dataset was expanded to nearly 1,200 images.
+
 #### RCNN
 
 A custom RCNN model is designed and trained to perform ocr on the bounding boxes passed by the YOLOv8 model. 
