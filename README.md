@@ -110,11 +110,13 @@ This seciton includes further detail on interesting features that were worked on
 
 ### Machine Learning
 
-#### Yolov8
+#### YOLOv8
 
 #### RCNN
 
-A custom RCNN model is designed and trained to perform ocr on the bounding boxes passed by the YOLOv8 model. The model consists of 9 layers of ResBlocks followed by 2 layers of bidirectional LSTM. The model is trained on a dataset of about 42000 image preprocessed into greyscale images. The dataset contains 1-3 words, prices, or other special characters that appear on receipts. Training process utilizes CTC loss, a decaying learning rate, as well as character error rate and word error rate as metrics. Inference model reached a characeter accuracy of 96% and a word accuracy of 88%.
+A custom RCNN model is designed and trained to perform ocr on the bounding boxes passed by the YOLOv8 model. 
+
+The model consists of 9 layers of ResBlocks followed by 2 layers of bidirectional LSTM. The model is trained on a dataset of about 42000 image preprocessed into greyscale images. The dataset contains 1-3 words, prices, or other special characters that appear on receipts. Training process utilizes CTC loss, a decaying learning rate, as well as character error rate and word error rate as metrics. Inference model reached a characeter accuracy of 96% and a word accuracy of 88%.
 
 #### BART
 
