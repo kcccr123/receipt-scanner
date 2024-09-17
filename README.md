@@ -23,8 +23,9 @@
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Getting Started</a>
+      <a href="#installation">Installation</a>
       <ul>
+        <li><a href="#getting-started">Getting Started</a></li>
         <li><a href="#prerequisites">Prerequisites</a></li>
       </ul>
     </li>
@@ -71,32 +72,46 @@ The machine learning models are deployed on a Google Kubernetes Engine (GKE) clu
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- GETTING STARTED -->
+<!-- INSTALLATION -->
 
-## Getting Started
+## Installation
 
-Run the executeable on your local machine! The executable and related dependencies are on a google drive because they are too big for github.
-Extract and run FlightTracker.exe!
+To run this project, you can either clone the repository and continue following the instructions,
 
+OR
+
+Download the .apk below to use immediately on your phone:  
 https://drive.google.com/drive/folders/1m73Ae3LnU7konZcTfJIdXvsenJ6avuYU?usp=sharing
 
 ### Prerequisites
 
-You will need to install these python dependencies
+If you are cloning this repository, please follow the instructions below to set up the Expo development environment and a mobile emulator if you do not already have them set up:  
+[Expo documentation](https://docs.expo.dev/get-started/set-up-your-environment/?mode=development-build&buildEnv=local&platform=android&device=simulated)
 
-- pip
-  ```sh
-  pip install FlightRadarAPI
-  ```
-  ```sh
-  pip install pandas
-  ```
-  ```sh
-  pip install sqlalchemy
-  ```
-  ```sh
-  pip install sqlite3
-  ```
+### Getting Started
+
+Clone the repository and run:
+
+```sh
+npm install --legacy-peer-deps
+```
+Please make sure you have installed an emulator and virtual device as specified in the prerequisites.
+After starting a device on your emulator, run the following command for your respective device type:
+
+iOS
+```sh
+npx expo run:ios
+```
+
+Android
+```sh
+npx expo run:android
+```
+
+Now, Expo should begin building a development build on your emulator.  
+
+For more details, follow:  
+[Expo documentation](https://docs.expo.dev/get-started/set-up-your-environment/?mode=development-build&buildEnv=local&platform=android&device=simulated)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -135,6 +150,8 @@ The model consists of 9 layers of ResBlocks followed by 2 layers of bidirectiona
 Inference model reached a characeter accuracy of 96% and a word accuracy of 88%.
 
 #### BART
+
+We utilize a pre-trained BART model developed by Facebook, fine-tuned specifically for our task. This model is used for sentence reconstruction, grammar correction, and the identification of key values, ensuring accurate processing and correction of text data before the results are sent in the POST response for display to the user.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
