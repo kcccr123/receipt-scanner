@@ -9,7 +9,7 @@
 <h3 align="center">Receipt Scanner Mobile App</h3>
 
   <p align="center">
-    A mobile app that lets users quickly store receipts with a photo and track spending for better budgeting.
+    A mobile app that lets users quickly store receipts with a photo and tracks spending for better budgeting.
    <br />
 
 <!-- TABLE OF CONTENTS -->
