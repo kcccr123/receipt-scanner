@@ -48,10 +48,6 @@ This React Native project simplifies receipt storage and spending tracking for u
 
 The machine learning models are deployed on a Google Kubernetes Engine (GKE) cluster on Google Cloud Platform, set up to receive images from the app and return a processed response for display.
 
-![pic1](<./images/Screenshot(191).png>)
-![pic2](<./images/Screenshot(192).png>)
-![pic3](<./images/Screenshot(195).png>)
-
 ### Built With
 
 ![React Native](https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
@@ -80,8 +76,8 @@ To run this project, you can either clone the repository and continue following 
 
 OR
 
-Download the .apk below to use immediately on your phone:  
-https://drive.google.com/drive/folders/1m73Ae3LnU7konZcTfJIdXvsenJ6avuYU?usp=sharing
+Download the .apk below from Google Drive to use on your phone immediately:  
+[Download The App Here](https://drive.google.com/drive/folders/1gMsgvBpB-5DIYCYthU_EozF8zWHmHyqh)
 
 ### Prerequisites
 
