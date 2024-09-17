@@ -6,8 +6,8 @@ export const buttonStyles = StyleSheet.create({
     borderRadius: 20,
     marginHorizontal: 5,
   },
-  NewReceipt: { 
-    backgroundColor: "#28282B", 
+  NewReceipt: {
+    backgroundColor: "#28282B",
     borderRadius: 20,
     marginHorizontal: 5,
     marginVertical: 5,
@@ -17,13 +17,13 @@ export const buttonStyles = StyleSheet.create({
     borderRadius: 20,
     marginHorizontal: 5,
   },
-  PopupButton:{
+  PopupButton: {
     backgroundColor: "#28282B",
     borderRadius: 20,
     height: 50,
     marginHorizontal: 5,
     marginVertical: 2,
-  }
+  },
 });
 
 export const otherStyles = StyleSheet.create({
@@ -33,4 +33,11 @@ export const otherStyles = StyleSheet.create({
     color: "dark grey",
   },
   buttonLabel: { fontWeight: "bold" },
+
+  transparentOverlay: {
+    backgroundColor: "rgba(0, 0, 0, 0)", // Fully transparent background
+    padding: 20,
+    elevation: 0, // Remove shadow on Android
+    shadowOpacity: 0, // Remove shadow on iOS
+  },
 });

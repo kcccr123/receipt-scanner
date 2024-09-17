@@ -4,6 +4,8 @@ import { CameraView, CameraProps, useCameraPermissions } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import * as MediaLibrary from "expo-media-library";
+import { Overlay } from "@rneui/themed";
+import { ActivityIndicator } from "react-native-paper";
 
 import { connectToDb } from "@/app/database/db";
 import { addSingleGroup } from "@/app/database/groups";
@@ -28,6 +30,7 @@ export default function CameraComponent({
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [pictureSizes, setPictureSizes] = useState<string[]>([]);
   const [selectedSize, setSelectedSize] = useState(undefined);
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
@@ -55,26 +58,32 @@ export default function CameraComponent({
       }
       // pass to next component to begin scanning
       setCapturedImage(photo.uri);
-      detectImagePost(photo.uri);
-    }
+      setIsLoading(true);
+      const response = await detectImagePost(photo.uri);
+      setIsLoading(false);
 
-    alert(`photo captured with dimensions: ${photo!.width} x ${photo!.height}`);
-
-    if (groupID) {
-      router.replace({
-        pathname: "/displayReceipt", // The screen you want to navigate to
-        params: {
-          groupID: groupID,
-        },
-      });
-    } else {
-      const newGroupId = await createNewGroup();
-      router.replace({
-        pathname: "/displayReceipt", // The screen you want to navigate to
-        params: {
-          groupID: newGroupId,
-        },
-      });
+      if (response.data) {
+        if (groupID) {
+          router.replace({
+            pathname: "/displayReceipt", // The screen you want to navigate to
+            params: {
+              groupID: groupID,
+              receiptData: JSON.stringify(response.data),
+            },
+          });
+        } else {
+          const newGroupId = await createNewGroup();
+          router.replace({
+            pathname: "/displayReceipt", // The screen you want to navigate to
+            params: {
+              groupID: newGroupId,
+              receiptData: JSON.stringify(response.data),
+            },
+          });
+        }
+      } else {
+        // error
+      }
     }
   };
 
@@ -131,27 +140,35 @@ export default function CameraComponent({
   }
 
   return (
-    <View style={styles.container}>
-      <View style={{ flex: 1 }}>
-        <CameraView
-          style={styles.camera}
-          facing={facing}
-          ref={cameraRef}
-          pictureSize={selectedSize}
-        >
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={toggleCameraFacing}
-            >
-              <Text style={styles.text}>Flip Camera</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={takePhoto}>
-              <Ionicons name="radio-button-on" size={80} color="black" />
-            </TouchableOpacity>
-          </View>
-        </CameraView>
+    <>
+      <Overlay
+        isVisible={isLoading}
+        overlayStyle={styles.transparentOverlay} // Transparent overlay with no border
+      >
+        <ActivityIndicator size="large" animating={true} />
+      </Overlay>
+      <View style={styles.container}>
+        <View style={{ flex: 1 }}>
+          <CameraView
+            style={styles.camera}
+            facing={facing}
+            ref={cameraRef}
+            pictureSize={selectedSize}
+          >
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={toggleCameraFacing}
+              >
+                <Text style={styles.text}>Flip Camera</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button} onPress={takePhoto}>
+                <Ionicons name="radio-button-on" size={80} color="black" />
+              </TouchableOpacity>
+            </View>
+          </CameraView>
+        </View>
       </View>
-    </View>
+    </>
   );
 }
