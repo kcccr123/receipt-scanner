@@ -31,7 +31,7 @@
     </li>
     <li><a href="#usage">Usage</a></li>
     <li>
-      <a href="#feature-details">Feature Details</a>
+      <a href="#features">Features</a>
       <ul>
         <li><a href="#machine-learning">Machine Learning</a></li>
       </ul>
@@ -129,7 +129,7 @@ There are two ways to interact with the program. You can enter in the long/lat c
 
 <!-- Feature Details -->
 
-## Feature Details
+## Features
 
 This seciton includes further detail on interesting features that were worked on in this project.
 
