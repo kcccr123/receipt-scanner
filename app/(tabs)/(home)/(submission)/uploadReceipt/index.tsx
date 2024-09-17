@@ -4,10 +4,7 @@ import { useRouter, useLocalSearchParams } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
 import { otherStyles } from "@/app/(tabs)/main_styles";
 import { buttonStyles } from "../styles";
-
-import { ItemType } from "@/components/ItemEditor/types";
-import { detectImagePost, sayHello } from "@/app/(tabs)/requests";
-import { ProcessedReceipt } from "@/app/(tabs)/types";
+import { detectImagePost } from "@/app/(tabs)/requests";
 
 export default function imageUploadPage() {
   const router = useRouter();
