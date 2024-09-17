@@ -21,7 +21,7 @@ export const detectImagePost = async (
   } as any);
   console.log(formData);
   return await axios
-    .post(process.env.EXPO_PUBLIC_GCP_URL_PREDICTION as string, formData, {
+    .post(process.env.EXPO_PUBLIC_LOCAL_URL_PREDICTION as string, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

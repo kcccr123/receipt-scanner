@@ -6,7 +6,7 @@ import { otherStyles } from "@/app/(tabs)/main_styles";
 import { buttonStyles } from "../styles";
 import { detectImagePost } from "@/app/(tabs)/requests";
 
-export default function imageUploadPage() {
+export default function imageUploadPage() { 
   const router = useRouter();
   const { groupID } = useLocalSearchParams();
 
