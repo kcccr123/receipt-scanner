@@ -2,12 +2,11 @@ import { View, Text } from "react-native";
 import { Button } from "@rneui/themed";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
-import { buttonStyles, otherStyles } from "@/app/Other/main_styles";
-import { ItemType } from "@/components/ItemEditor/types";
-import { detectImagePost, sayHello } from "@/app/Other/requests";
-import { ProcessedReceipt } from "@/app/Other/types";
+import { otherStyles } from "@/app/Other/main_styles";
+import { buttonStyles } from "@/app/Other/main_styles";
+import { detectImagePost } from "@/app/Other/requests";
 
-export default function imageUploadPage() {
+export default function imageUploadPage() { 
   const router = useRouter();
   const { groupID } = useLocalSearchParams();
 

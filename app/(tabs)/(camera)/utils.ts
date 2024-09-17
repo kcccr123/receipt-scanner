@@ -139,3 +139,4 @@ export const runOnnxModel = async (imageUri: string) => {
     // in python run predictiosn on same image that app is running model on, and comapre results.
   }
 };
+

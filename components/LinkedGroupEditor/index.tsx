@@ -13,6 +13,7 @@ import {
   ListItem,
   Overlay,
 } from "@rneui/themed";
+import * as ImagePicker from "expo-image-picker";
 import { FlatList, StyleSheet } from "react-native";
 import { DisplayReceipt } from "../ReceiptEditor";
 import { Link, useFocusEffect } from "expo-router";
@@ -24,6 +25,8 @@ import { View, Text } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import { registerTranslation, enGB } from "react-native-paper-dates";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { detectImagePost } from "@/app/Other/requests";
+import { ActivityIndicator } from "react-native-paper";
 
 registerTranslation("en", enGB);
 
@@ -52,6 +55,7 @@ export const LinkedGroupEditor: React.FC<{
   const [receiptID, setReceiptID] = useState(0);
   const [receiptsList, setReceiptsList] = useState<ReceiptType[]>([]);
   const [popup, setPopup] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -144,6 +148,7 @@ export const LinkedGroupEditor: React.FC<{
 
   const onConfirmSingle = useCallback(
     (params: { date: SetStateAction<CalendarDate> }) => {
+      console.log(params);
       setDatePickerOpen(false);
       setPdate(params.date);
     },
@@ -189,9 +194,48 @@ export const LinkedGroupEditor: React.FC<{
     }
   };
 
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    // update server models
+
+    // after image is picked and value is obtained frm server, return to displayReceipt and add a new receipt with obtained info.
+    if (!result.canceled) {
+      //sayHello("hi");
+      setIsLoading(true);
+      const response = await detectImagePost(result.assets[0].uri);
+      console.log(response, "receipt");
+      setIsLoading(false);
+
+      if (response.data) {
+        router.replace({
+          pathname: "/displayReceipt", // The screen you want to navigate to
+          params: {
+            groupID: gID,
+            receiptData: JSON.stringify(response.data),
+          },
+        });
+      } else {
+        // error
+      }
+    }
+    // use returned data to create reciepts page, and then use that to create reciept
+  };
+
   return (
     <>
       <PaperProvider theme={theme}>
+        <Overlay
+          isVisible={isLoading}
+          overlayStyle={otherStyles.transparentOverlay} // Transparent overlay with no border
+        >
+          <ActivityIndicator size="large" animating={true} />
+        </Overlay>
         <Input
           style={styles.input}
           value={name}
@@ -316,21 +360,15 @@ export const LinkedGroupEditor: React.FC<{
                 buttonStyle={buttonStyles.PopupButton}
               />
             </Link>
-            <Link
-              href={{
-                pathname: "/(submission)/uploadReceipt",
-                params: { groupID: gID },
+
+            <Button
+              buttonStyle={buttonStyles.PopupButton}
+              title={"Upload Image"}
+              onPress={() => {
+                pickImage();
+                setPopup(false);
               }}
-              asChild
-            >
-              <Button
-                buttonStyle={buttonStyles.PopupButton}
-                title={"Upload Image"}
-                onPress={() => {
-                  setPopup(false);
-                }}
-              />
-            </Link>
+            />
           </BottomSheet>
         </SafeAreaProvider>
 
