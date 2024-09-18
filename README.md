@@ -66,8 +66,6 @@ The machine learning models are deployed on a Google Kubernetes Engine (GKE) clu
 ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white)
 ![OpenCV](https://img.shields.io/badge/opencv-%23white.svg?style=for-the-badge&logo=opencv&logoColor=white)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 <!-- INSTALLATION -->
 
 ## Installation
