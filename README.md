@@ -109,12 +109,6 @@ For more details, follow:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- USAGE EXAMPLES -->
-
-## Usage
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 <!-- Feature Details -->
 
 ## Features
