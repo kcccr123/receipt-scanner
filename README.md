@@ -31,7 +31,7 @@
     </li>
     <li><a href="#usage">Usage</a></li>
     <li>
-      <a href="#features">Features</a>
+      <a href="#key-features">Key Features</a>
       <ul>
         <li><a href="#machine-learning">Machine Learning</a></li>
       </ul>
@@ -109,11 +109,13 @@ For more details, follow:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- Feature Details -->
+<!-- KEY FEATURES -->
 
-## Features
+## Key Features
 
-This seciton includes further detail on interesting features that were worked on in this project.
+This seciton includes further detail on key features that were worked on in this project.
+
+You can find the backend + machine learning utilities in this repo: [reciept-scanner-backend](https://github.com/kcccr123/receipt-scanner-backend)
 
 ### Machine Learning
 
