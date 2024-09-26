@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "reciept-scanner-app-frontend",
-    "slug": "reciept-scanner-app-frontend",
-    "version": "1.0.0",
+    "name": "Receipt Pocket",
+    "slug": "Receipt Pocket",
+    "version": "3.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/appIcon.png",
     "scheme": "Reciept-Scanner",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/appSplash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -18,7 +18,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/appIcon.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
@@ -61,7 +61,7 @@
       ],
       "expo-asset"
     ],
-    
+
     "experiments": {
       "typedRoutes": true
     },
