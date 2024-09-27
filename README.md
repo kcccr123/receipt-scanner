@@ -132,7 +132,8 @@ The model was trained from scratch using a dataset of over 400 receipts, which w
 
 A custom RCNN model is designed and trained to perform ocr on the bounding boxes passed by the YOLOv8 model.
 
-**Model Architecture**
+##### Model Architecture
+
 The model architecture integrates convolutional layers for spatial feature extraction with LSTM layers for sequence modeling. It consists of:
 
 - 9 Convolutional Residual Blocks to progressively extract and refine features from the input image.
@@ -141,20 +142,23 @@ The model architecture integrates convolutional layers for spatial feature extra
 
 - Final fully connected layers to map the LSTM outputs to a set of character probabilities.
 
-**Dataset**
-The model is trained on a dataset of about 42000 image. The dataset contains images of 1-3 words, prices, or other special characters that appear on receipts.
+##### Dataset
 
-**Data Preprocessing & Augmentation**
+- The model is trained on a dataset of about 42000 image.
+
+- The dataset contains images of 1-3 words, prices, or other special characters that appear on receipts.
+
+##### Data Preprocessing & Augmentation
 
 - Since color does not matter, the images are preprocessed into greyscale images by OpenCV then resized to 224\*36 while maintaining aspect ratio.
 
 - Data Augmentation methods such as sharpening, eroding and dilating are applied at random to enhance model generalization.
 
-**Training**
+##### Training
 
 - Training process utilizes CTC loss, a decaying learning rate, as well as character error rate and word error rate as metrics.
 
-**Result**
+##### Result
 
 - Inference model reached a characeter accuracy of 96% and a word accuracy of 88%.
 
