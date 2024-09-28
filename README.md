@@ -89,20 +89,23 @@ Clone the repository and run:
 ```sh
 npm install --legacy-peer-deps
 ```
+
 Please make sure you have installed an emulator and virtual device as specified in the prerequisites.
 After starting a device on your emulator, run the following command for your respective device type:
 
 iOS
+
 ```sh
 npx expo run:ios
 ```
 
 Android
+
 ```sh
 npx expo run:android
 ```
 
-Now, Expo should begin building a development build on your emulator.  
+Now, Expo should begin building a development build on your emulator.
 
 For more details, follow:  
 [Expo documentation](https://docs.expo.dev/get-started/set-up-your-environment/?mode=development-build&buildEnv=local&platform=android&device=simulated)
@@ -127,11 +130,37 @@ The model was trained from scratch using a dataset of over 400 receipts, which w
 
 #### RCNN
 
-A custom RCNN model is designed and trained to perform ocr on the bounding boxes passed by the YOLOv8 model. 
+A custom RCNN model is designed and trained to perform ocr on the bounding boxes passed by the YOLOv8 model.
 
-The model consists of 9 layers of ResBlocks followed by 2 layers of bidirectional LSTM. The model is trained on a dataset of about 42000 image preprocessed into greyscale images. The dataset contains 1-3 words, prices, or other special characters that appear on receipts. Training process utilizes CTC loss, a decaying learning rate, as well as character error rate and word error rate as metrics. 
+##### Model Architecture
 
-Inference model reached a characeter accuracy of 96% and a word accuracy of 88%.
+The model architecture integrates convolutional layers for spatial feature extraction with LSTM layers for sequence modeling. It consists of:
+
+- 9 Convolutional Residual Blocks to progressively extract and refine features from the input image.
+
+- 2 Bidirectional LSTM Layers to better capture the dependencies in both forward and backward directions.
+
+- Final fully connected layers to map the LSTM outputs to a set of character probabilities.
+
+##### Dataset
+
+- The model is trained on a dataset of about 42000 image.
+
+- The dataset contains images of 1-3 words, prices, or other special characters that appear on receipts.
+
+##### Data Preprocessing & Augmentation
+
+- Since color does not matter, the images are preprocessed into greyscale images by OpenCV then resized to 224\*36 while maintaining aspect ratio.
+
+- Data Augmentation methods such as sharpening, eroding and dilating are applied at random to enhance model generalization.
+
+##### Training
+
+- Training process utilizes CTC loss, a decaying learning rate, as well as character error rate and word error rate as metrics.
+
+##### Result
+
+- Inference model reached a characeter accuracy of 96% and a word accuracy of 88%.
 
 #### BART
 
