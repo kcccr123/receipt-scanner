@@ -5,6 +5,7 @@ import { useCallback } from "react";
 
 import { LinkedGroupEditor } from "@/components/LinkedGroupEditor";
 import { ReceiptType } from "../../types";
+import React from "react";
 
 export default function displayGroupPage() {
   const { groupID } = useLocalSearchParams();

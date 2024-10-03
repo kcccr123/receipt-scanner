@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useFocusEffect, useRouter } from "expo-router";
-import { View, Text, StyleSheet, SectionList } from "react-native";
+import { View, Text, StyleSheet, SectionList, Dimensions } from "react-native";
 import { GroupedTableProps, GroupType } from "../types";
 import { connectToDb, createTable, removeTable } from "@/app/database/db";
 import {
@@ -12,10 +12,11 @@ import {
 import { ListItem, Button, FAB } from "@rneui/themed";
 import { DisplayGroup } from "../../../components/GroupEditor";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import React from "react";
 import { addReceipt, getReceipts } from "@/app/database/receipts";
 import { addItem } from "@/app/database/items";
 import { Link, router } from "expo-router";
+import { LineGraph } from "@/components/LineGraph";
 
 const Home = () => {
   const [groups, setGroups] = useState<GroupType[]>([]);
@@ -183,8 +184,11 @@ const Home = () => {
     });
   };
 
+  const date_dummy = new Date();
+
   return (
     <View style={{ flex: 1 }}>
+      <LineGraph/>
       <GroupedTable groupedData={grouped_data} />
       <FAB
         visible={true}

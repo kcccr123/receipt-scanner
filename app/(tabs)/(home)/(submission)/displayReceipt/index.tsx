@@ -12,6 +12,7 @@ import { receiptTableStyles } from "./styles";
 import { buttonStyles, otherStyles } from "@/app/(tabs)/main_styles";
 import { ProcessedReceipt } from "@/app/(tabs)/types";
 import { ItemType } from "@/components/ItemEditor/types";
+import React from "react";
 
 export default function displayReceiptTablePage() {
   const router = useRouter();

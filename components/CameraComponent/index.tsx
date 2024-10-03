@@ -6,7 +6,7 @@ import { useRouter } from "expo-router";
 import * as MediaLibrary from "expo-media-library";
 import { Overlay } from "@rneui/themed";
 import { ActivityIndicator } from "react-native-paper";
-
+import React from "react";
 import { connectToDb } from "@/app/database/db";
 import { addSingleGroup } from "@/app/database/groups";
 import { GroupType } from "@/app/(tabs)/types";

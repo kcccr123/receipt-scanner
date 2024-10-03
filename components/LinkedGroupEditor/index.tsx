@@ -27,7 +27,7 @@ import { registerTranslation, enGB } from "react-native-paper-dates";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { detectImagePost } from "@/app/(tabs)/requests";
 import { ActivityIndicator } from "react-native-paper";
-
+import React from "react";
 registerTranslation("en", enGB);
 
 export const LinkedGroupEditor: React.FC<{
