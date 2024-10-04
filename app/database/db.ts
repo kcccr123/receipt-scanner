@@ -8,92 +8,34 @@ import { AppTables } from "../(tabs)/types";
 
 enablePromise(true);
 
-// export const connectToDb = async () => {
-//   return openDatabase(
-//     { name: "reciept-scanner-app-frontend.db", location: "default" },
-//     () => {
-//       console.log("Database Connected");
-//     },
-//     (error) => {
-//       console.error(error);
-//       throw Error("Could not connect to database");
-//     }
-//   );
-// };
-
-// export const connectToDb = async (): Promise<SQLiteDatabase> => {
-//   return new Promise((resolve, reject) => {
-//     const db = openDatabase(
-//       { name: "reciept-scanner-app-frontend.db", location: "default" },
-//       () => {
-//         console.log("Database Connected");
-//         resolve(db); // Successfully connected
-//       },
-//       (error) => {
-//         console.error("Database connection error: ", error); // Detailed logging
-//         reject(new Error("Could not connect to database")); // Reject the promise on error
-//       }
-//     );
-//   });
-// };
-
-// export const connectToDb = async (): Promise<SQLiteDatabase> => {
-//   return new Promise((resolve, reject) => {
-//     try {
-//       console.log("here1")
-//       const db = openDatabase(
-//         { name: "reciept-scanner-app-frontend.db", location: "default" },
-//         () => {
-//           console.log("Database Connected");
-//           resolve(db); // Resolve the promise with the db object
-//         },
-//         (error) => {
-//           console.error("Database connection error: ", error);
-//           reject(new Error("Could not connect to database")); // Reject the promise on error
-//         }
-//       );
-//       console.log("here2")
-//       if (!db) {
-//         console.log("here3")
-//         // Explicit check if db is null or undefined
-//         throw new Error("Database initialization returned null or undefined");
-//       }
-//     } catch (error) {
-//       console.error("Unexpected error in connectToDb: ", error);
-//       reject(error); // Reject promise with the error
-//     }
-//   });
-// };
-
 export const connectToDb = async (): Promise<SQLiteDatabase> => {
   return new Promise((resolve, reject) => {
     const timeout = setTimeout(() => {
       console.error("Database connection timed out.");
       reject(new Error("Database connection timed out."));
-    }, 5000); // 5 seconds timeout
+    }, 5000); 
 
     try {
       const db = openDatabase(
         { name: "reciept-scanner-app-frontend.db", location: "default" },
         () => {
-          clearTimeout(timeout); // Clear the timeout if connected
+          clearTimeout(timeout);
           console.log("Database Connected");
-          resolve(db); // Resolve the promise with the db object
+          resolve(db); 
         },
         (error) => {
-          clearTimeout(timeout); // Clear the timeout if there's an error
+          clearTimeout(timeout); 
           console.error("Database connection error: ", error);
-          reject(new Error("Could not connect to database")); // Reject the promise on error
+          reject(new Error("Could not connect to database")); 
         }
       );
       if (!db) {
-        // Explicit check if db is null or undefined
         throw new Error("Database initialization returned null or undefined");
       }
     } catch (error) {
-      clearTimeout(timeout); // Clear the timeout if an error is caught
+      clearTimeout(timeout); 
       console.error("Unexpected error in connectToDb: ", error);
-      reject(error); // Reject promise with the error
+      reject(error); 
     }
   });
 };
