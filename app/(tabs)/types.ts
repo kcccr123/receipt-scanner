@@ -20,6 +20,12 @@ export type GroupType = {
   upload_date: string | number;
   purchase_date: string | number;
 };
+
+export type LineDataPoints = {
+  date: Date;
+  amount: number;
+}
+
 export type GroupedTableProps = {
   groupedData: { [key: string]: GroupType[] };
 };

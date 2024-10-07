@@ -27,7 +27,7 @@ import { registerTranslation, enGB } from "react-native-paper-dates";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { detectImagePost } from "@/app/(tabs)/requests";
 import { ActivityIndicator } from "react-native-paper";
-
+import React from "react";
 registerTranslation("en", enGB);
 
 export const LinkedGroupEditor: React.FC<{
@@ -69,8 +69,8 @@ export const LinkedGroupEditor: React.FC<{
             const base = await getSingleGroup(db, groupID);
             if (base != null) {
               setName(base.name);
-              setPdate(new Date());
-              setUdate(new Date());
+              setPdate(toUTCDate(new Date(base.purchase_date)));
+              setUdate(toUTCDate(new Date(base.upload_date)));
               setTotal(base.total);
             }
             const receipts = await getReceipts(db, groupID);
@@ -112,8 +112,9 @@ export const LinkedGroupEditor: React.FC<{
       <ListItem.Content right>
         <ListItem.Title>{"$" + item.total}</ListItem.Title>
       </ListItem.Content>
-      <ListItem.Chevron
-        color="black"
+      <Button
+        icon={{ name: "arrow-right-alt", size: 20, color: "white" }}
+        buttonStyle={buttonStyles.Green}
         onPress={() => {
           setItemOV(true);
           setReceiptID(item.id);
@@ -153,7 +154,7 @@ export const LinkedGroupEditor: React.FC<{
 
   const onConfirmSingle = useCallback(
     (params: { date: SetStateAction<CalendarDate> }) => {
-      console.log(params);
+      console.log(params.date);
       setDatePickerOpen(false);
       setPdate(params.date);
     },
@@ -199,6 +200,14 @@ export const LinkedGroupEditor: React.FC<{
     }
   };
 
+  const toUTCDate = (calendarDate:Date) => {
+    return new Date(Date.UTC(
+      calendarDate.getFullYear(),
+      calendarDate.getMonth(),
+      calendarDate.getDate() + 2
+    ));
+  };
+
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -231,7 +240,6 @@ export const LinkedGroupEditor: React.FC<{
     }
     // use returned data to create reciepts page, and then use that to create reciept
   };
-
   return (
     <>
       <PaperProvider theme={theme}>

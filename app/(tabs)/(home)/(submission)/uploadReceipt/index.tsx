@@ -5,6 +5,7 @@ import * as ImagePicker from "expo-image-picker";
 import { otherStyles } from "@/app/(tabs)/main_styles";
 import { buttonStyles } from "../styles";
 import { detectImagePost } from "@/app/(tabs)/requests";
+import React from "react";
 
 export default function imageUploadPage() { 
   const router = useRouter();

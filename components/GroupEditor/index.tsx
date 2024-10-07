@@ -12,7 +12,7 @@ import { Button, Icon, Input, ListItem, Overlay } from "@rneui/themed";
 import { FlatList, StyleSheet } from "react-native";
 import { DisplayReceipt } from "../ReceiptEditor";
 import { Link } from "expo-router";
-
+import React from "react";
 export const DisplayGroup: React.FC<{
   isVisible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;

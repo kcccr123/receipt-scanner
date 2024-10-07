@@ -1,5 +1,5 @@
 import { SQLiteDatabase } from "react-native-sqlite-storage";
-import { GroupType } from "../(tabs)/types";
+import { GroupType, LineDataPoints } from "../(tabs)/types";
 
 export const addGroup = async (db: SQLiteDatabase, groups: GroupType[]) => {
   const insertQuery = `
@@ -121,6 +121,29 @@ export const updateGroup = async (db: SQLiteDatabase, group: GroupType) => {
     throw Error("Failed to update group");
   }
 };
+
+export const searchGroups = async (db: SQLiteDatabase, month: number, year: number): Promise<LineDataPoints[]> => {
+  try{
+    const data: LineDataPoints[] = []
+    const query = `SELECT purchase_date, total FROM groups WHERE strftime('%Y', purchase_date) = ? AND  strftime('%m', purchase_date) = ?`;
+    const paddedMonth = month < 10 ? `0${month}` : `${month}`;
+
+    const results = await db.executeSql(query, [year.toString(), paddedMonth]);
+    results?.forEach((x) => {
+      for (let index = 0; index < x.rows.length; index++) {
+        const temp = x.rows.item(index)
+        data.push({
+          date: new Date(temp.purchase_date),
+          amount: temp.total
+        });
+      }
+    });
+    return data
+  }catch (error){
+    console.error(error);
+    throw Error("Failed pull groups with this date");
+  }
+}
 
 export const deleteGroup = async (db: SQLiteDatabase, group: number) => {
   const deleteQuery = `

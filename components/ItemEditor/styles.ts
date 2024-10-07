@@ -10,8 +10,6 @@ export const buttonStyles = StyleSheet.create({
     borderRadius: 5,
   },
   edit_container: {
-    width: 150,
-    marginHorizontal: 119,
     marginVertical: 5,
   },
   item_edit: {
@@ -28,14 +26,11 @@ export const buttonStyles = StyleSheet.create({
   },
   add_item: {
     backgroundColor: "#28282B",
-    borderWidth: 2,
     borderColor: "white",
     borderRadius: 20,
   },
   add_item_container: {
     marginVertical: 10,
-    width: 200,
-    marginHorizontal: 96,
     alignContent: "center",
     justifyContent: "center",
   },

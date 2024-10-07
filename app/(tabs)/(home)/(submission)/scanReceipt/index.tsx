@@ -8,7 +8,7 @@ import { useLocalSearchParams } from "expo-router";
 import { useFocusEffect } from "expo-router";
 import { useCallback } from "react";
 import { otherStyles } from "@/app/(tabs)/main_styles";
-
+import React from "react";
 import CameraComponent from "@/components/CameraComponent";
 
 export default function displayCameraPage() {

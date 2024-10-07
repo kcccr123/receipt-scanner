@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useFocusEffect, useRouter } from "expo-router";
-import { View, Text, StyleSheet, SectionList } from "react-native";
+import { View, Text, StyleSheet, SectionList, Dimensions } from "react-native";
 import { GroupedTableProps, GroupType } from "../types";
 import { connectToDb, createTable, removeTable } from "@/app/database/db";
 import {
@@ -12,13 +12,17 @@ import {
 import { ListItem, Button, FAB } from "@rneui/themed";
 import { DisplayGroup } from "../../../components/GroupEditor";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import React from "react";
 import { addReceipt, getReceipts } from "@/app/database/receipts";
 import { addItem } from "@/app/database/items";
 import { Link, router } from "expo-router";
+import { LineGraph } from "@/components/LineGraph";
+import { format } from "date-fns";
+import { buttonStyles } from "../main_styles";
 
 const Home = () => {
   const [groups, setGroups] = useState<GroupType[]>([]);
+  const [date, setDate] = useState(new Date());
   //for editing group
 
   const router = useRouter();
@@ -93,6 +97,9 @@ const Home = () => {
     return (
       <>
         <SectionList
+          contentContainerStyle={{
+            justifyContent: "space-between",
+          }}
           sections={sections}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
@@ -109,31 +116,52 @@ const Home = () => {
               )}
               bottomDivider
             >
-              <ListItem.Content>
-                <ListItem.Title>{item.name}</ListItem.Title>
-              </ListItem.Content>
-              <ListItem.Content right>
-                <ListItem.Title>{"$" + item.total}</ListItem.Title>
-              </ListItem.Content>
-              <Link
-                href={{
-                  pathname: "/(displayGroup)",
-                  params: { groupID: item.id, createGroup: "false" },
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between", // Space between the content and the button
+                  width: "100%",
                 }}
-                asChild
               >
-                <ListItem.Chevron color="black" />
-              </Link>
+                <ListItem.Content>
+                  <ListItem.Title style={{fontWeight:"medium", fontSize:18, fontFamily:"monospace", fontStyle:"italic"}}>{item.name}</ListItem.Title>
+                </ListItem.Content>
+                <ListItem.Content right>
+                  <ListItem.Title style={{fontFamily:"monospace", fontWeight:"medium", fontSize:18, fontStyle:"italic"}}>{"$" + item.total}</ListItem.Title>
+                </ListItem.Content>
+                <Link
+                  href={{
+                    pathname: "/(displayGroup)",
+                    params: { groupID: item.id, createGroup: "false" },
+                  }}
+                  asChild
+                >
+                  <Button
+                    icon={{ name: "arrow-right-alt", color: "white" }}
+                    buttonStyle={buttonStyles.Green}
+                  />
+                  {/* <ListItem.Chevron color="black" /> */}
+                </Link>
+              </View>
               <ListItem />
             </ListItem.Swipeable>
           )}
           renderSectionHeader={({ section: { title } }) => (
-            <View style={{ padding: 10, backgroundColor: "black" }}>
+            <View
+              style={{
+                padding: 8,
+                backgroundColor: "#6c8160",
+                borderRadius: 15,
+                marginHorizontal: 1,
+              }}
+            >
               <Text
                 style={{
+                  fontFamily:"monospace",
                   fontWeight: "bold",
                   color: "white",
-                  fontSize: 17,
+                  fontSize: 18,
                   marginHorizontal: 5,
                 }}
               >
@@ -150,7 +178,7 @@ const Home = () => {
     return items.reduce((result, item) => {
       const date = item.purchase_date
         ? item.purchase_date.toString()
-        : undefined; // Ensure date is treated as a string
+        : undefined;
       if (date) {
         if (!result[date]) {
           result[date] = [];
@@ -158,7 +186,6 @@ const Home = () => {
         result[date].push(item);
       } else {
         console.warn("Encountered item with undefined date:", item);
-        // Handle cases where the date is undefined, if necessary
       }
       return result;
     }, {} as { [key: string]: GroupType[] });
@@ -172,8 +199,8 @@ const Home = () => {
       id: -1,
       name: " ",
       total: 0.0,
-      purchase_date: "9999-12-30",
-      upload_date: "9999-12-30",
+      purchase_date: format(new Date(), "yyyy-MM-dd"),
+      upload_date: format(new Date(), "yyyy-MM-dd"),
     };
 
     const newGroupId = await addSingleGroup(db, newGroupInfo);
@@ -185,11 +212,12 @@ const Home = () => {
 
   return (
     <View style={{ flex: 1 }}>
+      <LineGraph date={date} setDate={setDate} refreshOn={groups} />
       <GroupedTable groupedData={grouped_data} />
       <FAB
         visible={true}
         icon={{ name: "add", color: "white" }}
-        color="#6c7869"
+        color="#8BBF8A"
         onPress={createNewGroup}
         placement="right"
       />

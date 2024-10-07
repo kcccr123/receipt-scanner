@@ -6,7 +6,7 @@ import { Link } from "expo-router";
 import { useLocalSearchParams } from "expo-router";
 import { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
-
+import React from "react";
 import { RenderTable } from "@/components/ItemEditor";
 import CameraComponent from "@/components/CameraComponent";
 
