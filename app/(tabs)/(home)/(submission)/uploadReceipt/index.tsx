@@ -4,10 +4,10 @@ import { useRouter, useLocalSearchParams } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
 import { otherStyles } from "@/app/(tabs)/main_styles";
 import { buttonStyles } from "../styles";
-import { detectImagePost } from "@/app/(tabs)/requests";
+import { detectImagePost, detectImagePostGpt } from "@/app/(tabs)/requests";
 import React from "react";
 
-export default function imageUploadPage() { 
+export default function imageUploadPage() {
   const router = useRouter();
   const { groupID } = useLocalSearchParams();
 
@@ -24,8 +24,8 @@ export default function imageUploadPage() {
     // after image is picked and value is obtained frm server, return to displayReceipt and add a new receipt with obtained info.
     if (!result.canceled) {
       //sayHello("hi");
-      const response = await detectImagePost(result.assets[0].uri);
-      console.log(response, "receipt");
+      const response = await detectImagePostGpt(result.assets[0].uri);
+      console.log(response, "receipt", 'here');
 
       if (response.data) {
         router.replace({

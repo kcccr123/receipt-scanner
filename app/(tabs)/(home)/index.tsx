@@ -19,6 +19,7 @@ import { Link, router } from "expo-router";
 import { LineGraph } from "@/components/LineGraph";
 import { format } from "date-fns";
 import { buttonStyles } from "../main_styles";
+import { sayHello } from "../requests";
 
 const Home = () => {
   const [groups, setGroups] = useState<GroupType[]>([]);
@@ -125,10 +126,28 @@ const Home = () => {
                 }}
               >
                 <ListItem.Content>
-                  <ListItem.Title style={{fontWeight:"medium", fontSize:18, fontFamily:"monospace", fontStyle:"italic"}}>{item.name}</ListItem.Title>
+                  <ListItem.Title
+                    style={{
+                      fontWeight: "medium",
+                      fontSize: 18,
+                      fontFamily: "monospace",
+                      fontStyle: "italic",
+                    }}
+                  >
+                    {item.name}
+                  </ListItem.Title>
                 </ListItem.Content>
                 <ListItem.Content right>
-                  <ListItem.Title style={{fontFamily:"monospace", fontWeight:"medium", fontSize:18, fontStyle:"italic"}}>{"$" + item.total}</ListItem.Title>
+                  <ListItem.Title
+                    style={{
+                      fontFamily: "monospace",
+                      fontWeight: "medium",
+                      fontSize: 18,
+                      fontStyle: "italic",
+                    }}
+                  >
+                    {"$" + item.total}
+                  </ListItem.Title>
                 </ListItem.Content>
                 <Link
                   href={{
@@ -158,7 +177,7 @@ const Home = () => {
             >
               <Text
                 style={{
-                  fontFamily:"monospace",
+                  fontFamily: "monospace",
                   fontWeight: "bold",
                   color: "white",
                   fontSize: 18,

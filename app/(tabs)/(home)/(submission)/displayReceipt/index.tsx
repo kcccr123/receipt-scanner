@@ -37,6 +37,8 @@ export default function displayReceiptTablePage() {
   }, [groupID]);
 
   useEffect(() => {
+    // parse receiptData here
+    console.log("PARSING HERE");
     if (receiptData) {
       const parsedReceiptData = JSON.parse(
         receiptData as string

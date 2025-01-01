@@ -25,7 +25,7 @@ import { View, Text } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import { registerTranslation, enGB } from "react-native-paper-dates";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { detectImagePost } from "@/app/(tabs)/requests";
+import { detectImagePost, detectImagePostGpt } from "@/app/(tabs)/requests";
 import { ActivityIndicator } from "react-native-paper";
 import React from "react";
 registerTranslation("en", enGB);
@@ -200,12 +200,14 @@ export const LinkedGroupEditor: React.FC<{
     }
   };
 
-  const toUTCDate = (calendarDate:Date) => {
-    return new Date(Date.UTC(
-      calendarDate.getFullYear(),
-      calendarDate.getMonth(),
-      calendarDate.getDate() + 2
-    ));
+  const toUTCDate = (calendarDate: Date) => {
+    return new Date(
+      Date.UTC(
+        calendarDate.getFullYear(),
+        calendarDate.getMonth(),
+        calendarDate.getDate() + 2
+      )
+    );
   };
 
   const pickImage = async () => {
@@ -222,8 +224,8 @@ export const LinkedGroupEditor: React.FC<{
     if (!result.canceled) {
       //sayHello("hi");
       setIsLoading(true);
-      const response = await detectImagePost(result.assets[0].uri);
-      console.log(response, "receipt");
+      const response = await detectImagePostGpt(result.assets[0].uri);
+      console.log(response, "receipt", "here");
       setIsLoading(false);
 
       if (response.data) {
