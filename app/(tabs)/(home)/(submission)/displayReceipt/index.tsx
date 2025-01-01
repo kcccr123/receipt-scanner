@@ -33,10 +33,10 @@ export default function displayReceiptTablePage() {
     } else if (groupID !== undefined) {
       setCurrentGroupId(parseInt(groupID, 10));
     }
-    console.log(groupID, "wowah");
   }, [groupID]);
 
   useEffect(() => {
+    // parse new receipt here
     if (receiptData) {
       const parsedReceiptData = JSON.parse(
         receiptData as string
@@ -63,6 +63,9 @@ export default function displayReceiptTablePage() {
       if (parsedReceiptData.total) {
         setReceiptTotal(Number(parsedReceiptData.total.price));
       }
+      if (parsedReceiptData.store) {
+        setReceiptName(parsedReceiptData.store);
+      }
     }
   }, [receiptData]);
 
@@ -83,9 +86,6 @@ export default function displayReceiptTablePage() {
       itemsToAdd[i].receipt_id = receiptId;
     }
     await addItem(db, itemsToAdd);
-    console.log("added items", itemsToAdd);
-
-    console.log("end");
     router.replace({
       pathname: "/(displayGroup)", // The screen you want to navigate to
       params: {
@@ -150,3 +150,33 @@ export default function displayReceiptTablePage() {
     </>
   );
 }
+
+// old parsing logic for inhouse pipeline
+// parse receiptData here
+/*
+    console.log("PARSING HERE");
+    if (receiptData) {
+      const parsedReceiptData = JSON.parse(
+        receiptData as string
+      ) as ProcessedReceipt;
+      const newItems: ItemType[] = [];
+      Object.keys(parsedReceiptData).map((key, index) => {
+        // using the key process the receipt
+        if (parsedReceiptData[key].name === "##TOTAL") {
+          setReceiptTotal(Number(parsedReceiptData[key].price));
+        } else if (parsedReceiptData[key].name === "##SUBTOTAL") {
+          // TODO: Subtotal logic
+        } else {
+          const newItem: ItemType = {
+            id: index,
+            receipt_id: -1,
+            name: parsedReceiptData[key].name,
+            price: Number(parsedReceiptData[key].price),
+          };
+          newItems.push(newItem);
+          setRecieptItems([...receiptItems, ...newItems]);
+        }
+      });
+      console.log(parsedReceiptData);
+      console.log(newItems);
+    }*/

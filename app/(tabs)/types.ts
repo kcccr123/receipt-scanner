@@ -36,6 +36,7 @@ type ReceiptItem = {
 };
 
 export type ProcessedReceipt = {
+  store?: string;
   items: ReceiptItem[];
   subtotal: { price: string };
   total: { price: string };

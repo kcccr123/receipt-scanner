@@ -26,7 +26,6 @@ export default function displayCameraPage() {
       } else {
         setCurrentGroupId(null);
       }
-      console.log(groupID, "wowah");
     }, [groupID])
   );
 
