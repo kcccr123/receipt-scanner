@@ -37,32 +37,32 @@ export default function displayReceiptTablePage() {
   }, [groupID]);
 
   useEffect(() => {
-    // parse receiptData here
-    console.log("PARSING HERE");
     if (receiptData) {
       const parsedReceiptData = JSON.parse(
         receiptData as string
       ) as ProcessedReceipt;
+
       const newItems: ItemType[] = [];
-      Object.keys(parsedReceiptData).map((key, index) => {
-        // using the key process the receipt
-        if (parsedReceiptData[key].name === "##TOTAL") {
-          setReceiptTotal(Number(parsedReceiptData[key].price));
-        } else if (parsedReceiptData[key].name === "##SUBTOTAL") {
-          // TODO: Subtotal logic
-        } else {
+
+      if (parsedReceiptData.items) {
+        parsedReceiptData.items.map((item, index) => {
           const newItem: ItemType = {
             id: index,
             receipt_id: -1,
-            name: parsedReceiptData[key].name,
-            price: Number(parsedReceiptData[key].price),
+            name: item.name,
+            price: Number(item.price),
           };
           newItems.push(newItem);
           setRecieptItems([...receiptItems, ...newItems]);
-        }
-      });
-      console.log(parsedReceiptData);
-      console.log(newItems);
+        });
+      }
+      if (parsedReceiptData.subtotal) {
+        // TODO: Subtotal Logic
+      }
+
+      if (parsedReceiptData.total) {
+        setReceiptTotal(Number(parsedReceiptData.total.price));
+      }
     }
   }, [receiptData]);
 
