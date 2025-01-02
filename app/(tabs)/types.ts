@@ -24,7 +24,7 @@ export type GroupType = {
 export type LineDataPoints = {
   date: Date;
   amount: number;
-}
+};
 
 export type GroupedTableProps = {
   groupedData: { [key: string]: GroupType[] };
@@ -36,5 +36,8 @@ type ReceiptItem = {
 };
 
 export type ProcessedReceipt = {
-  [key: string]: ReceiptItem;
+  store?: string;
+  items: ReceiptItem[];
+  subtotal: { price: string };
+  total: { price: string };
 };

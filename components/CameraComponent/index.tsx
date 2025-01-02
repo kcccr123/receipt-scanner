@@ -10,7 +10,7 @@ import React from "react";
 import { connectToDb } from "@/app/database/db";
 import { addSingleGroup } from "@/app/database/groups";
 import { GroupType } from "@/app/(tabs)/types";
-import { detectImagePost } from "@/app/(tabs)/requests";
+import { detectImagePost, detectImagePostGpt } from "@/app/(tabs)/requests";
 
 import { styles } from "./styles";
 
@@ -59,7 +59,7 @@ export default function CameraComponent({
       // pass to next component to begin scanning
       setCapturedImage(photo.uri);
       setIsLoading(true);
-      const response = await detectImagePost(photo.uri);
+      const response = await detectImagePostGpt(photo.uri);
       setIsLoading(false);
 
       if (response.data) {
