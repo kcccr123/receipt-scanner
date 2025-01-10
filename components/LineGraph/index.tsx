@@ -87,16 +87,15 @@ export const LineGraph: React.FC <{refreshOn:GroupType[]; date: Date; setDate: R
       <Button
         ViewComponent={LinearGradient}
         linearGradientProps={{
-          colors: ["#6c7869", "#A9D2AA"],
+          colors: ["#64b0b1", "#7ddcdd"],
           start: { x: 0, y: 0.5 },
           end: { x: 1, y: 0.5 },
         }}
         title={monthNames[month] + " " + year.toString()}
-        titleStyle={{ fontFamily:"monospace", color: "white", fontWeight: "bold", fontSize: 19}}
+        titleStyle={{ fontFamily:"Product-Sans-Bold-Italic", color: "white", fontSize: 20}}
         onPress={() => setSelector(true)}
         buttonStyle={{
-          borderRadius: 15,
-          marginHorizontal: 1,
+          borderRadius: 2,
         }}
       />
       {selector && (
@@ -116,9 +115,9 @@ export const LineGraph: React.FC <{refreshOn:GroupType[]; date: Date; setDate: R
         // yAxisSuffix="k"
         yAxisInterval={1} // optional, defaults to 1
         chartConfig={{
-          backgroundColor: "#6c7869",
-          backgroundGradientFrom: "#6c7869",
-          backgroundGradientTo: "#A9D2AA",
+          backgroundColor: "#00b6b0",
+          backgroundGradientFrom: "#64b0b1",
+          backgroundGradientTo: "#7ddcdd",
           decimalPlaces: 2, // optional, defaults to 2dp
           color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
           labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -133,8 +132,8 @@ export const LineGraph: React.FC <{refreshOn:GroupType[]; date: Date; setDate: R
           },
         }}
         style={{
-          margin: 1,
-          borderRadius: 15,
+          marginBottom: 1,
+          borderRadius: 2,
         }}
         formatXLabel={(value) => {
           const index = data.labels.indexOf(value) + 1;

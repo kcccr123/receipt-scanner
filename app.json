@@ -36,6 +36,17 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      [
+      "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Product-Sans-Bold-Italic.ttf",
+            "./assets/fonts/Product-Sans-Bold.ttf",
+            "./assets/fonts/Product-Sans-Italic.ttf",
+            "./assets/fonts/Product-Sans-Regular.ttf"
+          ]
+        }
+      ],
       "expo-router",
       [
         "expo-image-picker",
@@ -61,7 +72,7 @@
       ],
       "expo-asset"
     ],
-    
+
     "experiments": {
       "typedRoutes": true
     },
