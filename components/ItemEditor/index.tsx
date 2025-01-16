@@ -7,7 +7,7 @@ import {
   Platform,
   ScrollView,
 } from "react-native";
-import { ListItem, Button, Icon } from "@rneui/themed";
+import { ListItem, Button, Icon, Input } from "@rneui/themed";
 import React, { useState } from "react";
 import { ItemType } from "./types";
 import { connectToDb } from "@/app/database/db";
@@ -83,8 +83,28 @@ export const RenderTable: React.FC<{
     <ListItem bottomDivider>
       <Icon name={"add-shopping-cart"} type={"material"} color="grey" />
       <ListItem.Content>
-        <ListItem.Title>{item.name}</ListItem.Title>
-        <ListItem.Subtitle>{"$" + item.price}</ListItem.Subtitle>
+        <ListItem.Title
+          style={{
+            fontFamily: "Product-Sans-Regular",
+            fontWeight: "bold",
+            color: "black",
+            fontSize: 14,
+            marginHorizontal: 5,
+          }}
+        >
+          {item.name}
+        </ListItem.Title>
+        <ListItem.Subtitle
+          style={{
+            fontFamily: "Product-Sans-Regular",
+            fontWeight: "bold",
+            color: "black",
+            fontSize: 14,
+            marginHorizontal: 5,
+          }}
+        >
+          {"$" + item.price}
+        </ListItem.Subtitle>
       </ListItem.Content>
     </ListItem>
   );
@@ -106,15 +126,29 @@ export const RenderTable: React.FC<{
       <ListItem.Content>
         {itemID == item.id ? (
           <>
-            <TextInput
+            <Input
               style={styles.input}
+              inputStyle={{
+                fontFamily: "Product-Sans-Regular",
+                fontWeight: "bold",
+                color: "black",
+                fontSize: 14,
+                marginHorizontal: 5,
+              }}
               value={itemName}
               onChangeText={setItemName}
               placeholder="Edit Name"
             />
-            <TextInput
+            <Input
               style={styles.input}
               value={itemPrice}
+              inputStyle={{
+                fontFamily: "Product-Sans-Regular",
+                fontWeight: "bold",
+                color: "black",
+                fontSize: 14,
+                marginHorizontal: 5,
+              }}
               onChangeText={setItemPrice}
               placeholder="Edit Price"
               keyboardType="numeric"
@@ -122,8 +156,28 @@ export const RenderTable: React.FC<{
           </>
         ) : (
           <>
-            <ListItem.Title>{item.name}</ListItem.Title>
-            <ListItem.Subtitle>{"$" + item.price}</ListItem.Subtitle>
+            <ListItem.Title
+              style={{
+                fontFamily: "Product-Sans-Regular",
+                fontWeight: "bold",
+                color: "black",
+                fontSize: 14,
+                marginHorizontal: 5,
+              }}
+            >
+              {item.name}
+            </ListItem.Title>
+            <ListItem.Subtitle
+              style={{
+                fontFamily: "Product-Sans-Regular",
+                fontWeight: "bold",
+                color: "black",
+                fontSize: 14,
+                marginHorizontal: 5,
+              }}
+            >
+              {"$" + item.price}
+            </ListItem.Subtitle>
           </>
         )}
       </ListItem.Content>
@@ -206,7 +260,7 @@ export const RenderTable: React.FC<{
         }}
         title={edit ? "Save Items" : "Edit Items"}
         buttonStyle={{
-          backgroundColor: edit ? "#6c7869" : "#28282Bfa",
+          backgroundColor: edit ? "#7ddcdd" : "#6abbbc",
           borderColor: "white",
           borderRadius: 20,
         }}

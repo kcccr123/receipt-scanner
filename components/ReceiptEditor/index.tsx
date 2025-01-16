@@ -126,10 +126,17 @@ export const DisplayReceipt: React.FC<{
         style={styles.input}
         value={name}
         onChangeText={setName}
+        inputStyle={{
+          fontFamily: "Product-Sans-Regular",
+          fontWeight: "bold",
+          color: "black",
+          fontSize: 16,
+          marginHorizontal: 5,
+        }}
         leftIcon={{
           type: "font-awesome",
           name: "chevron-left",
-          color: "#dfc6af",
+          color: "#6abbbc",
         }}
         label={"Name"}
         labelStyle={otherStyles.inputLabel}
@@ -142,17 +149,24 @@ export const DisplayReceipt: React.FC<{
           const numericValue = parseFloat(value);
           setTotal(isNaN(numericValue) ? 0 : numericValue);
         }}
+        inputStyle={{
+          fontFamily: "Product-Sans-Regular",
+          fontWeight: "bold",
+          color: "black",
+          fontSize: 16,
+          marginHorizontal: 5,
+        }}
         leftIcon={{
           type: "font-awesome",
           name: "chevron-left",
-          color: "#dfc6af",
+          color: "#6abbbc",
         }}
         label={"Total"}
         labelStyle={otherStyles.inputLabel}
       />
       <Button
         title={"Save And Exit"}
-        buttonStyle={buttonStyles.Green}
+        buttonStyle={buttonStyles.Blue}
         onPress={() => {
           saveReceipt();
           toggleOverLay();

@@ -13,19 +13,19 @@ export const buttonStyles = StyleSheet.create({
     marginVertical: 5,
   },
   item_edit: {
-    backgroundColor: "#28282B",
+    backgroundColor: "#6abbbc",
     borderRadius: 20,
   },
   item_save: {
-    backgroundColor: "#6c7869",
+    backgroundColor: "#7ddcdd",
     borderRadius: 20,
   },
   item_delete: {
-    backgroundColor: "#9b5353",
+    backgroundColor: "#ffc0d1",
     borderRadius: 20,
   },
   add_item: {
-    backgroundColor: "#28282B",
+    backgroundColor: "#6abbbc",
     borderColor: "white",
     borderRadius: 20,
   },
@@ -34,14 +34,25 @@ export const buttonStyles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
   },
-  button_label: { fontWeight: "bold" },
+  button_label: {
+    fontWeight: "bold",
+    fontFamily: "Product-Sans-Regular",
+    fontSize: 18,
+    color: "white",
+  },
 });
 
 export const otherStyles = StyleSheet.create({
   inputLabel: {
     fontWeight: "bold",
+    fontFamily: "Product-Sans-Regular",
     fontSize: 18,
     color: "dark grey",
   },
-  buttonLabel: { fontWeight: "bold" },
+  buttonLabel: {
+    fontWeight: "bold",
+    fontFamily: "Product-Sans-Regular",
+    fontSize: 18,
+    color: "white",
+  },
 });

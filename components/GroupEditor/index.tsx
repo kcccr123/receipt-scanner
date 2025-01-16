@@ -220,7 +220,7 @@ export const DisplayGroup: React.FC<{
           asChild
         >
           <Button
-            title={"new receipt"}
+            title={"New Receipt"}
             onPress={() => console.log("add a new receipt")}
           />
         </Link>

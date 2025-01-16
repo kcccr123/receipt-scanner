@@ -105,16 +105,39 @@ export const LinkedGroupEditor: React.FC<{
 
   const renderreceiptsList = ({ item }: { item: ReceiptType }) => (
     <ListItem bottomDivider>
-      <Icon name={"receipt"} type={"material"} color="#dfc6af" />
+      <Icon name={"receipt"} type={"material"} color="#6abbbc" />
       <ListItem.Content>
-        <ListItem.Title>{item.name}</ListItem.Title>
+        <ListItem.Title
+          style={{
+            fontFamily: "Product-Sans-Regular",
+            color: "black",
+            fontWeight: "bold",
+            fontSize: 16,
+            marginHorizontal: 5,
+          }}
+        >
+          {item.name}
+        </ListItem.Title>
       </ListItem.Content>
       <ListItem.Content right>
-        <ListItem.Title>{"$" + item.total}</ListItem.Title>
+        <ListItem.Title
+          style={{
+            fontFamily: "Product-Sans-Regular",
+            color: "black",
+            fontWeight: "bold",
+            fontSize: 16,
+          }}
+        >
+          {"$" + item.total}
+        </ListItem.Title>
       </ListItem.Content>
       <Button
         icon={{ name: "arrow-right-alt", size: 20, color: "white" }}
-        buttonStyle={buttonStyles.Green}
+        buttonStyle={{
+          backgroundColor: "#6abbbc",
+          borderRadius: 20,
+          marginHorizontal: 5,
+        }}
         onPress={() => {
           setItemOV(true);
           setReceiptID(item.id);
@@ -127,7 +150,7 @@ export const LinkedGroupEditor: React.FC<{
           size: 20,
           color: "white",
         }}
-        buttonStyle={{ backgroundColor: "#9b5353", borderRadius: 20 }}
+        buttonStyle={{ backgroundColor: "#ffc0d1", borderRadius: 20 }}
         onPress={() => {
           remove(item.id);
         }}
@@ -184,7 +207,15 @@ export const LinkedGroupEditor: React.FC<{
             flex: 1,
           }}
         >
-          <Text style={{ fontSize: 20, paddingBottom: 15 }}>
+          <Text
+            style={{
+              fontFamily: "Product-Sans-Regular",
+              fontWeight: "bold",
+              color: "black",
+              fontSize: 16,
+              marginHorizontal: 5,
+            }}
+          >
             No Receipts found.
           </Text>
         </View>
@@ -258,7 +289,14 @@ export const LinkedGroupEditor: React.FC<{
           leftIcon={{
             type: "font-awesome",
             name: "chevron-left",
-            color: "#dfc6af",
+            color: "#6abbbc",
+          }}
+          inputStyle={{
+            fontFamily: "Product-Sans-Regular",
+            fontWeight: "bold",
+            color: "black",
+            fontSize: 16,
+            marginHorizontal: 5,
           }}
           label={"Name"}
           labelStyle={otherStyles.inputLabel}
@@ -271,10 +309,17 @@ export const LinkedGroupEditor: React.FC<{
             const numericValue = parseFloat(value);
             setTotal(isNaN(numericValue) ? 0 : numericValue);
           }}
+          inputStyle={{
+            fontFamily: "Product-Sans-Regular",
+            fontWeight: "bold",
+            color: "black",
+            fontSize: 16,
+            marginHorizontal: 5,
+          }}
           leftIcon={{
             type: "font-awesome",
             name: "chevron-left",
-            color: "#dfc6af",
+            color: "#6abbbc",
           }}
           label={"Total"}
           labelStyle={otherStyles.inputLabel}
@@ -294,21 +339,33 @@ export const LinkedGroupEditor: React.FC<{
             leftIcon={{
               type: "font-awesome",
               name: "chevron-left",
-              color: "#dfc6af",
+              color: "#6abbbc",
             }}
-            inputStyle={{ fontWeight: "bold", color: "black" }}
+            inputStyle={{
+              fontFamily: "Product-Sans-Regular",
+              fontWeight: "bold",
+              color: "black",
+              fontSize: 16,
+              marginHorizontal: 5,
+            }}
             labelStyle={otherStyles.inputLabel}
             containerStyle={{ flex: 1 }}
           />
           <Button
             buttonStyle={{
-              backgroundColor: "#dfc6af",
+              backgroundColor: "#6abbbc",
               borderRadius: 20,
               width: "100%",
             }}
             title={"Select"}
+            titleStyle={{
+              fontFamily: "Product-Sans-Regular",
+              fontWeight: "bold",
+              color: "white",
+              fontSize: 18,
+              marginHorizontal: 5,
+            }}
             containerStyle={{ flex: 1, marginLeft: 10, marginRight: 10 }}
-            titleStyle={{ color: "black" }}
             onPress={() => setDatePickerOpen(true)}
           />
         </View>
@@ -325,14 +382,28 @@ export const LinkedGroupEditor: React.FC<{
 
         <Button
           title={"Done"}
-          buttonStyle={buttonStyles.Green}
+          titleStyle={{
+            fontFamily: "Product-Sans-Regular",
+            fontWeight: "bold",
+            color: "white",
+            fontSize: 18,
+            marginHorizontal: 5,
+          }}
+          buttonStyle={buttonStyles.Blue}
           onPress={() => {
             saveGroup();
             router.replace("(home)");
           }}
         />
         <Button
-          title={"new receipt"}
+          title={"New Receipt"}
+          titleStyle={{
+            fontFamily: "Product-Sans-Regular",
+            fontWeight: "bold",
+            color: "white",
+            fontSize: 18,
+            marginHorizontal: 5,
+          }}
           buttonStyle={buttonStyles.NewReceipt}
           onPress={() => {
             saveGroup();
@@ -357,6 +428,13 @@ export const LinkedGroupEditor: React.FC<{
             >
               <Button
                 title={"Blank Table"}
+                titleStyle={{
+                  fontFamily: "Product-Sans-Regular",
+                  fontWeight: "bold",
+                  color: "white",
+                  fontSize: 18,
+                  marginHorizontal: 5,
+                }}
                 onPress={() => setPopup(false)}
                 buttonStyle={buttonStyles.PopupButton}
               />
@@ -371,6 +449,13 @@ export const LinkedGroupEditor: React.FC<{
             >
               <Button
                 title={"Scan Receipt"}
+                titleStyle={{
+                  fontFamily: "Product-Sans-Regular",
+                  fontWeight: "bold",
+                  color: "white",
+                  fontSize: 18,
+                  marginHorizontal: 5,
+                }}
                 onPress={() => setPopup(false)}
                 buttonStyle={buttonStyles.PopupButton}
               />
@@ -379,6 +464,13 @@ export const LinkedGroupEditor: React.FC<{
             <Button
               buttonStyle={buttonStyles.PopupButton}
               title={"Upload Image"}
+              titleStyle={{
+                fontFamily: "Product-Sans-Regular",
+                fontWeight: "bold",
+                color: "white",
+                fontSize: 18,
+                marginHorizontal: 5,
+              }}
               onPress={() => {
                 pickImage();
                 setPopup(false);
