@@ -33,7 +33,7 @@ export default function displayCameraPage() {
     <>
       <Button
         titleStyle={otherStyles.buttonLabel}
-        buttonStyle={{ backgroundColor: "#9b5353" }}
+        buttonStyle={{ backgroundColor: "#ffc0d1" }}
         onPress={() => router.back()}
       >
         Back
