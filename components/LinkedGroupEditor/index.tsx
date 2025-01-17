@@ -74,6 +74,13 @@ export const LinkedGroupEditor: React.FC<{
               setTotal(base.total);
             }
             const receipts = await getReceipts(db, groupID);
+            if (receipts.length > 0) {
+              let newTotal = 0;
+              for (let i = 0; i < receipts.length; i++) {
+                newTotal += receipts[i].total;
+              }
+              setTotal(newTotal);
+            }
             setReceiptsList(receipts);
           }
         } catch (error) {
