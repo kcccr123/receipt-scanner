@@ -2,16 +2,27 @@ import { StyleSheet } from "react-native";
 
 export const buttonStyles = StyleSheet.create({
   Red: {
-    backgroundColor: "#9b5353",
+    backgroundColor: "#ffc0d1",
     borderRadius: 20,
     marginHorizontal:5,
   },
-  Blue: { 
-    backgroundColor: "#28282B", 
+  blue_d: { 
+    backgroundColor: "#64b0b1", 
     borderRadius: 20,
   },
-  Green: {
-    backgroundColor: "#6c7869",
+  blue_m: {
+    backgroundColor: "#77d1d2",
+    // borderRadius: 20,
+    marginHorizontal:5,
+  },
+  blue_l: {
+    backgroundColor: "#77ddcdd",
+    borderRadius: 20,
+    marginHorizontal:5,
+  },
+  white:{
+    flex: 1,
+    backgroundColor: "#FFFFFF",
     borderRadius: 20,
     marginHorizontal:5,
   },
@@ -23,5 +34,8 @@ export const otherStyles = StyleSheet.create({
     fontSize: 18,
     color: "dark grey",
   },
-  buttonLabel: { fontWeight: "bold" },
+  buttonLabel: { fontWeight: "bold",
+    fontFamily: "Product-Sans-Regular",
+    fontSize: 18,
+    color: "white" },
 });

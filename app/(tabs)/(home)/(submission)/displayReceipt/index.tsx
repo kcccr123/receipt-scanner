@@ -107,10 +107,17 @@ export default function displayReceiptTablePage() {
 
       <Input
         style={receiptTableStyles.input}
+        inputStyle={{
+          fontFamily: "Product-Sans-Regular",
+          fontWeight: "bold",
+          color: "black",
+          fontSize: 16,
+          marginHorizontal: 5,
+        }}
         leftIcon={{
           type: "font-awesome",
           name: "chevron-left",
-          color: "#dfc6af",
+          color: "#6abbbc",
         }}
         label={"Name"}
         labelStyle={otherStyles.inputLabel}
@@ -120,10 +127,17 @@ export default function displayReceiptTablePage() {
       <Input
         style={receiptTableStyles.input}
         inputMode="numeric"
+        inputStyle={{
+          fontFamily: "Product-Sans-Regular",
+          fontWeight: "bold",
+          color: "black",
+          fontSize: 16,
+          marginHorizontal: 5,
+        }}
         leftIcon={{
           type: "font-awesome",
           name: "chevron-left",
-          color: "#dfc6af",
+          color: "#6abbbc",
         }}
         label={"Total"}
         labelStyle={otherStyles.inputLabel}
@@ -141,7 +155,7 @@ export default function displayReceiptTablePage() {
       />
 
       <Button
-        buttonStyle={buttonStyles.Green}
+        buttonStyle={{ backgroundColor: "#7ddcdd", borderRadius: 20 }}
         titleStyle={otherStyles.buttonLabel}
         onPress={() => onCreateReciept()}
       >

@@ -9,7 +9,7 @@ import {
   getGroups,
   addSingleGroup,
 } from "@/app/database/groups";
-import { ListItem, Button, FAB } from "@rneui/themed";
+import { ListItem, Button, FAB, Divider } from "@rneui/themed";
 import { DisplayGroup } from "../../../components/GroupEditor";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React from "react";
@@ -72,8 +72,24 @@ const Home = () => {
   };
 
   const GroupedTable = ({ groupedData }: GroupedTableProps) => {
+    const formatDate = (date:string): string => {
+      const [year, month, day] = date.split("-");
+      const formatted = new Date(Number(year), Number(month) - 1, Number(day));
+
+      return `${day}/${month}/${year}`;
+    };
+
+    const formatweek = (date:string): string => {
+      const [year, month, day] = date.split("-");
+      const formatted = new Date(Number(year), Number(month) - 1, Number(day));
+
+      const weekday = format(formatted, "EEEE");
+      return `${weekday}`;
+    };
+
     const sections = Object.keys(groupedData).map((date) => ({
-      title: date,
+      week: formatweek(date),
+      full_date: formatDate(date),
       data: groupedData[date],
     }));
 
@@ -94,6 +110,33 @@ const Home = () => {
         </View>
       );
     }
+    const itemTitle = (item: GroupType) => {
+      return (
+        <View style={{flex:1, flexDirection: "row", justifyContent: "space-between"}}>
+          <Text
+            style={{
+              fontWeight: "medium",
+              fontSize: 18,
+              fontFamily: "Product-Sans-Regular",
+              // fontStyle: "italic",
+            }}
+          >
+            {item.name.trim() == "" ? "Untitled" : item.name}{" "}
+          </Text>
+          <Text
+            style={{
+              fontWeight: "medium",
+              fontSize: 18,
+              fontFamily: "Product-Sans-Regular",
+              // fontStyle: "italic",
+            }}
+          >
+            {"$"}
+            {item.total}{" "}
+          </Text>
+        </View>
+      );
+    };
 
     return (
       <>
@@ -107,84 +150,75 @@ const Home = () => {
             <ListItem.Swipeable
               rightContent={() => (
                 <Button
+                  containerStyle={{
+                    flex: 1,
+                    justifyContent: "center",
+                  }}
                   onPress={() => deleteAction(item.id)}
                   icon={{ name: "delete", color: "white" }}
                   buttonStyle={{
-                    minHeight: "100%",
-                    backgroundColor: "#9b5353",
+                    flex: 1,
+                    justifyContent: "center",
+                    backgroundColor: "#ffc0d1",
                   }}
                 />
               )}
               bottomDivider
             >
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between", // Space between the content and the button
-                  width: "100%",
-                }}
-              >
-                <ListItem.Content>
-                  <ListItem.Title
-                    style={{
-                      fontWeight: "medium",
-                      fontSize: 18,
-                      fontFamily: "monospace",
-                      fontStyle: "italic",
-                    }}
-                  >
-                    {item.name}
-                  </ListItem.Title>
-                </ListItem.Content>
-                <ListItem.Content right>
-                  <ListItem.Title
-                    style={{
-                      fontFamily: "monospace",
-                      fontWeight: "medium",
-                      fontSize: 18,
-                      fontStyle: "italic",
-                    }}
-                  >
-                    {"$" + item.total}
-                  </ListItem.Title>
-                </ListItem.Content>
-                <Link
-                  href={{
-                    pathname: "/(displayGroup)",
-                    params: { groupID: item.id, createGroup: "false" },
+              
+                <View
+                  style={{
+                    flex: 1,
                   }}
-                  asChild
                 >
-                  <Button
-                    icon={{ name: "arrow-right-alt", color: "white" }}
-                    buttonStyle={buttonStyles.Green}
-                  />
-                  {/* <ListItem.Chevron color="black" /> */}
-                </Link>
-              </View>
-              <ListItem />
+                  <Link
+                    style = {{ flex: 1, width:"100%"}}
+                    href={{
+                      pathname: "/(displayGroup)",
+                      params: { groupID: item.id, createGroup: "false" },
+                    }}
+                    asChild
+                  >
+                    <Button
+                      containerStyle = {{flex:1, width:"100%"}}
+                      buttonStyle={buttonStyles.white}
+                      title={itemTitle(item)}
+                    />
+                  </Link>
+                </View>
             </ListItem.Swipeable>
           )}
-          renderSectionHeader={({ section: { title } }) => (
+          renderSectionHeader={({ section: { full_date, week } }) => (
             <View
               style={{
+                flexDirection: "row",
                 padding: 8,
-                backgroundColor: "#6c8160",
-                borderRadius: 15,
+                justifyContent:"space-between",
+                backgroundColor: "#6abbbc",
+                borderRadius: 2,
                 marginHorizontal: 1,
               }}
             >
               <Text
                 style={{
-                  fontFamily: "monospace",
+                  fontFamily: "Product-Sans-Regular",
                   fontWeight: "bold",
                   color: "white",
                   fontSize: 18,
                   marginHorizontal: 5,
                 }}
               >
-                {title}
+                {week}{"  "}
+              </Text>
+              <Text
+                style={{
+                  fontFamily: "Product-Sans-Regular",
+                  color: "white",
+                  fontSize: 14,
+                  marginHorizontal: 5,
+                }}
+              >
+                {full_date}
               </Text>
             </View>
           )}
@@ -236,7 +270,7 @@ const Home = () => {
       <FAB
         visible={true}
         icon={{ name: "add", color: "white" }}
-        color="#8BBF8A"
+        color="#7ddcdd"
         onPress={createNewGroup}
         placement="right"
       />
