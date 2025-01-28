@@ -115,20 +115,24 @@ export const LineGraph: React.FC <{refreshOn:GroupType[]; date: Date; setDate: R
         // yAxisSuffix="k"
         yAxisInterval={1} // optional, defaults to 1
         chartConfig={{
-          backgroundColor: "#00b6b0",
-          backgroundGradientFrom: "#64b0b1",
-          backgroundGradientTo: "#7ddcdd",
+          backgroundColor: "white",
+          backgroundGradientFrom: "#ffffff",
+          backgroundGradientTo: "#ffffff",
           decimalPlaces: 2, // optional, defaults to 2dp
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+          color: (opacity = 1) => `rgba(100, 176, 177, ${opacity})`,
+          labelColor: (opacity = 1) => `rgba(100, 176, 189, ${opacity})`,
           style: {
             borderRadius:5,
           },
-
+          propsForLabels:{
+            fontWeight: "bold",
+            fontFamily: "Product-Sans-Regular",
+            fontSize: 13
+          },
           propsForDots: {
-            r: "3",
+            r: "1",
             strokeWidth: "2",
-            stroke: "white",
+            stroke: "#64b0b1",
           },
         }}
         style={{
