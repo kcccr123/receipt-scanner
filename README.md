@@ -46,7 +46,7 @@
 
 This React Native project simplifies receipt storage and spending tracking for users. It uses machine learning to detect and process receipts from images, combining a custom-trained YOLOv8 model, BART, and a custom RCNN.
 
-The machine learning models are deployed on a Google Kubernetes Engine (GKE) cluster on Google Cloud Platform, set up to receive images from the app and return a processed response for display.
+The machine learning models are deployed on a Google Kubernetes Engine (GKE) cluster within Google Cloud Platform (GCP). The server is configured to receive images from the app, process the data, and return inference results to be displayed.
 
 ### Built With
 
@@ -70,11 +70,11 @@ The machine learning models are deployed on a Google Kubernetes Engine (GKE) clu
 
 ## Installation
 
-To run this project, you can either clone the repository and continue following the instructions,
+To run this project, you can either clone the repository and run inside an android emulator,
 
 OR
 
-Download the .apk below from Google Drive to use on your phone immediately:  
+Download the latest version of the .apk from either the GitHub releases or the following Google Drive to use on your phone immediately:  
 [Download The App Here](https://drive.google.com/drive/folders/1gMsgvBpB-5DIYCYthU_EozF8zWHmHyqh)
 
 ### Prerequisites
@@ -114,9 +114,9 @@ For more details, follow:
 
 <!-- KEY FEATURES -->
 
-## Key Features
+## Receipt Processing ML Pipeline
 
-This seciton includes further detail on key features that were worked on in this project.
+The app utilizes two distinct technology pipelines for receipt inference. One pipeline was developed and trained in-house, leveraging YOLOv8, a custom RCNN, and BART. The other pipeline is powered by OpenAI's ChatGPT.
 
 You can find the backend + machine learning utilities in this repo: [reciept-scanner-backend](https://github.com/kcccr123/receipt-scanner-backend)
 
@@ -164,7 +164,7 @@ The model architecture integrates convolutional layers for spatial feature extra
 
 #### BART
 
-We utilize a pre-trained BART model developed by Facebook, fine-tuned specifically for our task. This model is used for sentence reconstruction, grammar correction, and the identification of key values, ensuring accurate processing and correction of text data before the results are sent in the POST response for display to the user.
+We utilize a pre-trained BART model developed by Meta, fine-tuned specifically for our task. This model is used for sentence reconstruction, grammar correction, and the identification of key values, ensuring accurate processing and correction of text data before the results are sent in the POST response for display to the user.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
