@@ -31,9 +31,12 @@
     </li>
     <li><a href="#usage">Usage</a></li>
     <li>
-      <a href="#key-features">Key Features</a>
+      <a href="#receipt-processing-ml-pipelines">Key Features</a>
       <ul>
-        <li><a href="#machine-learning">Machine Learning</a></li>
+        <li><a href="#in-house-pipeline">In-House Pipeline</a></li>
+      </ul>
+      <ul>
+        <li><a href="#gpt-4o-pipeline">GPT-4o</a></li>
       </ul>
     </li>
     <li><a href="#contact">Contact</a></li>
@@ -112,9 +115,9 @@ For more details, follow:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- KEY FEATURES -->
+<!-- RECEIPT PROCESSING ML PIPELINES -->
 
-## Receipt Processing ML Pipeline
+## Receipt Processing ML Pipelines
 
 The app employs two distinct technology pipelines for receipt inference: one developed and trained in-house and another powered by OpenAI’s GPT-4.
 
@@ -123,6 +126,8 @@ You can find the backend + machine learning utilities in this repo: [reciept-sca
 ### In-House Pipeline
 
 The in-house pipeline processes image requests through a sequence of three models: YOLOv8 for object detection, RCNN for reading text, and BART for correction and restructuring.
+
+![in-house-pipeline](https://github.com/user-attachments/assets/88e1a5da-e973-4b6a-8906-f9590a354210)
 
 #### YOLOv8
 
@@ -162,9 +167,9 @@ The model integrates convolutional layers for spatial feature extraction and LST
 
 - Inference model reached a characeter accuracy of 96% and a word accuracy of 88% during testing.
 
-##### BART
+#### BART
 
-We utilize a pre-trained BART model developed by Meta, fine-tuned specifically for our task. This model is used for sentence reconstruction, grammar correction, and the identification of key values, ensuring accurate processing and correction of text data before the results are sent in the POST response for display to the user.
+We utilize a pre-trained BART model developed by Meta, fine-tuned specifically for our task. This model is used for sentence reconstruction, grammar correction, and the identification of key values, ensuring accurate processing and correction of text data before the results are packaged in a JSON object and sent in the POST response back to the client.
 
 ### GPT-4o Pipeline
 
