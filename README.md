@@ -116,25 +116,27 @@ For more details, follow:
 
 ## Receipt Processing ML Pipeline
 
-The app utilizes two distinct technology pipelines for receipt inference. One pipeline was developed and trained in-house, leveraging YOLOv8, a custom RCNN, and BART. The other pipeline is powered by OpenAI's ChatGPT.
+The app employs two distinct technology pipelines for receipt inference: one developed and trained in-house and another powered by OpenAI’s GPT-4.
 
 You can find the backend + machine learning utilities in this repo: [reciept-scanner-backend](https://github.com/kcccr123/receipt-scanner-backend)
 
-### Machine Learning
+### In-House Pipeline
+
+The in-house pipeline processes image requests through a sequence of three models: YOLOv8 for object detection, RCNN for reading text, and BART for correction and restructuring.
 
 #### YOLOv8
 
-YOLOv8, a robust open-source AI framework for computer vision tasks with a large community, was leveraged to extract bounding boxes for items, totals, and subtotals from processed receipt images. The captured bounding boxes were then passed to subsequent models for further analysis.
+YOLOv8, a robust open-source AI framework for computer vision, was leveraged to extract bounding boxes for items, totals, and subtotals from processed receipt images. The bounding boxes are then passed to subsequent models for further analysis.
 
-The model was trained from scratch using a dataset of over 400 receipts, which were preprocessed into grayscale images and perspective corrected. Through data augmentation techniques, the dataset was expanded to nearly 1,200 images.
+The model was trained from scratch using a dataset of over 400 receipts, preprocessed into grayscale and perspective-corrected images. Data augmentation techniques expanded the dataset to nearly 1,200 images.
 
 #### RCNN
 
-A custom RCNN model is designed and trained to perform ocr on the bounding boxes passed by the YOLOv8 model.
+A custom RCNN model is designed and trained to perform optical character recognition (OCR) on the bounding boxes passed by the YOLOv8 model.
 
-##### Model Architecture
+###### Model Architecture
 
-The model architecture integrates convolutional layers for spatial feature extraction with LSTM layers for sequence modeling. It consists of:
+The model integrates convolutional layers for spatial feature extraction and LSTM layers for sequence modeling. Its architecture includes:
 
 - 9 Convolutional Residual Blocks to progressively extract and refine features from the input image.
 
@@ -142,29 +144,31 @@ The model architecture integrates convolutional layers for spatial feature extra
 
 - Final fully connected layers to map the LSTM outputs to a set of character probabilities.
 
-##### Dataset
+###### Dataset
 
-- The model is trained on a dataset of about 42000 image.
+- Trained on a dataset of approximately 42,000 images containing 1-3 words, prices, or special characters found on receipts.
 
-- The dataset contains images of 1-3 words, prices, or other special characters that appear on receipts.
-
-##### Data Preprocessing & Augmentation
-
+###### Data Preprocessing & Augmentation
+  
 - Since color does not matter, the images are preprocessed into greyscale images by OpenCV then resized to 224\*36 while maintaining aspect ratio.
 
 - Data Augmentation methods such as sharpening, eroding and dilating are applied at random to enhance model generalization.
 
-##### Training
+###### Training
 
 - Training process utilizes CTC loss, a decaying learning rate, as well as character error rate and word error rate as metrics.
 
-##### Result
+###### Result
 
-- Inference model reached a characeter accuracy of 96% and a word accuracy of 88%.
+- Inference model reached a characeter accuracy of 96% and a word accuracy of 88% during testing.
 
-#### BART
+##### BART
 
 We utilize a pre-trained BART model developed by Meta, fine-tuned specifically for our task. This model is used for sentence reconstruction, grammar correction, and the identification of key values, ensuring accurate processing and correction of text data before the results are sent in the POST response for display to the user.
+
+### GPT-4o Pipeline
+
+The GPT-4o pipeline is simpler, relying solely on GPT-4o to make inferences. When the app sends a request to the server, the server calls the OpenAI API and uses GPT-4o to extract items from the provided image and identify key attributes. Once the API returns a JSON object, the server processes it and sends the response back to the app for display and usage.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
