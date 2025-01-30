@@ -31,7 +31,7 @@
     </li>
     <li><a href="#usage">Usage</a></li>
     <li>
-      <a href="#receipt-processing-ml-pipelines">Key Features</a>
+      <a href="#receipt-processing">Receipt Processing</a>
       <ul>
         <li><a href="#in-house-pipeline">In-House Pipeline</a></li>
       </ul>
@@ -115,9 +115,27 @@ For more details, follow:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- RECEIPT PROCESSING ML PIPELINES -->
+<!-- USAGE -->
 
-## Receipt Processing ML Pipelines
+## Usage
+
+Users can organize receipts into groups, making it easy to track and manage expenses over time. Each group is associated with a specific date and can contain multiple receipts, allowing for clear categorization and streamlined access to past records.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/a52d84b5-6bf8-467d-8297-842b6ca7c504" width="300" />
+  <img src="https://github.com/user-attachments/assets/091214c0-9d39-4cc0-9582-4108f1150f4b" width="300" />
+</p>
+
+Once a group is created, users can easily add receipts by either uploading an existing image or taking a photo using the built-in camera. The image will be sent to our server, analyzed by our machine learning pipeline, and its key data—such as vendor, date, and total amount—will be extracted and organized for easy tracking and review.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/9c3ed7ab-dbd1-40b4-b0b4-b9d7189ecaee" width="300" />
+  <img src="https://github.com/user-attachments/assets/e0c36939-c3cf-43ce-af12-83094e066e7b" width="300" />
+</p>
+
+<!-- RECEIPT PROCESSING -->
+
+## Receipt Processing
 
 The app employs two distinct technology pipelines for receipt inference: one developed and trained in-house and another powered by OpenAI’s GPT-4.
 
